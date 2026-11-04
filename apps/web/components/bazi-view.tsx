@@ -1,10 +1,12 @@
 import { CAN_HAN, CHI_HAN, CHI } from "@lyso/calendar-vn";
-import { canElement, chiElement, NGU_HANH, type BaziChart } from "@lyso/engine-bazi";
+import { canElement, chiElement, NGU_HANH, THAN_SAT, type BaziChart } from "@lyso/engine-bazi";
 
 const ELEM_COLOR = ["text-emerald-700", "text-red-700", "text-amber-800", "text-stone-500", "text-sky-800"];
 const ELEM_BG = ["bg-emerald-600", "bg-red-600", "bg-amber-700", "bg-stone-400", "bg-sky-700"];
 
-export function BaziView({ chart }: { chart: BaziChart }) {
+const KIND_COLOR = { cát: "bg-emerald-50 text-emerald-800 border-emerald-200", hung: "bg-red-50 text-red-800 border-red-200", trung: "bg-stone-50 text-stone-700 border-stone-200" };
+
+export function BaziView({ chart, viewYear }: { chart: BaziChart; viewYear?: number }) {
   const total = Object.values(chart.elementCount).reduce((a, b) => a + b, 0) || 1;
   return (
     <div className="space-y-5">
@@ -67,6 +69,24 @@ export function BaziView({ chart }: { chart: BaziChart }) {
                 <td key={p.label} className="p-2 text-xs">{p.truongSinh}</td>
               ))}
             </tr>
+            <tr>
+              <td className="p-2 text-left align-top text-xs text-stone-500">Thần sát</td>
+              {chart.pillars.map((p) => (
+                <td key={p.label} className={`p-2 align-top ${!chart.timeKnown && p.label === "Giờ" ? "opacity-30" : ""}`}>
+                  <div className="flex flex-col items-center gap-1">
+                    {p.thanSat.map((t) => (
+                      <span
+                        key={t.name}
+                        title={`${THAN_SAT[t.name]?.meaning ?? ""} (tra theo ${t.from})`}
+                        className={`rounded border px-1.5 text-[11px] ${KIND_COLOR[t.kind]}`}
+                      >
+                        {t.name}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+              ))}
+            </tr>
           </tbody>
         </table>
       </div>
@@ -106,13 +126,37 @@ export function BaziView({ chart }: { chart: BaziChart }) {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2 text-sm">
-        {chart.luuNien.map((l) => (
-          <span key={l.year} className="rounded-full bg-stone-100 px-3 py-1">
-            Lưu niên {l.year}: {l.ganzhi.name} ({l.thapThan})
-          </span>
-        ))}
+      <div>
+        <div className="mb-2 text-sm font-medium">Lưu niên</div>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {chart.luuNien.map((l) => {
+            const dv = chart.daiVan.find((d) => l.year >= d.startYear && l.year < d.startYear + 10);
+            return (
+              <div key={l.year} className={`rounded-lg border bg-white p-3 text-sm ${l.year === viewYear ? "border-son ring-1 ring-son" : "border-stone-200"}`}>
+                <div className="font-medium">
+                  {l.year} · {l.ganzhi.name} <span className="font-normal text-stone-500">({l.thapThan})</span>
+                </div>
+                {dv && <div className="text-xs text-stone-500">Trong đại vận {dv.ganzhi.name} ({dv.thapThan})</div>}
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {l.thanSat.length ? (
+                    l.thanSat.map((t) => (
+                      <span key={t.name} title={THAN_SAT[t.name]?.meaning} className={`rounded border px-1.5 text-[11px] ${KIND_COLOR[t.kind]}`}>
+                        {t.name}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-xs text-stone-400">Không gặp thần sát chính</span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
+      <p className="text-xs text-stone-500">
+        Thần sát tra theo bảng phổ biến (Tam Mệnh Thông Hội): quý nhân, Văn Xương, Lộc, Nhận theo can ngày; nhóm Tam hợp theo chi năm và chi ngày; Thiên đức,
+        Nguyệt đức theo chi tháng. Rê chuột lên tên sao để xem nghĩa. Thần sát chỉ là phụ — luận chính vẫn dựa vào vượng suy và dụng thần.
+      </p>
       {chart.notes.map((n) => (
         <p key={n} className="text-xs text-stone-500">{n}</p>
       ))}

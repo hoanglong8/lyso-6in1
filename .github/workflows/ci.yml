@@ -16,6 +16,15 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Sinh bộ đối chiếu phái Việt từ lasotuvi
+        run: |
+          pip install --no-deps lasotuvi==0.1.2
+          python scripts/oracle/lasotuvi_dump.py 3000 > /tmp/lasotuvi.json
       - run: pnpm typecheck
       - run: pnpm test
+        env:
+          LASOTUVI_ORACLE: /tmp/lasotuvi.json
       - run: pnpm --filter @lyso/web build

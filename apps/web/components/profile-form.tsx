@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { CalendarConfig, CalendarInput } from "@lyso/calendar-vn";
-import type { TuViConfig } from "@lyso/engine-tuvi";
+import { DEFAULT_TUVI_CONFIG, SCHOOLS, type TuViConfig } from "@lyso/engine-tuvi";
 import { PLACES } from "@/lib/places";
 
 export type Gender = "nam" | "nu";
@@ -26,7 +26,7 @@ export interface Settings {
 
 export const DEFAULT_SETTINGS: Settings = {
   calendar: { dayBoundary: "ty23", useTrueSolarTime: false, lunarTzMode: "historical" },
-  tuvi: { algorithm: "default", leapMonth: "split15" },
+  tuvi: DEFAULT_TUVI_CONFIG,
 };
 
 export const emptyProfile = (): Profile => ({
@@ -194,15 +194,21 @@ export function ProfileForm({
             </select>
           </label>
           <label className="block">
-            <span className="text-stone-600">Tử vi: cách an sao</span>
+            <span className="text-stone-600">Tử vi: trường phái an sao</span>
             <select
               className={`${field} mt-1 py-1.5`}
-              value={settings.tuvi.algorithm}
-              onChange={(e) => onSettings({ ...settings, tuvi: { ...settings.tuvi, algorithm: e.target.value as TuViConfig["algorithm"] } })}
+              value={settings.tuvi.school}
+              onChange={(e) => onSettings({ ...settings, tuvi: { ...settings.tuvi, school: e.target.value as TuViConfig["school"] } })}
             >
-              <option value="default">Toàn thư (thông dụng)</option>
-              <option value="zhongzhou">Trung Châu phái</option>
+              {SCHOOLS.map((sc) => (
+                <option key={sc.id} value={sc.id} disabled={!sc.available}>
+                  {sc.label}
+                  {sc.available ? "" : " — chưa có"}
+                </option>
+              ))}
             </select>
+            <span className="mt-1 block text-xs text-stone-500">{SCHOOLS.find((x) => x.id === settings.tuvi.school)?.description}</span>
+            <span className="mt-1 block text-xs text-stone-400">{SCHOOLS.find((x) => x.id === "dong-a")?.description}</span>
           </label>
           <label className="block">
             <span className="text-stone-600">Tử vi: sinh tháng nhuận</span>

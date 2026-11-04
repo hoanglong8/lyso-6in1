@@ -20,16 +20,21 @@ export default function LaSoApp() {
   const [profile, setProfile] = useState<Profile>(() => emptyProfile());
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [tab, setTab] = useState<Tab>("tuvi");
+  const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
   const saved = useSavedProfiles();
 
   const result = useMemo(() => {
     try {
       const s = buildSnapshot(toCalendarInput(profile), settings.calendar);
-      return { s, tuvi: buildTuVi(s, profile.gender, settings.tuvi), bazi: buildBazi(s, profile.gender) };
+      return {
+        s,
+        tuvi: buildTuVi(s, profile.gender, settings.tuvi, { viewYear }),
+        bazi: buildBazi(s, profile.gender, { luuNienYears: [viewYear - 1, viewYear, viewYear + 1] }),
+      };
     } catch (e) {
       return { error: e instanceof Error ? e.message : String(e) };
     }
-  }, [profile, settings]);
+  }, [profile, settings, viewYear]);
 
   const title = profile.name.trim() || "Lá số";
 
@@ -82,6 +87,28 @@ export default function LaSoApp() {
             </button>
           ))}
         </div>
+        {tab !== "lich" && (
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-stone-600">Xem vận hạn năm</span>
+            <button type="button" aria-label="Năm trước" className="rounded border border-stone-300 bg-white px-2" onClick={() => setViewYear(viewYear - 1)}>
+              ‹
+            </button>
+            <input
+              type="number"
+              className="w-20 rounded border border-stone-300 bg-white px-2 py-1 text-center"
+              value={viewYear}
+              min={1900}
+              max={2100}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                if (v >= 1900 && v <= 2100) setViewYear(v);
+              }}
+            />
+            <button type="button" aria-label="Năm sau" className="rounded border border-stone-300 bg-white px-2" onClick={() => setViewYear(viewYear + 1)}>
+              ›
+            </button>
+          </div>
+        )}
         {"error" in result ? (
           <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-800">{result.error}</div>
         ) : (
@@ -92,7 +119,7 @@ export default function LaSoApp() {
               </p>
             )}
             {tab === "tuvi" && <TuViBoard chart={result.tuvi} title={title} />}
-            {tab === "bazi" && <BaziView chart={result.bazi} />}
+            {tab === "bazi" && <BaziView chart={result.bazi} viewYear={viewYear} />}
             {tab === "lich" && <LichResult s={result.s} />}
           </>
         )}

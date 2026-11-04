@@ -12,7 +12,9 @@ import {
   type GanZhi,
 } from "@lyso/calendar-vn";
 
-export const ENGINE_VERSION = "engine-bazi@0.1.0";
+import { thanSatOf, type ThanSatBases, type ThanSatHit } from "./than-sat";
+export * from "./than-sat";
+export const ENGINE_VERSION = "engine-bazi@0.2.0";
 
 export type Gender = "nam" | "nu";
 
@@ -82,6 +84,7 @@ export interface Pillar {
   thapThan: string;
   tangCan: { can: number; name: string; thapThan: string }[];
   truongSinh: string;
+  thanSat: ThanSatHit[];
 }
 
 export interface DaiVan {
@@ -91,6 +94,7 @@ export interface DaiVan {
   endAge: number;
   startYear: number;
   thapThan: string;
+  thanSat: ThanSatHit[];
 }
 
 export interface BaziChart {
@@ -110,13 +114,14 @@ export interface BaziChart {
     startDate: string; // ISO UTC, lúc bắt đầu đại vận đầu tiên
   };
   daiVan: DaiVan[];
-  luuNien: { year: number; ganzhi: GanZhi; thapThan: string }[];
+  luuNien: { year: number; ganzhi: GanZhi; thapThan: string; thanSat: ThanSatHit[] }[];
   timeKnown: boolean;
   notes: string[];
 }
 
-function pillar(label: Pillar["label"], g: GanZhi, dayCan: number): Pillar {
+function pillar(label: Pillar["label"], g: GanZhi, dayCan: number, bases: ThanSatBases): Pillar {
   return {
+    thanSat: thanSatOf(g, bases, { isDayPillar: label === "Ngày", isYearPillar: label === "Năm" }),
     label,
     ganzhi: g,
     napAm: napAm(g),
@@ -168,11 +173,12 @@ export function buildBazi(s: CalendarSnapshot, gender: Gender, opts: BaziOptions
   const g = s.ganzhi;
   const dayCan = g.day.can;
   const timeKnown = s.input.time !== null;
+  const bases: ThanSatBases = { year: g.yearBazi, month: g.monthBazi, day: g.day };
   const pillars = [
-    pillar("Năm", g.yearBazi, dayCan),
-    pillar("Tháng", g.monthBazi, dayCan),
-    pillar("Ngày", g.day, dayCan),
-    pillar("Giờ", g.hour, dayCan),
+    pillar("Năm", g.yearBazi, dayCan, bases),
+    pillar("Tháng", g.monthBazi, dayCan, bases),
+    pillar("Ngày", g.day, dayCan, bases),
+    pillar("Giờ", g.hour, dayCan, bases),
   ];
   const counted = timeKnown ? pillars : pillars.slice(0, 3);
   const elementCount = Object.fromEntries(NGU_HANH.map((n) => [n, 0])) as BaziChart["elementCount"];
@@ -196,6 +202,7 @@ export function buildBazi(s: CalendarSnapshot, gender: Gender, opts: BaziOptions
       endAge: firstAge + 10 * i + 9,
       startYear: startYear + 10 * i,
       thapThan: thapThan(dayCan, dg.can),
+      thanSat: thanSatOf(dg, bases),
     });
   }
 
@@ -203,7 +210,7 @@ export function buildBazi(s: CalendarSnapshot, gender: Gender, opts: BaziOptions
   const years = opts.luuNienYears ?? [nowYear, nowYear + 1, nowYear + 2];
   const luuNien = years.map((y) => {
     const yg = ganzhi(y - 4, y - 4);
-    return { year: y, ganzhi: yg, thapThan: thapThan(dayCan, yg.can) };
+    return { year: y, ganzhi: yg, thapThan: thapThan(dayCan, yg.can), thanSat: thanSatOf(yg, bases) };
   });
 
   const notes: string[] = [];
@@ -234,12 +241,14 @@ export function toPromptContext(c: BaziChart): string {
       (p) =>
         `Trụ ${p.label}: ${p.ganzhi.name} — ${p.thapThan}; nạp âm ${p.napAm}; trường sinh: ${p.truongSinh}; tàng can: ${p.tangCan
           .map((t) => `${t.name} (${t.thapThan})`)
-          .join(", ")}`,
+          .join(", ")}; thần sát: ${p.thanSat.map((t) => t.name).join(", ") || "không"}`,
     ),
     `Ngũ hành (8 chữ): ${Object.entries(c.elementCount).map(([k, v]) => `${k} ${v}`).join(", ")}.`,
     `Khởi vận ${c.khoiVan.forward ? "thuận" : "nghịch"}: ${c.khoiVan.years} năm ${c.khoiVan.months} tháng ${c.khoiVan.days} ngày sau khi sinh.`,
     `Đại vận: ${c.daiVan.map((d) => `${d.startAge}–${d.endAge} tuổi ${d.ganzhi.name} (${d.thapThan})`).join("; ")}.`,
   ];
+  if (c.luuNien.length)
+    lines.push(`Lưu niên: ${c.luuNien.map((l) => `${l.year} ${l.ganzhi.name} (${l.thapThan}${l.thanSat.length ? `; ${l.thanSat.map((t) => t.name).join(", ")}` : ""})`).join("; ")}.`);
   if (!c.timeKnown) lines.push("Lưu ý: không rõ giờ sinh, trụ giờ không dùng được.");
   return lines.join("\n");
 }

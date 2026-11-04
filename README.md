@@ -19,7 +19,7 @@ tính theo **âm lịch Việt Nam (UTC+7)**, có múi giờ lịch sử và gi�
 apps/web                Next.js (App Router), deploy Vercel
 packages/calendar-vn    Lõi lịch: âm lịch UTC+7, can chi, tiết khí, múi giờ lịch sử, giờ mặt trời thực
 packages/engine-bazi    Bát tự: tàng can, thập thần, nạp âm, trường sinh, khởi vận, đại vận, lưu niên
-packages/engine-tuvi    Tử vi: 12 cung từ ngày âm VN, lõi an sao iztro (Toàn thư / Trung Châu)
+packages/engine-tuvi    Tử vi: phái Việt (Thiên Lương), Nam phái, Trung Châu, Bắc phái (phi hóa); vận hạn năm xem
 packages/engine-*       (sắp có) iching, liuren, qimen, taiyi
 docs/                   Sổ quyết định trường phái
 ```
@@ -37,6 +37,9 @@ docs/                   Sổ quyết định trường phái
 - Bát tự: thập thần, tàng can, nạp âm, trường sinh, chiều và mốc khởi vận, can chi và tuổi đại vận khớp tyme4ts
   trên 604 lá số mẫu 1935–2085 (số ngày khởi vận được lệch tối đa 1 do làm tròn thời khắc giao tiết).
 - Tử vi: lá số dựng từ ngày âm Việt Nam; khớp iztro khi lịch VN và TQ trùng nhau; mọi ngày âm VN 1900–2100 đều an được sao.
+- Phái Việt (Thiên Lương): khớp [lasotuvi](https://github.com/doanguyen/lasotuvi) trên 20.000 lá số ngẫu nhiên (tên cung, Thân, đại hạn, tiểu hạn, Tuần Triệt, toàn bộ sao kèm độ sáng và Tứ hóa).
+- Bắc phái: bảng Tứ hóa phi tinh khớp Tứ hóa năm sinh của iztro cho cả 10 can.
+- Bát tự: thần sát kiểm bằng các ca tra tay theo bảng Tam Mệnh Thông Hội.
 
 ## Chạy thử
 
@@ -51,7 +54,8 @@ Yêu cầu Node 22+, pnpm 10.
 ## Thư viện
 
 - [astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT): điểm sóc, kinh độ Mặt Trời.
-- [iztro](https://github.com/SylarLong/iztro) (MIT): lõi an sao Tử vi.
+- [iztro](https://github.com/SylarLong/iztro) (MIT): lõi an sao Tử vi cho Nam phái, Trung Châu, Bắc phái.
+- [lasotuvi](https://github.com/doanguyen/lasotuvi) (MIT): nguồn quy tắc phái Việt, chỉ dùng làm bộ đối chiếu trong test.
 - [tyme4ts](https://github.com/6tail/tyme4ts) (MIT): chỉ dùng làm đáp án đối chiếu trong test.
 
 ## Giấy phép
