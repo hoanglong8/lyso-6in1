@@ -20,5 +20,6 @@
     "tyme4ts": "^1.5.4",
     "typescript": "^5.9.3",
     "vitest": "^4.0.0"
-  }
+  },
+  "license": "AGPL-3.0-only"
 }

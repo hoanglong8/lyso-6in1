@@ -13,9 +13,17 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 | L-06 | Bát tự | Ranh giới năm | Lập xuân (315°) | — | Chuẩn Bát tự | |
 | L-07 | Bát tự | Ranh giới tháng | 12 tiết (315°, 345°, 15°…) | — | Chuẩn Bát tự | |
 | L-08 | Tử vi | Ranh giới năm | Tết Nguyên đán | — | Chuẩn Tử vi | |
+| B-01 | Bát tự | Khởi vận | Đếm tới tiết kế tiếp (thuận) hoặc tiết trước (nghịch); 3 ngày = 1 năm, 1 ngày = 4 tháng, 2 giờ = 10 ngày | Các bảng quy đổi khác | Cách thông dụng, khớp tyme4ts | |
+| B-02 | Bát tự | Thuận/nghịch | Năm dương nam, năm âm nữ đi thuận | — | Chuẩn Bát tự | |
+| T-01 | Tử vi | Cách an sao | Toàn thư (bản thông dụng của iztro) | Trung Châu phái | Có sẵn trong iztro; phái Việt (Thiên Lương, Vân Đằng) chưa có, cần viết plugin | |
+| T-02 | Tử vi | Sinh tháng nhuận | 15 ngày đầu tính tháng đó, từ 16 tính tháng sau | Tính như tháng đó; tính như tháng sau | Cách phổ biến; cho chọn | |
+| T-03 | Tử vi | Ngày âm đưa vào an sao | Ngày âm Việt Nam (UTC+7) từ calendar-vn | — | iztro tự đổi theo lịch Trung Quốc nên không cho nó đổi từ dương lịch | |
 | L-09 | Lục nhâm | Nguyệt tướng | Đổi tại trung khí; sau Vũ thủy là Hợi | — | Chuẩn Đại Lục Nhâm | |
 
 ## Ngoại lệ đã biết khi đối chiếu
 
 - Lịch Trung Quốc trước 1929 tính theo giờ địa phương Bắc Kinh (UTC+7:45:40), nên test đối chiếu với tyme4ts chỉ chạy từ 1929.
 - Tháng 7–8/2097: điểm sóc rơi lúc 00:00:15 giờ Bắc Kinh; lệch vài giây ΔT giữa hai thư viện. Ca biên hợp lệ.
+- Tử vi: 96 ngày âm Việt Nam trong 1900–2100 không có trong lịch Trung Quốc (ví dụ ngày 30 mà tháng TQ chỉ có 29 ngày,
+  hoặc tháng nhuận chỉ lịch VN có). Với các ngày này engine an sao bằng ngày tương đương cùng can chi năm (cách 60 năm),
+  vì an sao chỉ phụ thuộc can chi năm, số tháng, số ngày, giờ, giới tính. Test kiểm chứng lá số cách 60 năm là y hệt.

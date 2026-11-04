@@ -12,7 +12,9 @@
     "@lyso/calendar-vn": "workspace:*",
     "next": "^16.4.5",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "@lyso/engine-bazi": "workspace:*",
+    "@lyso/engine-tuvi": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
@@ -24,5 +26,6 @@
   },
   "engines": {
     "node": ">=22"
-  }
+  },
+  "license": "AGPL-3.0-only"
 }
