@@ -22,6 +22,12 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 | T-02 | Tử vi | Sinh tháng nhuận | 15 ngày đầu tính tháng đó, từ 16 tính tháng sau | Tính như tháng đó; tính như tháng sau | Cách phổ biến; cho chọn | |
 | T-03 | Tử vi | Ngày âm đưa vào an sao | Ngày âm Việt Nam (UTC+7) từ calendar-vn | — | iztro tự đổi theo lịch Trung Quốc nên không cho nó đổi từ dương lịch | |
 | L-09 | Lục nhâm | Nguyệt tướng | Đổi tại trung khí; sau Vũ thủy là Hợi | — | Chuẩn Đại Lục Nhâm | |
+| N-01 | Lục nhâm | Thiệp hại | Mạnh → Trọng → Quý theo chỗ thần ngồi trên địa bàn | Đếm độ sâu bị khắc trên đường về nhà (涉害深者为用) | Bảng 720 khóa trong sách dùng Mạnh–Trọng–Quý: khớp 717/720; đếm độ sâu lệch bảng ở ~12 khóa | |
+| N-02 | Lục nhâm | Quý nhân | Giáp Mậu Canh: ngày Sửu, đêm Mùi; Ất Kỷ Tý/Thân; Bính Đinh Hợi/Dậu; Tân Ngọ/Dần; Nhâm Quý Tỵ/Mão | Giáp ngày Mùi đêm Sửu (bảng tách từng can) | Khớp bảng sách; giờ Mão–Thân là ngày | |
+| N-03 | Lục nhâm | Khóa trùng | Gộp khóa trùng (so can theo ký cung), giữ quan hệ khắc đầu tiên | — | Cần để khớp các ngày Bát chuyên và ngày can ký trùng chi | |
+| K-01 | Kinh dịch | Lục hào | Nạp giáp Kinh Phòng, Bát cung, thế ứng, lục thân theo cung, lục thú theo can ngày, phục thần từ quẻ thuần của cung | — | Thông dụng (Tăng San Bốc Dịch) | |
+| K-02 | Kinh dịch | Mai Hoa theo giờ | Số chi năm âm + tháng âm + ngày âm → thượng; + số giờ → hạ; tổng chia 6 → hào động | — | Thiệu Khang Tiết, ví dụ "Quan mai chiêm" khớp | |
+| K-03 | Kinh dịch | Gieo xu | Ngửa 3, sấp 2; 6 lão âm, 7 thiếu dương, 8 thiếu âm, 9 lão dương | Ngửa 2, sấp 3 | Cho người dùng tự nhập kết quả gieo xu thật | |
 
 ## Ngoại lệ đã biết khi đối chiếu
 
@@ -35,3 +41,8 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 
 - lasotuvi 0.1.2 có lỗi rò trạng thái: đối tượng sao dùng chung giữa các lá số nên độ sáng của lá số trước dính sang lá số sau. Script `scripts/oracle/lasotuvi_dump.py` vá lỗi này trước khi xuất bộ đối chiếu.
 - CI sinh 3.000 lá số đối chiếu mỗi lần chạy (`LASOTUVI_ORACLE`); test bỏ qua khi không có file.
+
+## Ghi chú Đại Lục Nhâm
+
+- Đối chiếu: bảng 720 khóa của `liuren-ts-lib` (Apache-2.0, chép từ sách) làm đáp án; `daliuren-lib` (thuật toán) và `kinliuren` (MIT) để so chéo. liuren-ts-lib và daliuren-lib khớp nhau 717/720; kinliuren lệch 113 khóa (chủ yếu Phản ngâm, Phục ngâm) nên không dùng.
+- 3 khóa bảng sách tự mâu thuẫn (丁卯+10, 辛卯+10, 己亥+4): cùng cấu trúc tứ khóa với các ngày khác nhưng ra sơ truyền khác. Ghi nhận là ngoại lệ của bảng, không chỉnh thuật toán để ép khớp.

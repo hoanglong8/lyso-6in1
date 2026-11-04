@@ -20,7 +20,9 @@ apps/web                Next.js (App Router), deploy Vercel
 packages/calendar-vn    Lõi lịch: âm lịch UTC+7, can chi, tiết khí, múi giờ lịch sử, giờ mặt trời thực
 packages/engine-bazi    Bát tự: tàng can, thập thần, nạp âm, trường sinh, khởi vận, đại vận, lưu niên
 packages/engine-tuvi    Tử vi: phái Việt (Thiên Lương), Nam phái, Trung Châu, Bắc phái (phi hóa); vận hạn năm xem
-packages/engine-*       (sắp có) iching, liuren, qimen, taiyi
+packages/engine-kinhdich  Kinh dịch: 64 quẻ, gieo xu, Mai Hoa, Lục hào nạp giáp (Bát cung, thế ứng, lục thân, lục thú, phục thần)
+packages/engine-lucnham   Đại Lục Nhâm: thiên địa bàn, tứ khóa, tam truyền (Cửu tông môn), 12 thiên tướng, độn can
+packages/engine-*       (sắp có) qimen, taiyi
 docs/                   Sổ quyết định trường phái
 ```
 
@@ -41,6 +43,11 @@ docs/                   Sổ quyết định trường phái
 - Bắc phái: bảng Tứ hóa phi tinh khớp Tứ hóa năm sinh của iztro cho cả 10 can.
 - Bát tự: thần sát kiểm bằng các ca tra tay theo bảng Tam Mệnh Thông Hội.
 
+## Kinh dịch và Đại Lục Nhâm đã kiểm thử
+
+- Đại Lục Nhâm: tứ khóa khớp 720/720 và tam truyền khớp 717/720 khóa của bảng sách (3 khóa bảng tự mâu thuẫn, xem [docs](docs/quyet-dinh-phai.md)); thiên tướng khớp 720/720.
+- Kinh dịch: thứ tự Bát cung Kinh Phòng đủ 64 quẻ; nạp giáp, thế ứng, phục thần đối chiếu sách (Thiên Phong Cấu, Thủy Hỏa Ký Tế); ví dụ "Quan mai chiêm" của Thiệu Khang Tiết.
+
 ## Chạy thử
 
 ```bash
@@ -55,6 +62,7 @@ Yêu cầu Node 22+, pnpm 10.
 
 - [astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT): điểm sóc, kinh độ Mặt Trời.
 - [iztro](https://github.com/SylarLong/iztro) (MIT): lõi an sao Tử vi cho Nam phái, Trung Châu, Bắc phái.
+- [liuren-ts-lib](https://github.com/look-fate/liuren-ts-lib) (Apache-2.0): bảng 720 khóa, chỉ dùng làm đáp án trong test.
 - [lasotuvi](https://github.com/doanguyen/lasotuvi) (MIT): nguồn quy tắc phái Việt, chỉ dùng làm bộ đối chiếu trong test.
 - [tyme4ts](https://github.com/6tail/tyme4ts) (MIT): chỉ dùng làm đáp án đối chiếu trong test.
 

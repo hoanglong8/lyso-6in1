@@ -21,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
             <div className="flex gap-4 text-sm">
               <Link href="/la-so" className="hover:text-son">Lá số</Link>
+              <Link href="/chiem" className="hover:text-son">Gieo quẻ</Link>
               <Link href="/lich" className="hover:text-son">Lịch</Link>
               <a href="https://github.com/hoanglong8/lyso-6in1" className="hover:text-son">GitHub</a>
             </div>

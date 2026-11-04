@@ -23,6 +23,12 @@ importers:
       '@lyso/engine-bazi':
         specifier: workspace:*
         version: link:../../packages/engine-bazi
+      '@lyso/engine-kinhdich':
+        specifier: workspace:*
+        version: link:../../packages/engine-kinhdich
+      '@lyso/engine-lucnham':
+        specifier: workspace:*
+        version: link:../../packages/engine-lucnham
       '@lyso/engine-tuvi':
         specifier: workspace:*
         version: link:../../packages/engine-tuvi
@@ -86,6 +92,41 @@ importers:
       tyme4ts:
         specifier: ^1.5.4
         version: 1.5.4
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^4.1.12
+        version: 4.1.12(@types/node@22.20.5)(vite@8.3.5(@types/node@22.20.5)(jiti@2.7.0))
+
+  packages/engine-kinhdich:
+    dependencies:
+      '@lyso/calendar-vn':
+        specifier: workspace:*
+        version: link:../calendar-vn
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^4.1.12
+        version: 4.1.12(@types/node@22.20.5)(vite@8.3.5(@types/node@22.20.5)(jiti@2.7.0))
+
+  packages/engine-lucnham:
+    dependencies:
+      '@lyso/calendar-vn':
+        specifier: workspace:*
+        version: link:../calendar-vn
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.5
+      liuren-ts-lib:
+        specifier: 3.1.0
+        version: 3.1.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -757,6 +798,9 @@ packages:
   lightningcss@1.33.0:
     resolution: {integrity: sha512-WkUDrojuJs0xkgGf2udWxa3yGBRxPtxUkB79i6aCZLRgc7PM8fZe9TosfPDcvEpQZbuFASnHYmRLBLUbmLOIIA==}
     engines: {node: '>= 12.0.0'}
+
+  liuren-ts-lib@3.1.0:
+    resolution: {integrity: sha512-YiT2HB0jEPSaHGH1g+TKAPhXBlj0T+ccr4YHY6AhpOw5byIKgo6TB/0IUzNGFoQFagGCebxs6yItaanKJfxaIQ==}
 
   lunar-lite@0.2.8:
     resolution: {integrity: sha512-Y4tba4RaIFI0ikImJhgoEsyqtDE64lJIM3yFwRX01dbmagCDq7rNmpDQFrSFFy4WXeuywdRVFpIBoT1GGCEizw==}
@@ -1489,6 +1533,10 @@ snapshots:
       lightningcss-linux-x64-musl: 1.33.0
       lightningcss-win32-arm64-msvc: 1.33.0
       lightningcss-win32-x64-msvc: 1.33.0
+
+  liuren-ts-lib@3.1.0:
+    dependencies:
+      tyme4ts: 1.5.4
 
   lunar-lite@0.2.8:
     dependencies:
