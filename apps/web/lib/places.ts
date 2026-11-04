@@ -1,0 +1,33 @@
+import type { Place } from "@lyso/calendar-vn";
+
+/** Một số nơi sinh thường gặp. Tọa độ trung tâm đô thị, đủ chính xác cho giờ mặt trời (1° kinh = 4 phút). */
+export const PLACES: Place[] = [
+  { name: "Hà Nội", lat: 21.0285, lon: 105.8542 },
+  { name: "TP. Hồ Chí Minh (Sài Gòn)", lat: 10.7769, lon: 106.7009 },
+  { name: "Hải Phòng", lat: 20.8449, lon: 106.6881 },
+  { name: "Đà Nẵng", lat: 16.0544, lon: 108.2022 },
+  { name: "Huế", lat: 16.4637, lon: 107.5909 },
+  { name: "Cần Thơ", lat: 10.0452, lon: 105.7469 },
+  { name: "Thái Nguyên", lat: 21.5942, lon: 105.848 },
+  { name: "Lạng Sơn", lat: 21.8537, lon: 106.7615 },
+  { name: "Lào Cai", lat: 22.4856, lon: 103.9707 },
+  { name: "Điện Biên Phủ", lat: 21.386, lon: 103.023 },
+  { name: "Hải Dương", lat: 20.9373, lon: 106.3146 },
+  { name: "Nam Định", lat: 20.42, lon: 106.1683 },
+  { name: "Thanh Hóa", lat: 19.8067, lon: 105.7852 },
+  { name: "Vinh (Nghệ An)", lat: 18.6796, lon: 105.6813 },
+  { name: "Đồng Hới (Quảng Bình)", lat: 17.4689, lon: 106.6223 },
+  { name: "Đông Hà (Quảng Trị)", lat: 16.8163, lon: 107.1003 },
+  { name: "Quảng Ngãi", lat: 15.1214, lon: 108.8044 },
+  { name: "Quy Nhơn", lat: 13.782, lon: 109.2192 },
+  { name: "Pleiku", lat: 13.9833, lon: 108.0 },
+  { name: "Buôn Ma Thuột", lat: 12.6667, lon: 108.05 },
+  { name: "Nha Trang", lat: 12.2388, lon: 109.1967 },
+  { name: "Đà Lạt", lat: 11.9404, lon: 108.4583 },
+  { name: "Biên Hòa", lat: 10.9574, lon: 106.8426 },
+  { name: "Vũng Tàu", lat: 10.346, lon: 107.0843 },
+  { name: "Mỹ Tho", lat: 10.36, lon: 106.36 },
+  { name: "Long Xuyên", lat: 10.3864, lon: 105.4351 },
+  { name: "Rạch Giá", lat: 10.0125, lon: 105.0809 },
+  { name: "Cà Mau", lat: 9.1769, lon: 105.1524 },
+];

@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-son: #9f1d20;
+  --color-son-soft: #fbeceb;
+  --color-giay: #faf7f2;
+  --color-muc: #1f1b16;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+body {
+  background: var(--color-giay);
+  color: var(--color-muc);
+}
