@@ -14,6 +14,8 @@ import {
 } from "@lyso/engine-kinhdich";
 import { buildLucNhamFromSnapshot, DEFAULT_LUCNHAM_CONFIG, type LucNhamChart, type LucNhamConfig } from "@lyso/engine-lucnham";
 import { PLACES } from "@/lib/places";
+import { KyMonView } from "./kymon-view";
+import { ThaiAtView } from "./thaiat-view";
 
 const field = "w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm";
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -23,7 +25,7 @@ function nowLocal() {
   return { date: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`, time: `${pad(d.getHours())}:${pad(d.getMinutes())}` };
 }
 
-type Tab = "kinhdich" | "lucnham";
+type Tab = "kinhdich" | "lucnham" | "kymon" | "thaiat";
 
 export default function ChiemApp() {
   const [when, setWhen] = useState<{ date: string; time: string } | null>(null);
@@ -91,6 +93,8 @@ export default function ChiemApp() {
             [
               ["kinhdich", "Kinh dịch"],
               ["lucnham", "Đại Lục Nhâm"],
+              ["kymon", "Kỳ môn"],
+              ["thaiat", "Thái ất"],
             ] as const
           ).map(([k, label]) => (
             <button key={k} type="button" onClick={() => setTab(k)} className={`flex-1 rounded-md px-3 py-1.5 ${tab === k ? "bg-white font-medium shadow-sm" : "text-stone-600"}`}>
@@ -103,8 +107,12 @@ export default function ChiemApp() {
           <div className="rounded-xl border border-stone-200 bg-white p-5 text-sm text-stone-500">Đang lấy giờ…</div>
         ) : tab === "kinhdich" ? (
           <KinhDich snap={snap} />
-        ) : (
+        ) : tab === "lucnham" ? (
           <LucNham snap={snap} />
+        ) : tab === "kymon" ? (
+          <KyMonView snap={snap} />
+        ) : (
+          <ThaiAtView snap={snap} />
         )}
       </section>
     </div>

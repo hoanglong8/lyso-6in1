@@ -5,8 +5,8 @@ const MON = [
   { ten: "Bát tự (Tứ trụ)", loai: "Lá số của tôi", mo: "4 trụ can chi, thập thần, đại vận", trangThai: "Beta" },
   { ten: "Kinh dịch", loai: "Hỏi một việc", mo: "Mai Hoa, Lục hào nạp giáp, gieo xu", trangThai: "Beta" },
   { ten: "Đại Lục Nhâm", loai: "Hỏi một việc", mo: "Thiên địa bàn, tứ khóa, tam truyền, thiên tướng", trangThai: "Beta" },
-  { ten: "Kỳ môn độn giáp", loai: "Hỏi một việc", mo: "9 cung, cửu tinh, bát môn, bát thần", trangThai: "Sprint 4" },
-  { ten: "Thái ất thần số", loai: "Hỏi một việc", mo: "Niên, nguyệt, nhật, thời kế", trangThai: "Sprint 4" },
+  { ten: "Kỳ môn độn giáp", loai: "Hỏi một việc", mo: "Chuyển bàn: cửu tinh, bát môn, bát thần; định cục Sách bổ / Mão sơn / Trí nhuận", trangThai: "Beta" },
+  { ten: "Thái ất thần số", loai: "Hỏi một việc", mo: "Niên, nguyệt, nhật, thời kế; chủ khách toán, ngũ tướng", trangThai: "Beta" },
 ];
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
         <Link href="/chiem" className="rounded-xl border border-stone-200 bg-white p-5 hover:border-son">
           <h2 className="text-lg font-semibold">Hỏi một việc →</h2>
           <p className="mt-1 text-sm text-stone-600">
-            Chiêm theo thời điểm hỏi: Kinh dịch, Đại Lục Nhâm (đã có); Kỳ môn, Thái ất (sắp có).
+            Chiêm theo thời điểm hỏi: Kinh dịch, Đại Lục Nhâm, Kỳ môn độn giáp, Thái ất thần số.
           </p>
         </Link>
       </section>

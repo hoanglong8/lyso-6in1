@@ -22,7 +22,8 @@ packages/engine-bazi    Bát tự: tàng can, thập thần, nạp âm, trườn
 packages/engine-tuvi    Tử vi: phái Việt (Thiên Lương), Nam phái, Trung Châu, Bắc phái (phi hóa); vận hạn năm xem
 packages/engine-kinhdich  Kinh dịch: 64 quẻ, gieo xu, Mai Hoa, Lục hào nạp giáp (Bát cung, thế ứng, lục thân, lục thú, phục thần)
 packages/engine-lucnham   Đại Lục Nhâm: thiên địa bàn, tứ khóa, tam truyền (Cửu tông môn), 12 thiên tướng, độn can
-packages/engine-*       (sắp có) qimen, taiyi
+packages/engine-kymon     Kỳ môn độn giáp: chuyển bàn; định cục Sách bổ, Trí nhuận, Mão sơn
+packages/engine-thaiat    Thái ất thần số: tứ kế, Thái ất cung, Văn xương, Thủy kích, chủ/khách/định toán, ngũ tướng
 docs/                   Sổ quyết định trường phái
 ```
 
@@ -47,6 +48,11 @@ docs/                   Sổ quyết định trường phái
 
 - Đại Lục Nhâm: tứ khóa khớp 720/720 và tam truyền khớp 717/720 khóa của bảng sách (3 khóa bảng tự mâu thuẫn, xem [docs](docs/quyet-dinh-phai.md)); thiên tướng khớp 720/720.
 - Kinh dịch: thứ tự Bát cung Kinh Phòng đủ 64 quẻ; nạp giáp, thế ứng, phục thần đối chiếu sách (Thiên Phong Cấu, Thủy Hỏa Ký Tế); ví dụ "Quan mai chiêm" của Thiệu Khang Tiết.
+
+## Kỳ môn và Thái ất đã kiểm thử
+
+- Kỳ môn: chuyển bàn khớp kinqimen từng cung; Trí nhuận khớp mốc chính thụ 1719-08-08 (Kỳ môn Thống tông) và tần suất nhuận 1800–2100.
+- Thái ất: ví dụ sách cho niên, nguyệt, nhật kế; dương 72 cục khớp bảng kintaiyi; âm 72 cục đối chiếu Vũ kinh tổng yếu (xem [docs](docs/quyet-dinh-phai.md)).
 
 ## Chạy thử
 

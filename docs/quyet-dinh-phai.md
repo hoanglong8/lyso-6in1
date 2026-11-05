@@ -28,6 +28,14 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 | K-01 | Kinh dịch | Lục hào | Nạp giáp Kinh Phòng, Bát cung, thế ứng, lục thân theo cung, lục thú theo can ngày, phục thần từ quẻ thuần của cung | — | Thông dụng (Tăng San Bốc Dịch) | |
 | K-02 | Kinh dịch | Mai Hoa theo giờ | Số chi năm âm + tháng âm + ngày âm → thượng; + số giờ → hạ; tổng chia 6 → hào động | — | Thiệu Khang Tiết, ví dụ "Quan mai chiêm" khớp | |
 | K-03 | Kinh dịch | Gieo xu | Ngửa 3, sấp 2; 6 lão âm, 7 thiếu dương, 8 thiếu âm, 9 lão dương | Ngửa 2, sấp 3 | Cho người dùng tự nhập kết quả gieo xu thật | |
+| Q-01 | Kỳ môn | Bàn | Thời gia, chuyển bàn | (Phi bàn: chưa làm) | Thông dụng nhất | |
+| Q-02 | Kỳ môn | Định cục | Sách bổ: tiết theo thời điểm, nguyên theo phù đầu ngày (Giáp/Kỷ: Tý Ngọ Mão Dậu thượng, Dần Thân Tỵ Hợi trung, Thìn Tuất Sửu Mùi hạ) | Trí nhuận (siêu thần tiếp khí, nhuận ở Mang chủng/Đại tuyết khi siêu ≥ 8 ngày lịch); Mão sơn (mỗi 5 ngày sau giao tiết) | Sách bổ khớp kinqimen; Trí nhuận khớp mốc Kỳ môn Thống tông 1719-08-08 và ví dụ qimen-dunjia; Mão sơn khớp qimen-dunjia | Ngày giao tiết tính theo giờ Việt Nam nên có thể lệch 1 ngày so với sách Trung Quốc |
+| Q-03 | Kỳ môn | Trung cung | Ký Khôn 2 | Dương ký Cấn 8, âm ký Khôn 2 | | |
+| A-01 | Thái ất | Tích niên | Thống tông: 10153917 + năm | Kim kính: 1936557 + năm | Ví dụ sách 2004 → dương 33 cục | |
+| A-02 | Thái ất | Độn | Niên, nguyệt, nhật kế: dương độn; thời kế: Đông chí → dương, Hạ chí → âm | — | | |
+| A-03 | Thái ất | Nhật kế | Đếm ngày liên tục, neo ví dụ sách 2004-06-01 → 60 cục | kintaiyi: lệch đúng 36 cục | Ví dụ có trong sách; mốc nhật kế trong kintaiyi không khớp can chi ngày | |
+| A-04 | Thái ất | Đại tướng | Lấy hàng đơn vị của toán; toán chẵn chục lấy số chục (10 → 1, 30 → 3) | kintaiyi: chẵn chục → 5 | Vũ kinh tổng yếu | |
+| A-05 | Thái ất | Thời kế | Tích thời = (tích nhật − 1) × 12 + chi giờ + 1 | — | **Chưa đối chiếu được**: bảng âm cục Vũ kinh tổng yếu ghép Kế thần với cục lệch 6 so với công thức này | Cần thầy hoặc tài liệu |
 
 ## Ngoại lệ đã biết khi đối chiếu
 
@@ -46,3 +54,10 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 
 - Đối chiếu: bảng 720 khóa của `liuren-ts-lib` (Apache-2.0, chép từ sách) làm đáp án; `daliuren-lib` (thuật toán) và `kinliuren` (MIT) để so chéo. liuren-ts-lib và daliuren-lib khớp nhau 717/720; kinliuren lệch 113 khóa (chủ yếu Phản ngâm, Phục ngâm) nên không dùng.
 - 3 khóa bảng sách tự mâu thuẫn (丁卯+10, 辛卯+10, 己亥+4): cùng cấu trúc tứ khóa với các ngày khác nhưng ra sơ truyền khác. Ghi nhận là ngoại lệ của bảng, không chỉnh thuật toán để ép khớp.
+
+## Ghi chú Kỳ môn và Thái ất
+
+- Kỳ môn: dựng bàn đối chiếu từng cung với kinqimen (转盘, 拆补) cho một thời điểm; các thuộc tính bất biến (mỗi cung đủ môn, thần, 9 sao) kiểm trên 9 cục × 2 độn × 60 giờ.
+- Thái ất: dương độn 72 cục đối chiếu bảng lập thành trong kintaiyi (MIT) — khớp trừ Thủy kích cục 30/66, nơi bảng kintaiyi phá quy luật tiến dần (lỗi chép). Âm độn đối chiếu bảng lập thành Vũ kinh tổng yếu (thời Tống): Thái ất cung, Văn xương, chủ đại tướng khớp 62/62 dòng; 12 chỗ khác ở khách toán có dạng chép nhầm chữ số, đã ghi trong test.
+- Chưa chạy được oracle tự động (kinqimen, qimen-dunjia, kintaiyi) trên toàn dải thời gian trong môi trường phát triển; cần chạy lại khi được phép.
+- Sửa lỗi lõi lịch: `nextSunLongitude` đôi khi trượt mất điểm 0° (Xuân phân) khi tìm với cửa sổ dài; nay tìm theo cửa sổ 40 ngày.

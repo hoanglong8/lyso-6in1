@@ -16,7 +16,9 @@
     "@lyso/engine-bazi": "workspace:*",
     "@lyso/engine-tuvi": "workspace:*",
     "@lyso/engine-kinhdich": "workspace:*",
-    "@lyso/engine-lucnham": "workspace:*"
+    "@lyso/engine-lucnham": "workspace:*",
+    "@lyso/engine-kymon": "workspace:*",
+    "@lyso/engine-thaiat": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
