@@ -213,8 +213,8 @@ export function buildThaiAtFromSnapshot(s: CalendarSnapshot, ke: Ke, config: Tha
     config.tichNien,
   );
   const c = buildThaiAt(t, config);
-  if (ke === "nhat") c.notes.push("Nhật kế neo theo ví dụ sách (2004-06-01 → dương độn 60 cục); kintaiyi dùng mốc khác, lệch 36 cục.");
-  if (ke === "thoi") c.notes.push("Thời kế: chưa có ví dụ sách thống nhất để đối chiếu.");
+  if (ke === "nhat") c.notes.push("Nhật kế neo theo ví dụ sách (2004-06-01 → dương độn 60 cục); kintaiyi lệch 5 cục do mốc tích nhật không khớp can chi ngày.");
+  if (ke === "thoi") c.notes.push("Thời kế khớp kintaiyi; cách ghép Kế thần trong bảng âm cục Vũ kinh tổng yếu còn chờ thầy xác nhận.");
   if (ke === "thoi" && s.input.time === null) c.notes.push("Không rõ giờ: đang lấy giờ Ngọ.");
   return c;
 }
