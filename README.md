@@ -54,6 +54,12 @@ docs/                   Sổ quyết định trường phái
 - Kỳ môn: chuyển bàn khớp kinqimen từng cung; Trí nhuận khớp mốc chính thụ 1719-08-08 (Kỳ môn Thống tông) và tần suất nhuận 1800–2100.
 - Thái ất: ví dụ sách cho niên, nguyệt, nhật kế; dương 72 cục khớp bảng kintaiyi; âm 72 cục đối chiếu Vũ kinh tổng yếu (xem [docs](docs/quyet-dinh-phai.md)).
 
+## Tài khoản và AI luận giải
+
+- Không đăng nhập: mọi thứ chạy trên trình duyệt. Đăng nhập (email OTP, Supabase): hồ sơ lưu theo tài khoản, chỉ chủ hồ sơ đọc được (RLS).
+- AI luận giải: máy chủ dựng lại lá số từ tham số đầu vào rồi gửi `toPromptContext` của engine tới Claude; gói cơ bản dùng Haiku 5.5, nâng cao dùng Sonnet 5.5.
+- Cấu hình xem [docs/trien-khai.md](docs/trien-khai.md).
+
 ## Chạy thử
 
 ```bash

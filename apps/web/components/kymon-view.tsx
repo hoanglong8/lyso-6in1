@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CAN, type CalendarSnapshot } from "@lyso/calendar-vn";
+import { LuanGiaiPanel } from "./luan-giai-panel";
 import { buildKyMonFromSnapshot, DEFAULT_KYMON_CONFIG, HUONG, type KyMonConfig } from "@lyso/engine-kymon";
 
 const field = "w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm";
@@ -90,6 +91,7 @@ export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
           ))}
         </div>
       </div>
+      <LuanGiaiPanel withQuestion request={{ mon: "kymon", input: snap.input, calendarConfig: snap.config, kymon: cfg }} />
     </div>
   );
 }

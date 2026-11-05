@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import type { CalendarConfig, CalendarInput } from "@lyso/calendar-vn";
 import { DEFAULT_TUVI_CONFIG, SCHOOLS, type TuViConfig } from "@lyso/engine-tuvi";
 import { PLACES } from "@/lib/places";
+import { useAuth } from "@/lib/auth";
+import { getBrowserSupabase } from "@/lib/supabase/client";
+import { CONSENT_VERSION } from "@/lib/supabase/config";
 
 export type Gender = "nam" | "nu";
 
@@ -55,29 +58,75 @@ export function toCalendarInput(p: Profile): CalendarInput {
 
 const KEY = "lyso.profiles.v1";
 
-/** Hồ sơ chỉ lưu trên trình duyệt này (localStorage), không gửi lên server. */
+/**
+ * Hồ sơ: chưa đăng nhập → chỉ lưu trên trình duyệt (localStorage).
+ * Đã đăng nhập và đồng ý điều khoản → lưu vào tài khoản (Supabase, RLS: chỉ chủ hồ sơ đọc được).
+ */
 export function useSavedProfiles() {
-  const [list, setList] = useState<Profile[]>([]);
+  const { user } = useAuth();
+  const [local, setLocal] = useState<Profile[]>([]);
+  const [remote, setRemote] = useState<Profile[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setList(JSON.parse(raw) as Profile[]);
+      if (raw) setLocal(JSON.parse(raw) as Profile[]);
     } catch {
       /* trình duyệt chặn lưu trữ: bỏ qua */
     }
   }, []);
-  const persist = (next: Profile[]) => {
-    setList(next);
+  useEffect(() => {
+    const sb = getBrowserSupabase();
+    if (!sb || !user) {
+      setRemote(null);
+      return;
+    }
+    sb.from("ho_so")
+      .select("data")
+      .order("updated_at", { ascending: false })
+      .then(({ data, error: e }) => {
+        if (e) setError("Không tải được hồ sơ từ tài khoản: " + e.message);
+        else setRemote((data ?? []).map((r) => r.data as Profile));
+      });
+  }, [user]);
+  const persistLocal = (next: Profile[]) => {
+    setLocal(next);
     try {
       localStorage.setItem(KEY, JSON.stringify(next));
     } catch {
       /* bỏ qua */
     }
   };
+  const sb = getBrowserSupabase();
+  const cloud = Boolean(sb && user && remote);
   return {
-    list,
-    save: (p: Profile) => persist([p, ...list.filter((x) => x.id !== p.id)].slice(0, 30)),
-    remove: (id: string) => persist(list.filter((x) => x.id !== id)),
+    list: cloud ? (remote as Profile[]) : local,
+    cloud,
+    localCount: local.length,
+    error,
+    async save(p: Profile) {
+      if (cloud && sb) {
+        const { error: e } = await sb.from("ho_so").upsert({ id: p.id, data: p, consent_version: CONSENT_VERSION, updated_at: new Date().toISOString() });
+        if (e) return setError("Lưu thất bại: " + e.message);
+        setRemote([p, ...(remote ?? []).filter((x) => x.id !== p.id)]);
+      } else persistLocal([p, ...local.filter((x) => x.id !== p.id)].slice(0, 30));
+    },
+    async remove(id: string) {
+      if (cloud && sb) {
+        const { error: e } = await sb.from("ho_so").delete().eq("id", id);
+        if (e) return setError("Xóa thất bại: " + e.message);
+        setRemote((remote ?? []).filter((x) => x.id !== id));
+      } else persistLocal(local.filter((x) => x.id !== id));
+    },
+    /** Đưa hồ sơ trên máy lên tài khoản rồi xóa bản trên máy */
+    async importLocal() {
+      if (!cloud || !sb || !local.length) return;
+      const rows = local.map((p) => ({ id: p.id, data: p, consent_version: CONSENT_VERSION, updated_at: new Date().toISOString() }));
+      const { error: e } = await sb.from("ho_so").upsert(rows);
+      if (e) return setError("Chuyển hồ sơ thất bại: " + e.message);
+      setRemote([...local, ...(remote ?? []).filter((x) => !local.some((l) => l.id === x.id))]);
+      persistLocal([]);
+    },
   };
 }
 

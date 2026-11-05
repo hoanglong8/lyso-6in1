@@ -8,6 +8,7 @@ import { BaziView } from "./bazi-view";
 import { Result as LichResult } from "./lich-tool";
 import { DEFAULT_SETTINGS, emptyProfile, ProfileForm, toCalendarInput, useSavedProfiles, type Profile, type Settings } from "./profile-form";
 import { TuViBoard } from "./tuvi-board";
+import { LuanGiaiPanel } from "./luan-giai-panel";
 
 type Tab = "tuvi" | "bazi" | "lich";
 const TABS: [Tab, string][] = [
@@ -48,9 +49,21 @@ export default function LaSoApp() {
             onClick={() => saved.save(profile)}
             className="mt-4 w-full rounded-lg bg-son px-4 py-2 text-sm font-medium text-white hover:opacity-90"
           >
-            Lưu hồ sơ trên máy này
+            {saved.cloud ? "Lưu hồ sơ vào tài khoản" : "Lưu hồ sơ trên máy này"}
           </button>
-          <p className="mt-2 text-xs text-stone-500">Hồ sơ chỉ lưu trong trình duyệt của bạn, không gửi lên server.</p>
+          <p className="mt-2 text-xs text-stone-500">
+            {saved.cloud ? (
+              <>Hồ sơ lưu trong tài khoản của bạn, chỉ bạn xem được. <a href="/quyen-rieng-tu" className="underline">Quyền riêng tư</a></>
+            ) : (
+              <>Hồ sơ chỉ lưu trong trình duyệt này. <a href="/dang-nhap" className="underline">Đăng nhập</a> để lưu vào tài khoản và dùng trên máy khác.</>
+            )}
+          </p>
+          {saved.cloud && saved.localCount > 0 && (
+            <button type="button" className="mt-2 text-xs text-son hover:underline" onClick={() => saved.importLocal()}>
+              Đưa {saved.localCount} hồ sơ trên máy này lên tài khoản
+            </button>
+          )}
+          {saved.error && <p className="mt-2 text-xs text-red-700">{saved.error}</p>}
         </div>
         {saved.list.length > 0 && (
           <div className="rounded-xl border border-stone-200 bg-white p-4 text-sm">
@@ -121,6 +134,18 @@ export default function LaSoApp() {
             {tab === "tuvi" && <TuViBoard chart={result.tuvi} title={title} />}
             {tab === "bazi" && <BaziView chart={result.bazi} viewYear={viewYear} />}
             {tab === "lich" && <LichResult s={result.s} />}
+            {tab !== "lich" && (
+              <LuanGiaiPanel
+                request={{
+                  mon: tab,
+                  input: toCalendarInput(profile),
+                  calendarConfig: settings.calendar,
+                  gender: profile.gender,
+                  tuvi: settings.tuvi,
+                  viewYear,
+                }}
+              />
+            )}
           </>
         )}
       </section>

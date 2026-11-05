@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CHI, type CalendarSnapshot } from "@lyso/calendar-vn";
+import { LuanGiaiPanel } from "./luan-giai-panel";
 import { buildThaiAtFromSnapshot, CUNG_TA, KE_LABEL, R16, THAN16, type Ke } from "@lyso/engine-thaiat";
 
 /** Vị trí vòng 16 trên viền lưới 5×5 (hàng, cột), Nam ở trên */
@@ -100,6 +101,7 @@ export function ThaiAtView({ snap }: { snap: CalendarSnapshot }) {
       {c.notes.map((n) => (
         <p key={n} className="text-xs text-amber-800">{n}</p>
       ))}
+      <LuanGiaiPanel withQuestion request={{ mon: "thaiat", input: snap.input, calendarConfig: snap.config, thaiatKe: ke }} />
     </div>
   );
 }

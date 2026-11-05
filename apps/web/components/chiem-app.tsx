@@ -14,6 +14,7 @@ import {
 } from "@lyso/engine-kinhdich";
 import { buildLucNhamFromSnapshot, DEFAULT_LUCNHAM_CONFIG, type LucNhamChart, type LucNhamConfig } from "@lyso/engine-lucnham";
 import { PLACES } from "@/lib/places";
+import { LuanGiaiPanel } from "./luan-giai-panel";
 import { KyMonView } from "./kymon-view";
 import { ThaiAtView } from "./thaiat-view";
 
@@ -280,8 +281,9 @@ function KinhDich({ snap }: { snap: CalendarSnapshot }) {
           </div>
           <p className="text-xs text-stone-500">
             Lục hào nạp giáp theo Kinh Phòng (Bát cung), lục thú khởi theo can ngày {snap.ganzhi.day.name}, tuần không{" "}
-            {r.tuanKhong?.map((z) => CHI[z]).join(" ")}. Lời quẻ, lời hào và luận giải sẽ có ở giai đoạn 2.
+            {r.tuanKhong?.map((z) => CHI[z]).join(" ")}.
           </p>
+          <LuanGiaiPanel withQuestion request={{ mon: "kinhdich", input: snap.input, calendarConfig: snap.config, cast: r.cast }} />
         </>
       ) : (
         <p className="rounded-xl border border-dashed border-stone-300 bg-white p-6 text-center text-sm text-stone-500">Bấm "Gieo 6 lần" để lập quẻ.</p>
@@ -389,6 +391,7 @@ function LucNham({ snap }: { snap: CalendarSnapshot }) {
       {c.notes.map((n) => (
         <p key={n} className="text-xs text-stone-500">{n}</p>
       ))}
+      <LuanGiaiPanel withQuestion request={{ mon: "lucnham", input: snap.input, calendarConfig: snap.config, lucnham: cfg }} />
     </div>
   );
 }
