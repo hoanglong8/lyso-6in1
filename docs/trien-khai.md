@@ -1,7 +1,20 @@
 # Triển khai: tài khoản, database, AI luận giải
 
-App chạy được khi **chưa** cấu hình gì: chế độ khách, hồ sơ lưu trên trình duyệt, chưa có AI.
-Mỗi phần dưới bật độc lập.
+## Giai đoạn 1 (hiện tại)
+
+Không cần biến môi trường nào. Mọi trang là trang tĩnh; tính lá số và luận cơ bản chạy trên trình duyệt.
+`/api/luan-giai`, đăng nhập, khung AI đều tắt (route trả 404). Vercel chỉ giữ log kỹ thuật (IP, đường dẫn), không thấy ngày giờ sinh.
+
+## Giai đoạn 2: thứ tự bật
+
+| # | Việc | Ghi chú |
+| --- | --- | --- |
+| 1 | Hồ sơ đánh giá tác động chuyển dữ liệu ra nước ngoài | Làm **trước** khi bật Supabase hoặc AI (mục 3) |
+| 2 | Lên Vercel Pro | Hobby không cho dùng thương mại |
+| 3 | Supabase (mục 1) | Vùng Singapore |
+| 4 | `ANTHROPIC_API_KEY` (mục 2) | Đặt giới hạn chi tiêu tháng |
+| 5 | Cổng thanh toán | Chưa có code; VNPay/MoMo/PayOS cần hộ kinh doanh hoặc doanh nghiệp |
+| 6 | `NEXT_PUBLIC_GIAI_DOAN=2` rồi redeploy | Công tắc chung: thiếu biến này thì mọi phần trên vẫn tắt |
 
 ## 1. Database + đăng nhập (Supabase)
 

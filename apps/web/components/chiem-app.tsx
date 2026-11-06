@@ -15,6 +15,9 @@ import {
 import { buildLucNhamFromSnapshot, DEFAULT_LUCNHAM_CONFIG, type LucNhamChart, type LucNhamConfig } from "@lyso/engine-lucnham";
 import { PLACES } from "@/lib/places";
 import { LuanGiaiPanel } from "./luan-giai-panel";
+import { LuanCoBanView } from "./luan-co-ban-view";
+import { PrintButton } from "./print-button";
+import { DUNG_THAN, luanKinhDich, luanLucNham, type ViecHoi } from "@lyso/luan-co-ban";
 import { KyMonView } from "./kymon-view";
 import { ThaiAtView } from "./thaiat-view";
 
@@ -89,7 +92,8 @@ export default function ChiemApp() {
       </aside>
 
       <section className="min-w-0 space-y-4">
-        <div className="flex gap-1 rounded-lg bg-stone-200/60 p-1 text-sm">
+        <div className="flex justify-end"><PrintButton /></div>
+        <div className="flex gap-1 rounded-lg bg-stone-200/60 p-1 text-sm print:hidden">
           {(
             [
               ["kinhdich", "Kinh dịch"],
@@ -161,6 +165,7 @@ function KinhDich({ snap }: { snap: CalendarSnapshot }) {
   const [nums, setNums] = useState({ a: 7, b: 12 });
   const [manual, setManual] = useState<LineValue[]>([7, 7, 7, 7, 7, 7]);
   const [useManual, setUseManual] = useState(false);
+  const [viec, setViec] = useState<ViecHoi | undefined>(undefined);
 
   const cast: CastInput | null =
     method === "mai-hoa-thoi-gian"
@@ -283,6 +288,19 @@ function KinhDich({ snap }: { snap: CalendarSnapshot }) {
             Lục hào nạp giáp theo Kinh Phòng (Bát cung), lục thú khởi theo can ngày {snap.ganzhi.day.name}, tuần không{" "}
             {r.tuanKhong?.map((z) => CHI[z]).join(" ")}.
           </p>
+          <LuanCoBanView luan={luanKinhDich(r, viec)}>
+            <label className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="text-stone-600">Việc hỏi (để chọn dụng thần Lục hào):</span>
+              <select className="rounded-lg border border-stone-300 bg-white px-2 py-1" value={viec ?? ""} onChange={(e) => setViec((e.target.value || undefined) as ViecHoi | undefined)}>
+                <option value="">— chưa chọn —</option>
+                {Object.entries(DUNG_THAN).map(([k, d]) => (
+                  <option key={k} value={k}>
+                    {d.y.split(",")[0]} ({d.lucThan})
+                  </option>
+                ))}
+              </select>
+            </label>
+          </LuanCoBanView>
           <LuanGiaiPanel withQuestion request={{ mon: "kinhdich", input: snap.input, calendarConfig: snap.config, cast: r.cast }} />
         </>
       ) : (
@@ -391,6 +409,7 @@ function LucNham({ snap }: { snap: CalendarSnapshot }) {
       {c.notes.map((n) => (
         <p key={n} className="text-xs text-stone-500">{n}</p>
       ))}
+      <LuanCoBanView luan={luanLucNham(c)} />
       <LuanGiaiPanel withQuestion request={{ mon: "lucnham", input: snap.input, calendarConfig: snap.config, lucnham: cfg }} />
     </div>
   );

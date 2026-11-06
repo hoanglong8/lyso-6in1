@@ -3,6 +3,7 @@ import { buildContext, validate, type LuanGiaiRequest } from "@/lib/luan-giai/co
 import { MAX_TOKENS, MODEL, SYSTEM_CORE, userPrompt } from "@/lib/luan-giai/prompts";
 import { checkQuota } from "@/lib/luan-giai/quota";
 import { getServerSupabase } from "@/lib/supabase/server";
+import { GIAI_DOAN_2 } from "@/lib/phase";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -10,6 +11,8 @@ export const maxDuration = 60;
 const json = (status: number, error: string) => Response.json({ error }, { status });
 
 export async function POST(req: Request) {
+  // Giai đoạn 1: không nhận dữ liệu lá số lên máy chủ
+  if (!GIAI_DOAN_2) return json(404, "Tính năng AI luận giải chưa mở.");
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return json(503, "Máy chủ chưa cấu hình AI (thiếu ANTHROPIC_API_KEY).");
 

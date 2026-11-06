@@ -9,6 +9,9 @@ import { Result as LichResult } from "./lich-tool";
 import { DEFAULT_SETTINGS, emptyProfile, ProfileForm, toCalendarInput, useSavedProfiles, type Profile, type Settings } from "./profile-form";
 import { TuViBoard } from "./tuvi-board";
 import { LuanGiaiPanel } from "./luan-giai-panel";
+import { LuanCoBanView } from "./luan-co-ban-view";
+import { PrintButton } from "./print-button";
+import { luanBazi, luanTuVi } from "@lyso/luan-co-ban";
 
 type Tab = "tuvi" | "bazi" | "lich";
 const TABS: [Tab, string][] = [
@@ -42,6 +45,7 @@ export default function LaSoApp() {
   return (
     <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
       <aside className="space-y-4">
+        <a href="#ket-qua" className="block rounded-lg bg-son px-4 py-2 text-center text-sm font-medium text-white lg:hidden">Xem lá số ↓</a>
         <div className="rounded-xl border border-stone-200 bg-white p-4">
           <ProfileForm value={profile} onChange={setProfile} settings={settings} onSettings={setSettings} />
           <button
@@ -87,8 +91,9 @@ export default function LaSoApp() {
         )}
       </aside>
 
-      <section className="min-w-0 space-y-4">
-        <div className="flex gap-1 rounded-lg bg-stone-200/60 p-1 text-sm">
+      <section id="ket-qua" className="min-w-0 scroll-mt-4 space-y-4">
+        <div className="flex justify-end"><PrintButton /></div>
+        <div className="flex gap-1 rounded-lg bg-stone-200/60 p-1 text-sm print:hidden">
           {TABS.map(([k, label]) => (
             <button
               key={k}
@@ -101,7 +106,7 @@ export default function LaSoApp() {
           ))}
         </div>
         {tab !== "lich" && (
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-2 text-sm print:hidden">
             <span className="text-stone-600">Xem vận hạn năm</span>
             <button type="button" aria-label="Năm trước" className="rounded border border-stone-300 bg-white px-2" onClick={() => setViewYear(viewYear - 1)}>
               ‹
@@ -133,6 +138,8 @@ export default function LaSoApp() {
             )}
             {tab === "tuvi" && <TuViBoard chart={result.tuvi} title={title} />}
             {tab === "bazi" && <BaziView chart={result.bazi} viewYear={viewYear} />}
+            {tab === "tuvi" && <LuanCoBanView luan={luanTuVi(result.tuvi)} />}
+            {tab === "bazi" && <LuanCoBanView luan={luanBazi(result.bazi, viewYear)} />}
             {tab === "lich" && <LichResult s={result.s} />}
             {tab !== "lich" && (
               <LuanGiaiPanel

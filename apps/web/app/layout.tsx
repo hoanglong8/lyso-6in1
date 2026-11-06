@@ -18,15 +18,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-dvh antialiased">
         <AuthProvider>
         <header className="border-b border-stone-200 bg-white/70 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-            <Link href="/" className="font-semibold tracking-tight">
+          <nav className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <Link href="/" className="whitespace-nowrap font-semibold tracking-tight">
               <span className="text-son">Lý số</span> 6 in 1
             </Link>
-            <div className="flex gap-4 text-sm">
+            <div className="-mx-1 flex gap-x-4 overflow-x-auto whitespace-nowrap px-1 text-sm">
               <Link href="/la-so" className="hover:text-son">Lá số</Link>
               <Link href="/chiem" className="hover:text-son">Gieo quẻ</Link>
               <Link href="/lich" className="hover:text-son">Lịch</Link>
-              <a href="https://github.com/hoanglong8/lyso-6in1" className="hover:text-son">GitHub</a>
+              <Link href="/huong-dan" className="hover:text-son">Hướng dẫn</Link>
+              <a href="https://github.com/hoanglong8/lyso-6in1" className="hidden hover:text-son sm:inline">GitHub</a>
               <AccountLink />
             </div>
           </nav>
@@ -34,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
         <footer className="mx-auto max-w-6xl px-4 pb-10 text-xs leading-relaxed text-stone-500">
           Nội dung mang tính văn hóa, nghiên cứu và tham khảo; không phải lời khẳng định về tương lai và không thay thế tư vấn y tế,
-          pháp lý hay tài chính. Ở chế độ khách, mọi phép tính chạy trên trình duyệt của bạn và không được gửi đi.
+          pháp lý hay tài chính. Mọi phép tính và phần luận cơ bản chạy trên trình duyệt của bạn; dữ liệu không được gửi về máy chủ.
           {" "}
           <a href="/quyen-rieng-tu" className="underline">
             Quyền riêng tư

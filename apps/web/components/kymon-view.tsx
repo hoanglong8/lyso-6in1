@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { CAN, type CalendarSnapshot } from "@lyso/calendar-vn";
 import { LuanGiaiPanel } from "./luan-giai-panel";
+import { LuanCoBanView } from "./luan-co-ban-view";
+import { luanKyMon, VIEC_KYMON } from "@lyso/luan-co-ban";
 import { buildKyMonFromSnapshot, DEFAULT_KYMON_CONFIG, HUONG, type KyMonConfig } from "@lyso/engine-kymon";
 
 const field = "w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm";
@@ -12,6 +14,7 @@ const NGUYEN = ["Thượng", "Trung", "Hạ"];
 
 export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
   const [cfg, setCfg] = useState<KyMonConfig>(DEFAULT_KYMON_CONFIG);
+  const [viec, setViec] = useState<keyof typeof VIEC_KYMON | undefined>(undefined);
   const c = buildKyMonFromSnapshot(snap, cfg);
   return (
     <div className="space-y-4">
@@ -91,6 +94,19 @@ export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
           ))}
         </div>
       </div>
+      <LuanCoBanView luan={luanKyMon(c, viec)}>
+        <label className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-stone-600">Việc hỏi:</span>
+          <select className="rounded-lg border border-stone-300 bg-white px-2 py-1" value={viec ?? ""} onChange={(e) => setViec((e.target.value || undefined) as keyof typeof VIEC_KYMON | undefined)}>
+            <option value="">— chung —</option>
+            {Object.entries(VIEC_KYMON).map(([k, v]) => (
+              <option key={k} value={k}>
+                {v.label} ({v.mon} môn)
+              </option>
+            ))}
+          </select>
+        </label>
+      </LuanCoBanView>
       <LuanGiaiPanel withQuestion request={{ mon: "kymon", input: snap.input, calendarConfig: snap.config, kymon: cfg }} />
     </div>
   );

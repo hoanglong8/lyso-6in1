@@ -3,8 +3,10 @@
 Phần mềm tích hợp **Tử vi, Bát tự, Kỳ môn độn giáp, Đại Lục Nhâm (Lục nhâm đại độn), Thái ất thần số, Kinh dịch**,
 tính theo **âm lịch Việt Nam (UTC+7)**, có múi giờ lịch sử và giờ mặt trời thực, ghi rõ trường phái.
 
-- Giai đoạn 1: tính đúng 6 môn, giao diện nhập hồ sơ, lưu và chia sẻ lá số.
-- Giai đoạn 2: AI luận giải dựa trên kết quả đã tính, có trích dẫn nguồn (luận cơ bản miễn phí, luận nâng cao trả phí).
+- **Giai đoạn 1 (đang chạy, mặc định):** tính 6 môn và luận cơ bản theo luật, **toàn bộ trên trình duyệt**.
+  Máy chủ không nhận, không lưu, không chuyển dữ liệu sinh ra nước ngoài. Hồ sơ chỉ lưu trên máy người dùng nếu họ bấm lưu.
+- **Giai đoạn 2 (đã viết code, đang tắt):** Supabase (tài khoản, hồ sơ), AI luận giải (Claude API), Vercel Pro, cổng thanh toán,
+  hồ sơ đánh giá chuyển dữ liệu ra nước ngoài. Bật bằng `NEXT_PUBLIC_GIAI_DOAN=2` — xem [docs/trien-khai.md](docs/trien-khai.md).
 
 ## Nguyên tắc
 
@@ -24,6 +26,7 @@ packages/engine-kinhdich  Kinh dịch: 64 quẻ, gieo xu, Mai Hoa, Lục hào n�
 packages/engine-lucnham   Đại Lục Nhâm: thiên địa bàn, tứ khóa, tam truyền (Cửu tông môn), 12 thiên tướng, độn can
 packages/engine-kymon     Kỳ môn độn giáp: chuyển bàn; định cục Sách bổ, Trí nhuận, Mão sơn
 packages/engine-thaiat    Thái ất thần số: tứ kế, Thái ất cung, Văn xương, Thủy kích, chủ/khách/định toán, ngũ tướng
+packages/luan-co-ban    Luận cơ bản theo luật cho 6 môn (văn tự viết riêng, đối chiếu sách), chạy trên trình duyệt
 docs/                   Sổ quyết định trường phái
 ```
 
@@ -54,7 +57,15 @@ docs/                   Sổ quyết định trường phái
 - Kỳ môn: chuyển bàn khớp kinqimen từng cung; Trí nhuận khớp mốc chính thụ 1719-08-08 (Kỳ môn Thống tông) và tần suất nhuận 1800–2100.
 - Thái ất: ví dụ sách cho niên, nguyệt, nhật kế; dương 72 cục khớp bảng kintaiyi; âm 72 cục đối chiếu Vũ kinh tổng yếu (xem [docs](docs/quyet-dinh-phai.md)).
 
-## Tài khoản và AI luận giải
+## Luận cơ bản (giai đoạn 1)
+
+- Tử vi: Mệnh (chính tinh, độ sáng, vô chính diệu mượn Thiên Di, Tuần/Triệt), tam phương tứ chính, tứ hóa, Thân, cục–mệnh, 5 cung chính, đại/tiểu hạn.
+- Bát tự: vượng suy nhật chủ theo 4 tiêu chí được lệnh, đắc địa, được sinh, được trợ (theo *Tôi học đoán mệnh*), hỷ/kỵ, thập thần, đại vận và lưu niên.
+- Kinh dịch: quẻ chủ/hỗ/biến, hào động, Mai Hoa thể–dụng, Lục hào dụng thần theo việc hỏi. Thoán từ Hán Việt (Chu Dịch, phạm vi công cộng) đối chiếu sách: 61/64 quẻ khớp nguyên văn, 3 quẻ khác dị bản.
+- Đại Lục Nhâm, Kỳ môn, Thái ất: luận theo luật cơ bản; **chưa có sách chuyên đề trong kho để đối chiếu**, mỗi bài ghi rõ điều này.
+- Sách tham khảo là sách có bản quyền, chỉ dùng để đối chiếu, không đưa vào repo; văn tự trong app là viết riêng.
+
+## Tài khoản và AI luận giải (giai đoạn 2, đang tắt)
 
 - Không đăng nhập: mọi thứ chạy trên trình duyệt. Đăng nhập (email OTP, Supabase): hồ sơ lưu theo tài khoản, chỉ chủ hồ sơ đọc được (RLS).
 - AI luận giải: máy chủ dựng lại lá số từ tham số đầu vào rồi gửi `toPromptContext` của engine tới Claude; gói cơ bản dùng Haiku 5.5, nâng cao dùng Sonnet 5.5.

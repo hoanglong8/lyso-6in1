@@ -61,3 +61,11 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 - Thái ất: dương độn 72 cục đối chiếu bảng lập thành trong kintaiyi (MIT) — khớp trừ Thủy kích cục 30/66, nơi bảng kintaiyi phá quy luật tiến dần (lỗi chép). Âm độn đối chiếu bảng lập thành Vũ kinh tổng yếu (thời Tống): Thái ất cung, Văn xương, chủ đại tướng khớp 62/62 dòng; 12 chỗ khác ở khách toán có dạng chép nhầm chữ số, đã ghi trong test.
 - Oracle tự động (chạy trong test): Kỳ môn dựng bàn khớp kinqimen 3000/3000, Sách bổ 3000/3000; Mão sơn khớp qimen-dunjia 2000/2000; Trí nhuận khớp ngoài khung 23h (qimen-dunjia định cục theo ngày dân sự lúc 23h). Thái ất: mọi trường không phụ thuộc toán khớp kintaiyi 372/372; các khác biệt còn lại thuộc 3 loại lỗi đã xác định của kintaiyi (toán trả 0, đại tướng ở toán 1/chẵn chục, Thủy kích nhật/thời kế tra bảng niên kế).
 - Sửa lỗi lõi lịch: `nextSunLongitude` đôi khi trượt mất điểm 0° (Xuân phân) khi tìm với cửa sổ dài; nay tìm theo cửa sổ 40 ngày.
+
+## Ghi chú luận cơ bản (giai đoạn 1)
+
+- Luận cơ bản là luật cố định, không dùng AI: cùng lá số luôn ra cùng bài, có "căn cứ" cho từng ý.
+- Bát tự vượng suy: được lệnh khi chi tháng ở Trường sinh, Mộc dục, Quan đới, Lâm quan, Đế vượng của nhật can; cộng thêm đắc địa (gốc ở chi ngày/giờ/năm), được sinh (Ấn), được trợ (Tỷ Kiếp lộ can). Theo *Tôi học đoán mệnh* Q1 ch.7.
+- Tử vi: mệnh vô chính diệu mượn chính tinh Thiên Di; Liêm Trinh ghi "Hỏa (có sách ghi Mộc)" do các sách không thống nhất.
+- Kinh dịch: thoán từ 3 quẻ (11, 47, 51) khác bản sách đối chiếu do dị bản; giữ bản Chu Dịch thông hành.
+- Lục Nhâm, Kỳ môn, Thái ất: chưa có sách chuyên đề trong kho để đối chiếu — cần thầy duyệt trước khi coi là chuẩn.

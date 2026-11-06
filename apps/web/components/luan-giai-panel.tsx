@@ -3,6 +3,7 @@
 import { Fragment, useRef, useState } from "react";
 import type { Level, LuanGiaiRequest } from "@/lib/luan-giai/context";
 import { useAuth } from "@/lib/auth";
+import { GIAI_DOAN_2 } from "@/lib/phase";
 
 /** Markdown tối giản: ##, ###, gạch đầu dòng, **đậm**, *nghiêng*, > trích. Không chèn HTML thô. */
 function inline(text: string) {
@@ -79,6 +80,7 @@ export function LuanGiaiPanel({ request, withQuestion = false }: { request: Omit
   };
 
   const advancedOk = Boolean(user) && plan === "nang-cao";
+  if (!GIAI_DOAN_2) return null;
   return (
     <section className="space-y-3 rounded-xl border border-stone-200 bg-white p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
