@@ -384,5 +384,27 @@ export function luuNienVN(can: number, chi: number): { name: string; cung: numbe
     { name: "Lưu Lộc Tồn", cung: locTon },
     { name: "Lưu Kình Dương", cung: dichCung(locTon, 1) },
     { name: "Lưu Đà La", cung: dichCung(locTon, -1) },
+    // Sao lưu mở rộng (kênh Tử Vi Học Quán): an như sao gốc nhưng theo can chi năm xem
+    { name: "Lưu Đào Hoa", cung: dichCung(thienMa(chi), 7) },
+    { name: "Lưu Hồng Loan", cung: dichCung(4, -chi + 1) },
+    { name: "Lưu Thiên Hỷ", cung: dichCung(4, -chi + 7) },
+    { name: "Lưu Long Đức", cung: dichCung(chi, 7) },
+    { name: "Lưu Nguyệt Đức", cung: dichCung(chi, 5) },
+    { name: "Lưu Thiên Khôi", cung: KHOI[can] as number },
+    { name: "Lưu Thiên Việt", cung: dichCung(5, 5 - (KHOI[can] as number)) },
+  ];
+}
+
+/** Sao đại vận theo can chi của cung đại hạn (can 1..10, chi 1..12). */
+export function daiVanVN(can: number, chi: number): { name: string; cung: number }[] {
+  const locTon = LOC_TON[can] as number;
+  const khoi = KHOI[can] as number;
+  return [
+    { name: "ĐV Lộc Tồn", cung: locTon },
+    { name: "ĐV Kình Dương", cung: dichCung(locTon, 1) },
+    { name: "ĐV Đà La", cung: dichCung(locTon, -1) },
+    { name: "ĐV Thiên Khôi", cung: khoi },
+    { name: "ĐV Thiên Việt", cung: dichCung(5, 5 - khoi) },
+    { name: "ĐV Thiên Mã", cung: thienMa(chi) },
   ];
 }

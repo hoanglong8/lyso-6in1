@@ -139,3 +139,128 @@ Thầy dùng bảng tứ hóa theo 10 can khớp đúng bảng Bắc phái trong
 - Phụ đề là ASR, hay nghe sai tên sao. Có khoảng 50 quy tắc mơ hồ, đã loại.
 - Video chủ yếu là luận từng khách, nên quy tắc phản ánh cách áp dụng của thầy, không phải giáo trình.
 - Mẫu chỉ có 25 video mỗi kênh, trên tổng số hơn 1.200 video.
+
+
+---
+
+# Đợt 2 (duyệt 06/11/2026): Tử Vi Học Quán, Lê Quang Lăng
+
+Áp dụng trong `packages/luan-co-ban/src/tuvi-video2.ts` cho phái **Việt Nam – Thiên Lương**. Chủ dự án duyệt toàn bộ mục B và F1–F4.
+**E1–E3 (an Phá Toái, Khôi/Việt) chưa sửa** theo quyết định của chủ dự án; engine vẫn theo lasotuvi ở các điểm này. Ngoại lệ Tuần/Triệt trong hạn (H14) và Địa Kiếp trong "kho trống" (C2) sửa trực tiếp vào quy tắc 389 ở `tuvi-video.ts`.
+
+**Nguồn**
+- *Tử Vi Học Quán*: 60/60 video, khoảng 315 nghìn từ.
+- *Tử Vi Nam Phái Lê Quang Lăng*: mới có 8/50 video có phụ đề, khoảng 45 nghìn từ.
+
+**Kết quả rút**
+- 702 quy tắc luận thô (Học Quán 581, Lê Quang Lăng 121).
+- 1 bảng đối chiếu cách an sao với engine (60 hạng mục).
+
+Quy tắc được viết lại bằng lời riêng, không có thông tin người trong ví dụ.
+
+**Hai kênh phần lớn đồng thuận với nhau**
+- Lê Quang Lăng: 22 quy tắc trùng ý với 389, 4 quy tắc trái.
+- Học Quán: phần lớn quy tắc là mới, không có quy tắc nào trái hẳn với 389.
+
+**Khớp với engine**
+- Bảng độ sáng Vũ Khúc của Lê Quang Lăng khớp engine 12/12 cung.
+- Bảng độ sáng Thiên Lương và Tham Lang của Học Quán cũng khớp engine.
+
+---
+
+## A. Engine an sao (phái Thiên Lương)
+
+Học Quán giảng cách an sao từng bước trong 17 video. Phần lớn các bước khớp engine:
+- ngũ hổ độn, nạp âm (60/60), cục, an Tử Vi (5/5 ví dụ), 14 chính tinh;
+- Tràng Sinh, vòng Bác Sỹ, vòng Thái Tuế, Tuần, Triệt;
+- Hỏa/Linh (nhóm Thân Tý Thìn), Mã, Cái, Đào, Hồng Hỷ, Tả Hữu, Xương Khúc, Thai Tọa, Quang Quý, Không Kiếp, Đẩu Quân, Cô Quả, Quốc Ấn;
+- chiều và tuổi khởi đại hạn, tiểu hạn, 9 sao lưu.
+
+Chỗ lệch:
+
+| # | Hạng mục | Thầy Học Quán | Engine hiện tại | Đối chiếu thêm | Đề xuất |
+| --- | --- | --- | --- | --- | --- |
+| E1 | **Phá Toái** | Tuổi Tý Ngọ Mão Dậu ở Tỵ; Dần Thân Tỵ Hợi ở Dậu | Hai nhóm bị tráo (Tý Ngọ Mão Dậu ra Dậu) | Lõi Toàn thư (iztro) trong app cho kết quả giống thầy | **Sửa**, chắc chắn cao |
+| E2 | **Thiên Khôi/Việt tuổi Mậu, Đinh, Nhâm** | Mậu Khôi Sửu, Đinh Khôi Hợi, Nhâm Khôi Mão | Mậu Khôi Mùi, Đinh Khôi Dậu, Nhâm Khôi Tỵ (Khôi, Việt bị tráo) | Toàn thư giống thầy | **Sửa**, chắc chắn cao |
+| E3 | Khôi/Việt tuổi Canh | Khôi Ngọ, Việt Dần (câu "Canh Tân phùng Mã Hổ") | Khôi Mùi, Việt Sửu | Toàn thư: Khôi Sửu, Việt Mùi | Sửa theo thầy (đúng câu phú Việt), hoặc giữ nguyên |
+| E4 | Tứ hóa can Canh và Nhâm | Canh: Nhật Vũ **Âm Đồng**. Nhâm: Khoa là **Tả Phù**, vì Thiên Phủ không hóa | Bảng của cụ Thiên Lương: Canh Nhật Vũ **Đồng Âm**; Nhâm Khoa là **Thiên Phủ** | Bắc phái và Toàn thư theo bảng thầy | Giữ nguyên vì phái mang tên Thiên Lương; ghi chú khác biệt |
+| E5 | Thiên Giải | Từ Thân, mỗi tháng tiến 1 cung | Từ Thân, mỗi tháng tiến 2 cung (code ghi là cách của cụ Thiên Lương) | — | Giữ nguyên, ghi chú |
+| E6 | Hỏa/Linh tuổi Tỵ Dậu Sửu | Không nói | Hỏa khởi Tuất, Linh khởi Mão | Toàn thư: Hỏa khởi Mão | Chưa đủ căn cứ, chờ thêm nguồn |
+
+Sửa E1–E3 thì lá số Thiên Lương của người tuổi đó sẽ đổi vị trí sao. Test đối chiếu với lasotuvi sẽ được ghi rõ 3 điểm này là chỗ lasotuvi khác sách.
+
+**Engine chưa có** (thầy giảng rõ cách tính):
+
+| # | Tính năng | Dùng cho |
+| --- | --- | --- |
+| F1 | **Sao lưu mở rộng**: Lưu Đào Hoa, Lưu Hồng Loan, Lưu Thiên Hỷ, Lưu Long Đức, Lưu Nguyệt Đức, Lưu Khôi/Việt, Lưu Xương/Khúc | Năm tình duyên, hỷ sự, thi cử (H8, H9) |
+| F2 | **Lưu niên đại hạn** (cung số tuổi trong 10 năm) | Xem năm theo 3 lớp (H2) |
+| F3 | **Sao đại vận**: Kình, Đà, Lộc Tồn, Khôi, Việt, Mã và tứ hóa theo can cung đại hạn | "Trùng phùng" với sao lưu năm |
+| F4 | Nguyệt hạn (12 tháng trong năm) | Hiển thị tháng nên lưu ý |
+
+---
+
+## B. Luận bổ sung cho phái Thiên Lương
+
+### B1. Xem hạn (Học Quán 5+ video, Lê Quang Lăng)
+
+| # | Quy tắc (viết lại) | Nguồn | So với 389 |
+| --- | --- | --- | --- |
+| H1 | Cung có **Lưu Thái Tuế** là chủ đề của năm. Xét sao gốc và sao lưu trong cung: nhiều sát tinh thì năm nhiều việc khó; tên cung cho biết lĩnh vực | HQ (4 video) | Mở rộng: 389 chỉ xét vài cung |
+| H2 | Xem năm theo 3 lớp: Lưu Thái Tuế là chủ đề, tiểu hạn là diễn biến, lưu niên đại hạn là kết quả (cần F2) | HQ (5) | Mới |
+| H3 | **Đại hạn là nền**: đại hạn tốt thì tiểu hạn xấu chỉ nhẹ; cả hai xấu mới đáng lo. Mệnh và Phúc vững thì hạn xấu chỉ thành chuyện nhỏ | HQ, LQL | Mới |
+| H4 | Lưu Kình Dương: việc nổ ra nhanh, công khai. Lưu Đà La: dây dưa, ngấm ngầm. Cả hai vào cung lục thân thì dễ tranh chấp | HQ (4) | Bổ sung |
+| H5 | Lưu Thiên Mã một mình: thay đổi (đổi việc, chuyển nhà, đi xa), không phải tai nạn. Chỉ khi gặp Kình, Đà, Hình hoặc Triệt ở Mệnh/Thiên Di mới cần cẩn thận xe cộ | HQ (3), LQL | Bổ sung |
+| H6 | Lưu Lộc Tồn vào Tài hoặc Quan, hoặc Mệnh/Tài/Quan nằm trong tam hợp của Lưu Lộc Tồn: năm làm ăn được, tăng thu nhập | HQ (3), LQL | Trùng |
+| H7 | Lưu Hóa Quyền là việc đang muốn làm (vào Điền: mua nhà, vào Quan: thăng chức hoặc đổi việc). Lưu Hóa Khoa là giải thần (giấy tờ, thi cử thuận, ốm gặp thầy giỏi). Lưu Hóa Kỵ: cung xung có khi nặng hơn cung nhập | HQ (4) | Mới (app mới có lưu Lộc, lưu Kỵ) |
+| H8 | **Năm tình duyên**: Lưu Đào Hoa, Hồng Loan, Thiên Hỷ, Long Đức, Nguyệt Đức vào Mệnh/Thân/Phu Thê. **Năm hỷ sự**: tiểu hạn có Thanh Long, Long Trì, Phượng Các. Cô Thần/Quả Tú gặp Lưu Thái Tuế: năm không thuận cưới (cần F1) | HQ (4) | Mới |
+| H9 | **Sao lưu nguyên tắc**: sao lưu chỉ kích hoạt cung, tốt xấu do sao gốc. Lưu Tang Môn là buồn phiền, không phải mất người. Luận tang chế hay bệnh nặng phải xét cả đại vận | HQ (3) | Làm mềm các câu hiện có |
+| H10 | Lưu Thiên Khốc: chuyện buồn, nước mắt. Lưu Thiên Hư: hư hao (vào Điền thì phải sửa nhà) | HQ (2) | Mới |
+| H11 | Sao lưu trùng sao gốc cùng tên trong một cung (Thái Tuế, Kình, Đà, Tang, Hổ): hạn nặng hơn | HQ (2) | Mới |
+| H12 | Đại hạn: tam hợp của cung đại hạn sinh hoặc cùng hành với tam hợp tuổi thì thuận ("thiên thời"); khắc thì vất vả | HQ (3) | Mới |
+| H13 | Ý đại hạn theo chính tinh: Cự Môn (thị phi, kiện tụng), Phá Quân (hao tài, đổi mới), Thái Âm (làm ăn, nhà cửa), Thái Dương (công danh, đi xa) | LQL | Mới |
+| H14 | **Tuần/Triệt trong hạn**: nếu Mệnh cũng có Tuần/Triệt, hoặc Mệnh ở tứ mộ hay vô chính diệu, thì hạn gặp Tuần/Triệt lại thuận | LQL (3) | **Trái**: 389 coi là xấu. Đề xuất thêm thành ngoại lệ cho quy tắc 389 |
+
+### B2. Chính tinh và cách cục
+
+| # | Quy tắc | Nguồn | So với 389 |
+| --- | --- | --- | --- |
+| C1 | Thiên Phủ gặp từ 2 sát tinh (Kình, Đà, Hỏa, Linh) trở lên: "kho lộ", giàu nhanh nhưng khó bền. Gặp 1 sát tinh thì nhẹ | HQ (1) | Mới |
+| C2 | Thiên Phủ "kho trống": thêm Địa Kiếp vào nhóm Tuần, Triệt, Không | HQ, LQL | Mở rộng quy tắc N13 |
+| C3 | Tham Lang (hoặc Sát Phá Tham) gặp Hỏa/Linh: phát nhanh. Hỏa nghiêng về giàu, Linh nghiêng về quý; nhưng khó giữ lâu | HQ (2), LQL | Bổ sung |
+| C4 | Tham Lang gặp sao đào hoa (Đào, Hồng, Riêu, Hàm Trì): ở Tý Ngọ Mão Dậu thì tăng, ở miếu vượng thì giảm. Gặp Lộc Tồn thì đoan chính | HQ (2) | Mới |
+| C5 | Liêm Trinh cùng Tham Lang (Tỵ Hợi) hoặc cùng Phá Quân (Mão Dậu): thế khó; gặp thêm Hóa Kỵ, Kình hoặc Hỏa/Linh thì dễ vướng pháp lý. Liêm Phủ (Thìn Tuất) hợp tài chính, kiểm toán | HQ (2) | Mới |
+| C6 | Thất Sát cùng Kình Dương ở Ngọ ("mã đầu đới kiếm"): cần thận trọng. Thất Sát + Hỏa/Linh + Kình: bạo phát bạo tàn | HQ (1) | Mới |
+| C7 | Thiên Tướng giữa Kình Dương và Hóa Kỵ ("Hình Kỵ giáp Ấn"): tránh tham danh vị. Giữa Thiên Lương và Cự Môn hóa Lộc ("Tài Ấm giáp Ấn"): tốt | HQ (1) | Mới |
+| C8 | Thiên Lương hóa Khoa, hoặc đi cùng Xương Khúc, Thai Phụ, Phong Cáo: hợp nghiên cứu, giáo dục, y. Lương ở Mão đẹp hơn ở Dậu, Đồng Lương ở Dần đẹp hơn ở Thân | HQ (2) | Mới |
+| C9 | Cự Môn cần Hóa Lộc/Quyền hoặc sao văn mới thành cách; ưa Thái Dương sáng; gặp Không Kiếp, Kình hoặc Hỏa/Linh thì nặng | HQ (1) | Bổ sung |
+| C10 | Thiên Đồng ở Phúc Đức tốt dù sáng hay hãm. Thiên Đồng hóa Kỵ: làm ơn mắc oán | HQ (1) | Bổ sung |
+| C11 | Phá Quân hội sát tinh nhưng có Hóa Lộc hoặc Lộc Tồn thì thành cách; thời nay hợp nghề kỹ thuật, an ninh | HQ (2) | Hơi khác 389 (389 cần cát tinh đỡ). Hai ý bổ sung cho nhau |
+| C12 | Hóa Lộc gặp Không/Kiếp, Kình/Đà, Hỏa/Linh, Hóa Kỵ hoặc Tuần/Triệt cùng cung: phần tốt giảm | LQL | Mới |
+| C13 | Vũ Khúc gặp Không/Kiếp: tiền ra nhiều hơn vào. Mức sợ sát tinh giảm dần: Không Kiếp, rồi Hỏa Linh, rồi Kình Đà | LQL | Mới |
+| C14 | Đào/Hồng gặp Thiên Đức, Nguyệt Đức, Quang Quý, Lộc hoặc Xương Khúc: hôn nhân thuận. Gặp Không/Kiếp: tình duyên lận đận | LQL, HQ | Mới |
+| C15 | "Mệnh hạn": năm có can làm chính tinh thủ Mệnh hóa Kỵ thì năm đó cần thận trọng; hóa Lộc, Quyền, Khoa thì thuận | HQ (1) | Mới |
+
+### B3. Hôn nhân, con cái (nhạy cảm, viết dạng xu hướng)
+
+| # | Quy tắc | Nguồn |
+| --- | --- | --- |
+| M1 | Kình Dương ở Mệnh kéo Đà La vào Phu Thê: vợ chồng dễ va chạm | HQ |
+| M2 | Thiên Mã ở Phu Thê gặp Tuần/Triệt hoặc Đà La: hôn nhân dễ trắc trở | HQ |
+| M3 | Thất Sát ở cung lục thân: bất lợi cho người của cung đó, nặng nhẹ theo miếu hãm | HQ |
+| M4 | Nô Bộc có cát tinh hoặc Hóa Lộc thì được nhờ bạn; có Kỵ, Không Kiếp, Hao hoặc Tuần Triệt thì nên thận trọng khi hùn vốn | HQ (3), trùng 389 |
+
+---
+
+## C. Không đưa vào
+
+- Tỷ lệ phần trăm thầy đưa ra ("9/10 người…").
+- "Truyền tinh, truyền cung": chính thầy Học Quán bác bỏ.
+- Ví dụ lá số người thật.
+- Dự báo xã hội năm 2026.
+- Phần tướng mạo.
+- Quy tắc tuổi ghép Quả Tú (ASR mơ hồ).
+
+## D. Hai kênh chưa dùng
+
+Ông Phương Ảo Quán và Phong Thủy Tâm Linh mới có 3 video phụ đề mỗi kênh. Hai kênh này chờ bạn tải lại.

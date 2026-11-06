@@ -75,3 +75,5 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 - Phái Thiên Lương có thêm các mục "kinh nghiệm luận 389 TỬ VI"; Bắc phái có thêm "kinh nghiệm luận Đào Thanh Tín". Danh sách quy tắc và nguồn: [tuvi-quy-tac-video.md](tuvi-quy-tac-video.md). Các mục này tách riêng khỏi phần đối chiếu sách.
 - Âm dương thuận lý = âm dương năm sinh trùng âm dương cung Mệnh (không xét giới tính). Bản port lasotuvi trước đây nhân với giới tính, đã sửa.
 - Bắc phái: bảng tứ hóa thầy Đào Thanh Tín dùng trùng bảng thông dụng của engine (Canh: Dương Vũ Âm Đồng; Nhâm: Lương Tử Phụ Vũ; Mậu: Tham Âm Bật Cơ).
+- Đợt 2 (Tử Vi Học Quán, Lê Quang Lăng) thêm cho phái Thiên Lương: sao lưu mở rộng (Lưu Đào Hoa, Hồng Loan, Thiên Hỷ, Long Đức, Nguyệt Đức, Khôi, Việt), lưu niên đại hạn, sao đại vận (Lộc Tồn, Kình, Đà, Khôi, Việt, Mã theo can chi cung đại hạn) và tứ hóa đại vận, nguyệt hạn. Công thức theo bài giảng kênh Tử Vi Học Quán.
+- Chưa sửa (chờ quyết định): Phá Toái và Khôi/Việt tuổi Mậu, Đinh, Nhâm, Canh trong engine phái Việt khác với Tử Vi Học Quán và Toàn thư (xem tuvi-quy-tac-video.md, mục E).

@@ -135,3 +135,24 @@ describe("Âm dương thuận/nghịch lý (phái Việt)", () => {
     expect(c.amDuongMenh).toBe(`Âm dương ${exp} lý`);
   });
 });
+
+describe("Vận hạn mở rộng (phái Việt, theo Tử Vi Học Quán)", () => {
+  const c = buildTuVi(snap(1990, 5, 15, 7, 5), "nam", undefined, { viewYear: 2032 }); // năm Nhâm Tý
+  const v = c.vanHan!;
+  const at = (n: string) => v.luuStars.find((x) => x.name === n)?.chi;
+  it("sao lưu mở rộng năm Tý: Đào Hoa Dậu, Hồng Loan Mão, Thiên Hỷ Dậu, Long Đức Mùi, Nguyệt Đức Tỵ", () => {
+    expect([at("Lưu Đào Hoa"), at("Lưu Hồng Loan"), at("Lưu Thiên Hỷ"), at("Lưu Long Đức"), at("Lưu Nguyệt Đức")]).toEqual([9, 3, 9, 7, 5]);
+  });
+  it("lưu niên đại hạn: năm đầu đại hạn ở chính cung đại hạn, năm thứ hai ở cung xung", () => {
+    const dh = c.palaces.find((p) => p.chi === v.daiHan!.chi)!;
+    for (const [k, off] of [[0, 0], [1, 6], [3, 6]] as const) {
+      const cc = buildTuVi(snap(1990, 5, 15, 7, 5), "nam", undefined, { viewYear: 1990 + dh.daiHan.from - 1 + k });
+      expect(cc.vanHan!.luuNienDaiHan!.chi).toBe((dh.chi + off) % 12);
+    }
+  });
+  it("sao đại vận và nguyệt hạn có đủ", () => {
+    expect(v.daiVanStars).toHaveLength(6);
+    expect(v.daiVanTuHoa).toHaveLength(4);
+    expect(new Set(v.nguyetHan).size).toBe(12);
+  });
+});

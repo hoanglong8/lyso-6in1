@@ -124,8 +124,9 @@ export function luanVideoNam(c: TuViChart): Phan[] {
     cach.push(y(`Nhật Nguyệt phản bối: công danh phát chậm, từ từ.${cuu ? " Có Quyền/Khoa đi cùng nên vẫn khá." : ""}`, `Thái Dương ở ${nhatP.chiName}, Thái Âm ở ${nguyetP.chiName}`, cuu ? "trung" : "xau"));
   }
   for (const p of c.palaces) {
-    if (has(p, "Thiên Phủ") && (p.tuan || p.triet || has(p, "Địa Không", "Thiên Không"))) {
-      const w = [p.tuan ? "Tuần" : "", p.triet ? "Triệt" : "", ...found(p, ["Địa Không", "Thiên Không"])].filter(Boolean).join(", ");
+    if (has(p, "Thiên Phủ") && (p.tuan || p.triet || has(p, "Địa Không", "Thiên Không", "Địa Kiếp"))) {
+      // Địa Kiếp: bổ sung theo Tử Vi Học Quán, Lê Quang Lăng
+      const w = [p.tuan ? "Tuần" : "", p.triet ? "Triệt" : "", ...found(p, ["Địa Không", "Thiên Không", "Địa Kiếp"])].filter(Boolean).join(", ");
       cach.push(y(`Thiên Phủ gặp ${w} ("kho rỗng"): tiền liên quan đến ${lv(p)} khó giữ; nên tích lũy chắc, tránh đầu cơ.`, `Thiên Phủ ở ${p.name}`, "xau"));
     }
     if (has(p, "Thiên Tướng") && (p.tuan || p.triet) && (p.chi === menh.chi || p.name === "Quan Lộc"))
@@ -241,7 +242,11 @@ export function luanVideoNam(c: TuViChart): Phan[] {
     for (const { p, lb } of han) {
       const ns = [...names(p), ...(luu.get(p.chi) ?? [])];
       const k = [...KHONG_KIEP.filter((s) => ns.includes(s)), ...(p.tuan ? ["Tuần"] : []), ...(p.triet ? ["Triệt"] : [])];
-      if (k.length >= 2 || (k.length && ns.includes("Thiên Phủ")))
+      // Ngoại lệ (Lê Quang Lăng): hạn chỉ gặp Tuần/Triệt mà Mệnh cũng có Tuần/Triệt, ở tứ mộ hoặc vô chính diệu thì lại thuận
+      const chiTT = k.length > 0 && k.every((x) => x === "Tuần" || x === "Triệt");
+      if (chiTT && (menh.tuan || menh.triet || [1, 4, 7, 10].includes(menh.chi) || !menh.majorStars.length))
+        vh.push(y(`${lb.split(" ")[0]} hạn gặp ${k.join(", ")} nhưng Mệnh ${menh.tuan || menh.triet ? "cũng có Tuần/Triệt" : !menh.majorStars.length ? "vô chính diệu" : "ở tứ mộ"}: theo thầy Lê Quang Lăng, hạn này lại thuận.`, `${lb} ở ${p.name} · Lê Quang Lăng`, "tot"));
+      else if (k.length >= 2 || (k.length && ns.includes("Thiên Phủ")))
         vh.push(y(`${lb.split(" ")[0]} hạn gặp Không, Kiếp, Tuần, Triệt: tránh đầu cơ, cho vay, đầu tư lớn; giữ tiền mặt.`, `${lb} ở ${p.name} có ${k.join(", ")}`, "xau"));
       if (ns.includes("Đại Hao") && ns.includes("Tiểu Hao")) vh.push(y("Hạn có song Hao: không nên đầu tư lớn, dễ hao tài.", `${lb} ở ${p.name}`, "xau"));
       if (ns.includes("Bạch Hổ") || ns.includes("Lưu Bạch Hổ")) {
