@@ -175,7 +175,7 @@ export default function LichTool() {
   );
 }
 
-function Result({ s }: { s: CalendarSnapshot }) {
+export function Result({ s }: { s: CalendarSnapshot }) {
   const g = s.ganzhi;
   const pillars: [string, GanZhi][] = [
     ["Năm", g.yearBazi],

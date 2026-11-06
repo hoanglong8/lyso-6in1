@@ -12,3 +12,23 @@ body {
   background: var(--color-giay);
   color: var(--color-muc);
 }
+
+/* In / lưu PDF: chỉ giữ lá số và phần luận */
+@media print {
+  header,
+  footer,
+  aside,
+  .print\:hidden {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+  main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  li {
+    break-inside: avoid;
+  }
+}

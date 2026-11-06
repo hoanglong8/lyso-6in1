@@ -1,0 +1,26 @@
+{
+  "name": "@lyso/engine-tuvi",
+  "version": "0.1.0",
+  "description": "Tử vi: lá số 12 cung từ ngày âm lịch Việt Nam, dùng iztro làm lõi an sao",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lyso/calendar-vn": "workspace:*",
+    "iztro": "^2.6.4",
+    "lunar-typescript": "^1.8.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.12"
+  }
+}

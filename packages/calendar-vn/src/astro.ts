@@ -14,9 +14,14 @@ export function sunLongitude(date: Date): number {
 
 /** Thời điểm đầu tiên kể từ `start` Mặt Trời đạt kinh độ `lon` (độ). */
 export function nextSunLongitude(lon: number, start: Date, limitDays = 400): Date {
-  const t = Astronomy.SearchSunLongitude(lon, start, limitDays);
-  if (!t) throw new Error(`Không tìm thấy thời điểm kinh độ Mặt Trời ${lon}°`);
-  return t.date;
+  // Tìm theo cửa sổ 40 ngày: SearchSunLongitude với cửa sổ dài đôi khi trượt mất điểm vắt qua 360°/0°.
+  const target = ((lon % 360) + 360) % 360;
+  for (let off = 0; off < limitDays; off += 40) {
+    const from = new Date(start.getTime() + off * MS_PER_DAY);
+    const t = Astronomy.SearchSunLongitude(target, from, Math.min(40, limitDays - off) + 1);
+    if (t && t.date.getTime() >= start.getTime()) return t.date;
+  }
+  throw new Error(`Không tìm thấy thời điểm kinh độ Mặt Trời ${lon}°`);
 }
 
 /** Thời điểm gần nhất TRƯỚC (hoặc bằng) `at` Mặt Trời đạt kinh độ `lon`. */
