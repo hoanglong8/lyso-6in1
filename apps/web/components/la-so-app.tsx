@@ -12,6 +12,7 @@ import { LuanGiaiPanel } from "./luan-giai-panel";
 import { LuanCoBanView } from "./luan-co-ban-view";
 import { PrintButton } from "./print-button";
 import { luanBazi, luanTuVi } from "@lyso/luan-co-ban";
+import { GIAI_DOAN_2 } from "@/lib/phase";
 
 type Tab = "tuvi" | "bazi" | "lich";
 const TABS: [Tab, string][] = [
@@ -59,7 +60,11 @@ export default function LaSoApp() {
             {saved.cloud ? (
               <>Hồ sơ lưu trong tài khoản của bạn, chỉ bạn xem được. <a href="/quyen-rieng-tu" className="underline">Quyền riêng tư</a></>
             ) : (
+              GIAI_DOAN_2 ? (
               <>Hồ sơ chỉ lưu trong trình duyệt này. <a href="/dang-nhap" className="underline">Đăng nhập</a> để lưu vào tài khoản và dùng trên máy khác.</>
+            ) : (
+              <>Hồ sơ chỉ lưu trong trình duyệt này, không gửi lên máy chủ. Xóa dữ liệu trình duyệt là mất hồ sơ.</>
+            )
             )}
           </p>
           {saved.cloud && saved.localCount > 0 && (
