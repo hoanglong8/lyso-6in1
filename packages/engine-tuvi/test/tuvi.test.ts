@@ -120,3 +120,18 @@ describe("Tử vi dùng ngày âm Việt Nam", () => {
     expect(same).toBe(n);
   });
 });
+
+describe("Âm dương thuận/nghịch lý (phái Việt)", () => {
+  // 14 lá số kênh "389 TỬ VI" đọc trong video; quy tắc: âm dương năm sinh trùng âm dương cung Mệnh là thuận lý.
+  const ca: [number, number, number, number, number, "nam" | "nu", "thuận" | "nghịch"][] = [
+    [1989, 2, 28, 3, 30, "nu", "nghịch"], [1990, 6, 19, 12, 20, "nam", "thuận"], [1997, 10, 23, 16, 30, "nu", "nghịch"],
+    [1994, 11, 12, 2, 0, "nu", "thuận"], [1985, 10, 16, 5, 30, "nam", "thuận"], [2007, 12, 25, 9, 30, "nam", "thuận"],
+    [1990, 11, 2, 6, 0, "nu", "nghịch"], [1987, 6, 30, 6, 0, "nu", "nghịch"], [1981, 6, 7, 16, 0, "nam", "nghịch"],
+    [1989, 2, 20, 4, 0, "nam", "nghịch"], [2020, 6, 25, 5, 30, "nam", "nghịch"], [1983, 10, 11, 0, 30, "nam", "nghịch"],
+    [1993, 12, 24, 20, 0, "nam", "nghịch"], [1989, 8, 21, 19, 45, "nam", "nghịch"],
+  ];
+  it.each(ca)("%i-%i-%i %ih%i %s → %s", (y, m, d, h, mi, g, exp) => {
+    const c = buildTuVi(snap(y, m, d, h, mi), g);
+    expect(c.amDuongMenh).toBe(`Âm dương ${exp} lý`);
+  });
+});

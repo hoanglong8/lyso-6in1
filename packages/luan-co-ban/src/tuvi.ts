@@ -2,6 +2,7 @@ import { CHI } from "@lyso/calendar-vn";
 import type { TuViChart, TuViPalace, TuViStar } from "@lyso/engine-tuvi";
 import { CANH_BAO_CHUNG, type LuanCoBan, type Phan, type Y } from "./types";
 import { CAT_TINH, CHINH_TINH, CUNG_Y, NGUON_TUVI, PHU_TINH, SAT_TINH } from "./tuvi-data";
+import { luanVideoBac, luanVideoNam, NGUON_VIDEO_BAC, NGUON_VIDEO_NAM } from "./tuvi-video";
 
 const SANG = new Set(["Miếu", "Vượng", "Đắc"]);
 const TOI = new Set(["Hãm", "Bất"]);
@@ -139,12 +140,36 @@ export function luanTuVi(c: TuViChart): LuanCoBan {
     phan.push({ title: `Vận hạn năm ${v.year} (${v.yearName}, ${v.age} tuổi mụ)`, items });
   }
 
+  // 7. Kinh nghiệm luận theo phái (rút từ video, tách riêng khỏi phần đối chiếu sách)
+  const nguon = [NGUON_TUVI];
+  const canhBaoVideo: string[] = [];
+  if (c.config.school === "vn-thien-luong") {
+    phan.push(...luanVideoNam(c));
+    nguon.push(NGUON_VIDEO_NAM);
+    canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của một thầy, chưa đối chiếu sách; mục gia đạo, sức khỏe, tâm linh chỉ để tham khảo, không thay lời khuyên y tế.");
+  } else if (c.config.school === "bac-phai") {
+    phan.push(...luanVideoBac(c));
+    nguon.push(NGUON_VIDEO_BAC);
+    canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của một thầy Bắc phái, chưa đối chiếu sách.");
+  }
+
+  // Gộp các ý trùng lời trong cùng một mục, nối căn cứ
+  for (const p of phan) {
+    const by = new Map<string, Y>();
+    for (const it of p.items) {
+      const old = by.get(it.text);
+      if (!old) by.set(it.text, { ...it });
+      else if (it.canCu && !old.canCu?.includes(it.canCu)) old.canCu = old.canCu ? `${old.canCu}; ${it.canCu}` : it.canCu;
+    }
+    p.items = [...by.values()];
+  }
+
   const m = menh.majorStars.map((s) => s.name).join(", ");
   return {
     mon: "Tử vi",
     tomTat: `Mệnh ${m ? `có ${m}` : "vô chính diệu"} tại ${menh.chiName}, ${c.cuc}${c.banMenh ? `, bản mệnh ${c.banMenh}` : ""}; phái ${c.school}.`,
     phan,
-    nguon: [NGUON_TUVI],
-    canhBao: [CANH_BAO_CHUNG, "Ý nghĩa sao viết theo cách hiểu thông dụng của Tử vi Việt Nam; các phái có thể luận khác nhau ở cùng một vị trí sao."],
+    nguon,
+    canhBao: [CANH_BAO_CHUNG, "Ý nghĩa sao viết theo cách hiểu thông dụng của Tử vi Việt Nam; các phái có thể luận khác nhau ở cùng một vị trí sao.", ...canhBaoVideo],
   };
 }

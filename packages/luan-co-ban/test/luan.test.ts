@@ -20,6 +20,40 @@ const ok = (l: LuanCoBan) => {
   expect(JSON.stringify(l)).not.toMatch(/undefined|NaN/);
 };
 
+describe("Luận theo kinh nghiệm video (Tử vi)", () => {
+  const chart = (s: (typeof snaps)[number], school: "vn-thien-luong" | "bac-phai", g: "nam" | "nu" = "nam") => buildTuVi(s, g, { school, leapMonth: "split15" }, { viewYear: 2026 });
+  it("Thiên Lương có mục 389 TỬ VI, Bắc phái có mục Đào Thanh Tín, phái khác thì không", () => {
+    for (const s of snaps) {
+      const vn = luanTuVi(chart(s, "vn-thien-luong"));
+      const bac = luanTuVi(chart(s, "bac-phai", "nu"));
+      expect(vn.phan.some((p) => p.title.includes("389 TỬ VI"))).toBe(true);
+      expect(bac.phan.some((p) => p.title.includes("Đào Thanh Tín"))).toBe(true);
+      expect(vn.phan.some((p) => p.title.includes("Đào Thanh Tín"))).toBe(false);
+      const np = luanTuVi(buildTuVi(s, "nam", { school: "nam-phai", leapMonth: "split15" }, { viewYear: 2026 }));
+      expect(np.phan.some((p) => /389|Đào Thanh Tín/.test(p.title))).toBe(false);
+      for (const l of [vn, bac]) for (const p of l.phan.filter((x) => /389|Đào Thanh Tín|thầy/.test(x.title))) {
+        for (const y of p.items) expect(y.canCu?.length, y.text).toBeGreaterThan(2);
+        expect(new Set(p.items.map((y) => y.text)).size, p.title).toBe(p.items.length);
+      }
+    }
+  });
+  it("Thuận/nghịch lý trong luận khớp nhãn của engine", () => {
+    for (const s of snaps) {
+      const c = chart(s, "vn-thien-luong");
+      const t = luanTuVi(c).phan.find((p) => p.title.startsWith("Khung lá số"))!.items[0]!.text;
+      expect(t.startsWith(c.amDuongMenh!)).toBe(true);
+    }
+  });
+  it("Bắc phái: lưu niên xoay cung đúng (lưu Tài cách Mệnh lưu 8 cung)", () => {
+    const c = chart(snaps[0]!, "bac-phai");
+    const t = luanTuVi(c).phan.find((p) => p.title.startsWith("Vận hạn") && p.title.includes("Đào Thanh Tín"))!.items.find((y) => y.text.startsWith("Lưu niên"))!.text;
+    const ORDER = ["Mệnh", "Phụ Mẫu", "Phúc Đức", "Điền Trạch", "Quan Lộc", "Nô Bộc", "Thiên Di", "Tật Ách", "Tài Bạch", "Tử Tức", "Phu Thê", "Huynh Đệ"];
+    const lm = c.vanHan!.luuThaiTue.chi;
+    const want = ORDER[(((lm + 8 - c.menhChi) % 12) + 12) % 12];
+    expect(t).toContain(`lưu Tài Bạch ở ${want} gốc`);
+  });
+});
+
 describe("Luận cơ bản", () => {
   it("Tử vi: mọi phái, mọi lá số", () => {
     for (const s of snaps) for (const school of ["vn-thien-luong", "nam-phai", "trung-chau", "bac-phai"] as const) ok(luanTuVi(buildTuVi(s, r() < 0.5 ? "nam" : "nu", { school, leapMonth: "split15" }, { viewYear: 2026 })));

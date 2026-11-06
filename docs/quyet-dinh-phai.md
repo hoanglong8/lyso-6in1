@@ -69,3 +69,9 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 - Tử vi: mệnh vô chính diệu mượn chính tinh Thiên Di; Liêm Trinh ghi "Hỏa (có sách ghi Mộc)" do các sách không thống nhất.
 - Kinh dịch: thoán từ 3 quẻ (11, 47, 51) khác bản sách đối chiếu do dị bản; giữ bản Chu Dịch thông hành.
 - Lục Nhâm, Kỳ môn, Thái ất: chưa có sách chuyên đề trong kho để đối chiếu — cần thầy duyệt trước khi coi là chuẩn.
+
+## Ghi chú Tử vi: luận theo kinh nghiệm video
+
+- Phái Thiên Lương có thêm các mục "kinh nghiệm luận 389 TỬ VI"; Bắc phái có thêm "kinh nghiệm luận Đào Thanh Tín". Danh sách quy tắc và nguồn: [tuvi-quy-tac-video.md](tuvi-quy-tac-video.md). Các mục này tách riêng khỏi phần đối chiếu sách.
+- Âm dương thuận lý = âm dương năm sinh trùng âm dương cung Mệnh (không xét giới tính). Bản port lasotuvi trước đây nhân với giới tính, đã sửa.
+- Bắc phái: bảng tứ hóa thầy Đào Thanh Tín dùng trùng bảng thông dụng của engine (Canh: Dương Vũ Âm Đồng; Nhâm: Lương Tử Phụ Vũ; Mậu: Tham Âm Bật Cơ).

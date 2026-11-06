@@ -355,6 +355,8 @@ export function anSaoVN({ canNam, chiNam, thang: tt, ngay: nn, gio: gioSinh, gio
   (palaces[dichCung(tuan1, 1)] as VnPalace).tuan = true;
   for (const c of TRIET[canNam] as [number, number]) (palaces[c] as VnPalace).triet = true;
 
+  // Âm dương thuận lý: âm dương của năm sinh trùng âm dương của cung Mệnh (dương niên Mệnh ở cung dương,
+  // âm niên Mệnh ở cung âm). Cung 1 = Tý (dương). Không phụ thuộc giới tính.
   const cungAmDuong = cungMenh % 2 === 1 ? 1 : -1;
   return {
     palaces,
@@ -364,7 +366,7 @@ export function anSaoVN({ canNam, chiNam, thang: tt, ngay: nn, gio: gioSinh, gio
     tenCuc,
     menhChu: MENH_CHU[cungMenh] as string,
     thanChu: THAN_CHU[chiNam] as string,
-    amDuongMenh: cungAmDuong * gioiTinh === 1 ? "Âm dương thuận lý" : "Âm dương nghịch lý",
+    amDuongMenh: cungAmDuong * amDuongNam === 1 ? "Âm dương thuận lý" : "Âm dương nghịch lý",
     banMenh: BAN_MENH[napAm(chiNam, canNam)] as string,
   };
 }
