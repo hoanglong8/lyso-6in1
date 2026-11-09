@@ -120,3 +120,39 @@ describe("Tử vi dùng ngày âm Việt Nam", () => {
     expect(same).toBe(n);
   });
 });
+
+describe("Âm dương thuận/nghịch lý (phái Việt)", () => {
+  // 14 lá số kênh "389 TỬ VI" đọc trong video; quy tắc: âm dương năm sinh trùng âm dương cung Mệnh là thuận lý.
+  const ca: [number, number, number, number, number, "nam" | "nu", "thuận" | "nghịch"][] = [
+    [1989, 2, 28, 3, 30, "nu", "nghịch"], [1990, 6, 19, 12, 20, "nam", "thuận"], [1997, 10, 23, 16, 30, "nu", "nghịch"],
+    [1994, 11, 12, 2, 0, "nu", "thuận"], [1985, 10, 16, 5, 30, "nam", "thuận"], [2007, 12, 25, 9, 30, "nam", "thuận"],
+    [1990, 11, 2, 6, 0, "nu", "nghịch"], [1987, 6, 30, 6, 0, "nu", "nghịch"], [1981, 6, 7, 16, 0, "nam", "nghịch"],
+    [1989, 2, 20, 4, 0, "nam", "nghịch"], [2020, 6, 25, 5, 30, "nam", "nghịch"], [1983, 10, 11, 0, 30, "nam", "nghịch"],
+    [1993, 12, 24, 20, 0, "nam", "nghịch"], [1989, 8, 21, 19, 45, "nam", "nghịch"],
+  ];
+  it.each(ca)("%i-%i-%i %ih%i %s → %s", (y, m, d, h, mi, g, exp) => {
+    const c = buildTuVi(snap(y, m, d, h, mi), g);
+    expect(c.amDuongMenh).toBe(`Âm dương ${exp} lý`);
+  });
+});
+
+describe("Vận hạn mở rộng (phái Việt, theo Tử Vi Học Quán)", () => {
+  const c = buildTuVi(snap(1990, 5, 15, 7, 5), "nam", undefined, { viewYear: 2032 }); // năm Nhâm Tý
+  const v = c.vanHan!;
+  const at = (n: string) => v.luuStars.find((x) => x.name === n)?.chi;
+  it("sao lưu mở rộng năm Tý: Đào Hoa Dậu, Hồng Loan Mão, Thiên Hỷ Dậu, Long Đức Mùi, Nguyệt Đức Tỵ", () => {
+    expect([at("Lưu Đào Hoa"), at("Lưu Hồng Loan"), at("Lưu Thiên Hỷ"), at("Lưu Long Đức"), at("Lưu Nguyệt Đức")]).toEqual([9, 3, 9, 7, 5]);
+  });
+  it("lưu niên đại hạn: năm đầu đại hạn ở chính cung đại hạn, năm thứ hai ở cung xung", () => {
+    const dh = c.palaces.find((p) => p.chi === v.daiHan!.chi)!;
+    for (const [k, off] of [[0, 0], [1, 6], [3, 6]] as const) {
+      const cc = buildTuVi(snap(1990, 5, 15, 7, 5), "nam", undefined, { viewYear: 1990 + dh.daiHan.from - 1 + k });
+      expect(cc.vanHan!.luuNienDaiHan!.chi).toBe((dh.chi + off) % 12);
+    }
+  });
+  it("sao đại vận và nguyệt hạn có đủ", () => {
+    expect(v.daiVanStars).toHaveLength(6);
+    expect(v.daiVanTuHoa).toHaveLength(4);
+    expect(new Set(v.nguyetHan).size).toBe(12);
+  });
+});

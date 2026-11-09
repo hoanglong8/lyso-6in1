@@ -355,6 +355,8 @@ export function anSaoVN({ canNam, chiNam, thang: tt, ngay: nn, gio: gioSinh, gio
   (palaces[dichCung(tuan1, 1)] as VnPalace).tuan = true;
   for (const c of TRIET[canNam] as [number, number]) (palaces[c] as VnPalace).triet = true;
 
+  // Âm dương thuận lý: âm dương của năm sinh trùng âm dương của cung Mệnh (dương niên Mệnh ở cung dương,
+  // âm niên Mệnh ở cung âm). Cung 1 = Tý (dương). Không phụ thuộc giới tính.
   const cungAmDuong = cungMenh % 2 === 1 ? 1 : -1;
   return {
     palaces,
@@ -364,7 +366,7 @@ export function anSaoVN({ canNam, chiNam, thang: tt, ngay: nn, gio: gioSinh, gio
     tenCuc,
     menhChu: MENH_CHU[cungMenh] as string,
     thanChu: THAN_CHU[chiNam] as string,
-    amDuongMenh: cungAmDuong * gioiTinh === 1 ? "Âm dương thuận lý" : "Âm dương nghịch lý",
+    amDuongMenh: cungAmDuong * amDuongNam === 1 ? "Âm dương thuận lý" : "Âm dương nghịch lý",
     banMenh: BAN_MENH[napAm(chiNam, canNam)] as string,
   };
 }
@@ -382,5 +384,27 @@ export function luuNienVN(can: number, chi: number): { name: string; cung: numbe
     { name: "Lưu Lộc Tồn", cung: locTon },
     { name: "Lưu Kình Dương", cung: dichCung(locTon, 1) },
     { name: "Lưu Đà La", cung: dichCung(locTon, -1) },
+    // Sao lưu mở rộng (kênh Tử Vi Học Quán): an như sao gốc nhưng theo can chi năm xem
+    { name: "Lưu Đào Hoa", cung: dichCung(thienMa(chi), 7) },
+    { name: "Lưu Hồng Loan", cung: dichCung(4, -chi + 1) },
+    { name: "Lưu Thiên Hỷ", cung: dichCung(4, -chi + 7) },
+    { name: "Lưu Long Đức", cung: dichCung(chi, 7) },
+    { name: "Lưu Nguyệt Đức", cung: dichCung(chi, 5) },
+    { name: "Lưu Thiên Khôi", cung: KHOI[can] as number },
+    { name: "Lưu Thiên Việt", cung: dichCung(5, 5 - (KHOI[can] as number)) },
+  ];
+}
+
+/** Sao đại vận theo can chi của cung đại hạn (can 1..10, chi 1..12). */
+export function daiVanVN(can: number, chi: number): { name: string; cung: number }[] {
+  const locTon = LOC_TON[can] as number;
+  const khoi = KHOI[can] as number;
+  return [
+    { name: "ĐV Lộc Tồn", cung: locTon },
+    { name: "ĐV Kình Dương", cung: dichCung(locTon, 1) },
+    { name: "ĐV Đà La", cung: dichCung(locTon, -1) },
+    { name: "ĐV Thiên Khôi", cung: khoi },
+    { name: "ĐV Thiên Việt", cung: dichCung(5, 5 - khoi) },
+    { name: "ĐV Thiên Mã", cung: thienMa(chi) },
   ];
 }

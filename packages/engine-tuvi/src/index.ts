@@ -14,7 +14,7 @@
 import { astro } from "iztro";
 import { LunarYear } from "lunar-typescript";
 import { CAN, CHI, firstMonthCan, lunarToSolar, type CalendarSnapshot } from "@lyso/calendar-vn";
-import { anSaoVN, dichCung, luuNienVN, TU_HOA_THIEN_LUONG, type VnChartRaw } from "./vn";
+import { anSaoVN, daiVanVN, dichCung, luuNienVN, TU_HOA_THIEN_LUONG, type VnChartRaw } from "./vn";
 
 export const ENGINE_VERSION = "engine-tuvi@0.2.0";
 
@@ -120,6 +120,14 @@ export interface VanHan {
   luuThaiTue: { chi: number; palace: string };
   luuStars: { name: string; chi: number }[];
   luuTuHoa: { mutagen: Mutagen; star: string; chi: number | null }[];
+  /** Phái Việt: lưu niên đại hạn — cung "số tuổi" trong 10 năm của đại hạn (Tử Vi Học Quán) */
+  luuNienDaiHan?: { chi: number; palace: string } | null;
+  /** Phái Việt: sao đại vận theo can chi cung đại hạn */
+  daiVanStars?: { name: string; chi: number }[];
+  /** Phái Việt: tứ hóa của đại vận theo can cung đại hạn */
+  daiVanTuHoa?: { mutagen: Mutagen; star: string; chi: number | null }[];
+  /** Phái Việt: chi cung của từng tháng âm 1..12 trong năm xem (nguyệt hạn) */
+  nguyetHan?: number[];
 }
 
 export interface TuViChart {
@@ -312,6 +320,22 @@ function buildFromVn(s: CalendarSnapshot, gender: Gender, config: TuViConfig, vi
     luuStars: luuNienVN(vyCan + 1, vyChi + 1).map((x) => ({ name: x.name, chi: x.cung - 1 })),
     luuTuHoa: (TU_HOA_THIEN_LUONG[vyCan + 1] as string[]).map((st, i) => ({ mutagen: MUTAGENS[i] as Mutagen, star: st, chi: where.get(st) ?? null })),
   };
+  const mod = (x: number) => ((x % 12) + 12) % 12;
+  if (dh) {
+    // Chiều đại hạn: cung của đại hạn kế tiếp
+    const next = palaces.find((p) => p.daiHan.from === dh.daiHan.from + 10);
+    const dir = next && mod(next.chi - dh.chi) === 11 ? -1 : 1;
+    const k = age - dh.daiHan.from;
+    const off = k === 0 ? 0 : k === 1 || k === 3 ? 6 : k === 2 ? 6 - dir : 6 + dir * (k - 3);
+    const ln = palaces[mod(dh.chi + off)] as TuViPalace;
+    vanHan.luuNienDaiHan = { chi: ln.chi, palace: ln.name };
+    const canDh = palaceCan(yearCan, dh.chi);
+    vanHan.daiVanStars = daiVanVN(canDh + 1, dh.chi + 1).map((x) => ({ name: x.name, chi: x.cung - 1 }));
+    vanHan.daiVanTuHoa = (TU_HOA_THIEN_LUONG[canDh + 1] as string[]).map((st, i) => ({ mutagen: MUTAGENS[i] as Mutagen, star: st, chi: where.get(st) ?? null }));
+  } else vanHan.luuNienDaiHan = null;
+  // Nguyệt hạn: từ cung tiểu hạn kể tháng 1 nghịch đến tháng sinh, từ đó kể giờ Tý thuận đến giờ sinh là tháng Giêng
+  const thang1 = mod(th.chi - (n.month - 1) + s.hour.chi);
+  vanHan.nguyetHan = Array.from({ length: 12 }, (_, i) => mod(thang1 + i));
 
   return {
     yearName: s.ganzhi.year.name,
