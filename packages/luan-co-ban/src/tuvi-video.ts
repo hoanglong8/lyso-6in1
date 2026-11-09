@@ -88,7 +88,7 @@ export function luanVideoNam(c: TuViChart): Phan[] {
   const thanTen = CUNG_CHUC[m12(c.thanChi - c.menhChi)];
   if (thanTen && THAN[thanTen]) khung.push(y(`Thân cư ${thanTen}: ${THAN[thanTen]}.`, `Thân tại ${CHI[c.thanChi]}`));
   if (menh.tuan || menh.triet)
-    khung.push(y(`${menh.triet ? "Triệt" : "Tuần"} ở Mệnh tác động mạnh khoảng 30 năm đầu đời. ${menh.triet ? "Triệt nhẹ dần sau khoảng 30 tuổi" : "Tuần ảnh hưởng kéo dài hơn Triệt"}; trước mốc đó nên kiên trì, không nóng vội.`, `${menh.tuan ? "Tuần " : ""}${menh.triet ? "Triệt " : ""}ở Mệnh`, "trung"));
+    khung.push(y(menh.triet ? "Triệt ở Mệnh tác động mạnh trước khoảng 30 tuổi, sau đó nhẹ dần; giai đoạn đầu nên kiên trì, không nóng vội." : "Tuần ở Mệnh tác động rõ hơn từ khoảng 30 tuổi trở đi; càng về sau càng phải chắc tay.", `${menh.tuan ? "Tuần " : ""}${menh.triet ? "Triệt " : ""}ở Mệnh · mốc tuổi theo Phong Thủy Tâm Linh, Đông Phương Đạo Quán`, "trung"));
   if (!menh.majorStars.length) {
     if (has(menh, ...KHONG_KIEP)) khung.push(y("Mệnh vô chính diệu có Không/Kiếp độc thủ: đỡ hơn cung trống hẳn; thông minh, xoay xở nhanh.", `Mệnh trống chính tinh, có ${found(menh, KHONG_KIEP).join(", ")}`, "trung"));
     if (has(menh, "Tả Phù", "Hữu Bật") || hoaIn(menh, "Khoa").length) khung.push(y("Mệnh vô chính diệu có Tả Hữu hoặc Hóa Khoa: đi xa, ra ngoài thì có lợi.", `Mệnh trống chính tinh, có ${[...found(menh, ["Tả Phù", "Hữu Bật"]), ...hoaIn(menh, "Khoa").map((s) => `${s} hóa Khoa`)].join(", ")}`, "tot"));
@@ -133,7 +133,7 @@ export function luanVideoNam(c: TuViChart): Phan[] {
       cach.push(y("Thiên Tướng (sao ấn) bị Tuần/Triệt: quyền hành và danh vị dễ bị giảm, khá lên sau khoảng 30 tuổi.", `Thiên Tướng ở ${p.name} gặp ${p.tuan ? "Tuần" : "Triệt"}`, "xau"));
     if (hasAll(p, "Lộc Tồn", "Thiên Mã")) cach.push(y("Lộc Tồn gặp Thiên Mã (Lộc Mã giao trì): hợp buôn bán, vận tải, tài chính; đi xa có lợi.", `Lộc Tồn và Thiên Mã ở ${p.name}`, "tot"));
     if (has(p, "Thiên Mã") && (p.truongSinh === "Tràng Sinh" || p.truongSinh === "Lâm Quan"))
-      cach.push(y(`Thiên Mã gặp ${p.truongSinh}: ra ngoài hoặc đổi chỗ thì phát, kiếm tiền thuận.`, `Thiên Mã ở ${p.name} cùng ${p.truongSinh}`, "tot"));
+      cach.push(y(`Thiên Mã gặp ${p.truongSinh}: đi nhiều, đi thì có lộc, nhưng khó yên một chỗ.`, `Thiên Mã ở ${p.name} cùng ${p.truongSinh} · 389 (phát khi đi), Phong Thủy Tâm Linh (bôn ba)`, "trung"));
     if (has(p, "Vũ Khúc") && has(p, "Cô Thần", "Quả Tú") && (p.chi === menh.chi || p.name === "Phu Thê"))
       cach.push(y("Vũ Khúc gặp Cô Thần/Quả Tú: tình cảm dễ cô quạnh, khó bày tỏ; lấy muộn thì bền hơn.", `Vũ Khúc và ${found(p, ["Cô Thần", "Quả Tú"]).join(", ")} ở ${p.name}`, "trung"));
   }
@@ -154,11 +154,10 @@ export function luanVideoNam(c: TuViChart): Phan[] {
   if (has(menh, "Tướng Quân") || has(than, "Tướng Quân")) pt.push(y(`Tướng Quân ở Mệnh/Thân: có uy, giỏi sắp xếp${tc.has("Quốc Ấn") ? "; gặp Quốc Ấn càng có địa vị" : ""}.`, "Tướng Quân ở Mệnh/Thân", "tot"));
   const nam = Number(yearChi(c));
   const vong = [
-    m12(c.menhChi - nam) % 4 === 0 ? "Thái Tuế" : "",
     tuChinh(c, c.menhChi).slice(0, 3).some((p) => has(p, "Lộc Tồn")) || tuChinh(c, c.thanChi).slice(0, 3).some((p) => has(p, "Lộc Tồn")) ? "Lộc Tồn" : "",
     tuChinh(c, c.menhChi).slice(0, 3).some((p) => ["Tràng Sinh", "Đế Vượng", "Mộ"].includes(p.truongSinh)) ? "Tràng Sinh" : "",
   ].filter(Boolean);
-  if (vong.length) pt.push(y(`Mệnh ôm vòng ${vong.join(", ")}${vong.length === 3 ? " (đủ Tam Luân)" : ""}: nền thuận, ít vấp${vong.length === 3 ? ", phú quý bền" : ""}.`, `tam hợp Mệnh/Thân chứa vòng ${vong.join(", ")}`, "tot"));
+  if (vong.length) pt.push(y(`Mệnh ôm vòng ${vong.join(", ")}${vong.length === 2 ? " (Lộc Tồn và Tràng Sinh)" : ""}: nền thuận, ít vấp.`, `tam hợp Mệnh/Thân chứa vòng ${vong.join(", ")}`, "tot"));
   const CUU = ["Ân Quang", "Thiên Quý", "Thiên Giải", "Địa Giải", "Giải Thần", "Thiên Đức", "Nguyệt Đức", "Long Đức", "Phúc Đức"];
   for (const p of [menh, cung(c, "Quan Lộc"), cung(c, "Tài Bạch"), cung(c, "Phu Thê"), cung(c, "Tật Ách")]) {
     const sat = found(p, [...SAT4, ...KHONG_KIEP]);
@@ -215,7 +214,7 @@ export function luanVideoNam(c: TuViChart): Phan[] {
   const TAT_HANH: Record<string, string> = { "Vũ Khúc": "phổi, hô hấp", "Thất Sát": "phổi, hô hấp", "Thái Dương": "mắt, đầu, huyết áp", "Liêm Trinh": "tim mạch, khí huyết", "Thiên Phủ": "dạ dày, tiêu hóa", "Tử Vi": "dạ dày, tiêu hóa", "Thái Âm": "mắt, bụng dưới", "Cự Môn": "miệng, răng, tiêu hóa" };
   const bp = [...new Set(hanhTat.map((s) => TAT_HANH[s]).filter(Boolean))];
   if (bp.length) gd.push(y(`Cung Tật Ách gợi ý nên chú ý: ${bp.join("; ")}.`, `Tật Ách có ${hanhTat.join(", ")}`));
-  if (tat.tuan || tat.triet) gd.push(y("Tuần/Triệt ở Tật Ách: bệnh thường nhẹ bớt, dễ qua; tác dụng giảm dần sau khoảng 30 tuổi nên vẫn cần giữ sức khỏe.", `${tat.tuan ? "Tuần" : "Triệt"} ở Tật Ách`, "tot"));
+  if (tat.tuan || tat.triet) gd.push(y(`Tuần/Triệt ở Tật Ách: bệnh thường nhẹ bớt, dễ qua; ${tat.triet ? "Triệt che mạnh trước khoảng 30 tuổi" : "Tuần che rõ hơn sau khoảng 30 tuổi"}, vẫn cần giữ sức khỏe.`, `${tat.tuan ? "Tuần" : "Triệt"} ở Tật Ách`, "tot"));
   const cuuTat = found(tat, ["Thiên Giải", "Địa Giải", "Giải Thần", "Thiên Y", "Thiên Đức", "Nguyệt Đức", "Thiên Quan", "Thiên Phúc"]);
   if (cuuTat.length >= 2) gd.push(y("Tật Ách có sao cứu giải: ốm đau dễ gặp thầy gặp thuốc.", `Tật Ách có ${cuuTat.join(", ")}`, "tot"));
   const dao = [menh, tat].filter((p) => has(p, "Thiên Hình", "Bạch Hổ") && has(p, "Kình Dương", "Đà La", "Thất Sát"));

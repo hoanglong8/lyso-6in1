@@ -33,7 +33,7 @@ describe("Luận theo kinh nghiệm video (Tử vi)", () => {
       expect(bac.phan.some((p) => p.title.includes("Học Quán"))).toBe(false);
       const np = luanTuVi(buildTuVi(s, "nam", { school: "nam-phai", leapMonth: "split15" }, { viewYear: 2026 }));
       expect(np.phan.some((p) => /389|Đào Thanh Tín/.test(p.title))).toBe(false);
-      for (const l of [vn, bac]) for (const p of l.phan.filter((x) => /389|Đào Thanh Tín|thầy|Học Quán/.test(x.title))) {
+      for (const l of [vn, bac]) for (const p of l.phan.filter((x) => /389|Đào Thanh Tín|thầy|Học Quán|Phong Thủy|Đông Phương/.test(x.title))) {
         for (const y of p.items) expect(y.canCu?.length, y.text).toBeGreaterThan(2);
         expect(new Set(p.items.map((y) => y.text)).size, p.title).toBe(p.items.length);
       }

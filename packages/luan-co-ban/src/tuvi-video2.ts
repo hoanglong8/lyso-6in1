@@ -12,7 +12,7 @@ import { CUNG_Y } from "./tuvi-data";
 import { CUNG_CHUC } from "./tuvi-video";
 
 export const NGUON_VIDEO_HQ = 'Kinh nghiệm luận của kênh YouTube "Tử Vi Học Quán" (rút từ 60 video, viết lại; chưa đối chiếu sách)';
-export const NGUON_VIDEO_LQL = 'Kinh nghiệm luận của kênh YouTube "Tử Vi Nam Phái Lê Quang Lăng" (rút từ 8 video, viết lại; chưa đối chiếu sách)';
+export const NGUON_VIDEO_LQL = 'Kinh nghiệm luận của kênh YouTube "Tử Vi Nam Phái Lê Quang Lăng" (rút từ 46 video, viết lại; chưa đối chiếu sách)';
 
 type CungChuc = (typeof CUNG_CHUC)[number];
 const m12 = (x: number) => ((x % 12) + 12) % 12;
@@ -39,6 +39,7 @@ const SANG = new Set(["Miếu", "Vượng", "Đắc"]);
 const TOI = new Set(["Hãm", "Bất"]);
 const LUC_THAN: CungChuc[] = ["Phụ Mẫu", "Huynh Đệ", "Phu Thê", "Tử Tức"];
 const SINH: Record<string, string> = { Mộc: "Hỏa", Hỏa: "Thổ", Thổ: "Kim", Kim: "Thủy", Thủy: "Mộc" };
+const KHAC: Record<string, string> = { Mộc: "Thổ", Thổ: "Thủy", Thủy: "Hỏa", Hỏa: "Kim", Kim: "Mộc" };
 const hanhTamHop = (chi: number) => ({ 0: "Thủy", 1: "Kim", 2: "Hỏa", 3: "Mộc" })[(chi % 4) as 0 | 1 | 2 | 3];
 
 /** Điểm cát hung đơn giản của một cung (dùng để so đại hạn – tiểu hạn) */
@@ -80,13 +81,14 @@ function cachCuc(c: TuViChart): Y[] {
     const mj = major(p);
     if (mj.includes("Liêm Trinh") && ((mj.includes("Tham Lang") && [5, 11].includes(p.chi)) || (mj.includes("Phá Quân") && [3, 9].includes(p.chi)))) {
       const xau = [...hoaIn(p, "Kỵ").map((s) => `${s} hóa Kỵ`), ...found(p, ["Kình Dương", "Hỏa Tinh", "Linh Tinh"])];
-      out.push(y(`Liêm Trinh cùng ${mj.includes("Tham Lang") ? "Tham Lang" : "Phá Quân"} ở ${p.chiName}: thế khó, cần sống và làm việc đúng luật.${xau.length ? " Có thêm sao xấu nên càng phải tránh rủi ro pháp lý." : ""}`, `ở ${p.name}${xau.length ? `, gặp ${xau.join(", ")}` : ""}${HQ}`, "xau"));
+      const lqlKy = mj.includes("Tham Lang") && hoaIn(p, "Kỵ").length > 0;
+      out.push(y(`Liêm Trinh cùng ${mj.includes("Tham Lang") ? "Tham Lang" : "Phá Quân"} ở ${p.chiName}: thế khó, cần sống và làm việc đúng luật.${xau.length ? " Có thêm sao xấu nên càng phải tránh rủi ro pháp lý." : ""}${lqlKy ? " Riêng thầy Lê Quang Lăng coi Liêm Tham gặp Hóa Kỵ ở Tỵ/Hợi là \"phản vi kỳ cách\", thành công sau gian nan." : ""}`, `ở ${p.name}${xau.length ? `, gặp ${xau.join(", ")}` : ""}${HQ}${lqlKy ? LQL : ""}`, lqlKy ? "trung" : "xau"));
     }
     if (mj.includes("Liêm Trinh") && mj.includes("Thiên Phủ") && [4, 10].includes(p.chi))
       out.push(y("Liêm Phủ ở Thìn/Tuất: như kho tiền có người giữ; hợp tài chính, kiểm toán, quản lý tài sản.", `ở ${p.name}${HQ}`, "tot"));
   }
-  if (has(menh, "Thất Sát") && has(menh, "Kình Dương") && menh.chi === 6)
-    out.push(y('Thất Sát cùng Kình Dương ở Ngọ ("mã đầu đới kiếm"): có bản lĩnh nhưng nhiều sóng gió; cần thận trọng, tránh mạo hiểm.', `Mệnh ở Ngọ${HQ}`, "xau"));
+  if (has(menh, "Kình Dương") && menh.chi === 6)
+    out.push(y(`Kình Dương ở Mệnh tại Ngọ ("mã đầu đới kiếm")${has(menh, "Thất Sát") ? ", lại cùng Thất Sát" : ""}: có bản lĩnh nhưng nhiều sóng gió; cần thận trọng, tránh mạo hiểm.`, `Mệnh ở Ngọ${HQ} · Phong Thủy Tâm Linh`, "xau"));
   else if (mm.includes("Thất Sát") && tc.has("Kình Dương") && (tc.has("Hỏa Tinh") || tc.has("Linh Tinh")))
     out.push(y("Thất Sát gặp Kình và Hỏa/Linh: dễ bạo phát bạo tàn; nên giữ lại một phần thành quả.", `Thất Sát hội Kình, Hỏa/Linh${HQ}`, "xau"));
   if (has(menh, "Thiên Tướng")) {
@@ -116,7 +118,7 @@ function cachCuc(c: TuViChart): Y[] {
   if (has(phuc, "Thiên Đồng")) out.push(y("Thiên Đồng ở Phúc Đức: phúc phần tốt, dù sao sáng hay tối.", `Thiên Đồng ở Phúc Đức${HQ}`, "tot"));
   for (const p of c.palaces)
     if (p.majorStars.some((s) => s.name === "Thiên Đồng" && s.mutagen === "Kỵ"))
-      out.push(y("Thiên Đồng hóa Kỵ: dễ làm ơn mắc oán; giúp người nên rõ ràng.", `Thiên Đồng hóa Kỵ ở ${p.name}${HQ}`, "xau"));
+      out.push(y("Thiên Đồng hóa Kỵ: dễ làm ơn mắc oán, giúp người nên rõ ràng; mặt khác, bị kích nên chịu phấn đấu hơn.", `Thiên Đồng hóa Kỵ ở ${p.name}${HQ} · Phong Thủy Tâm Linh (ý phấn đấu)`, "trung"));
   if (mm.includes("Phá Quân") && SAT6.some((s) => tc.has(s)) && (tc.has("Lộc Tồn") || [...tuChinh(c, c.menhChi)].some((p) => hoaIn(p, "Lộc").length)))
     out.push(y("Phá Quân gặp sát tinh nhưng có Lộc đi cùng: thành cách, dám đổi mới; thời nay hợp nghề kỹ thuật, an ninh.", `Phá Quân hội sát tinh và Lộc${HQ}`, "tot"));
   for (const p of c.palaces) {
@@ -126,8 +128,8 @@ function cachCuc(c: TuViChart): Y[] {
     if (xau.length) out.push(y(`Hóa Lộc ở ${p.name} bị ${xau.join(", ")} làm giảm: lợi về ${lv(p)} không trọn, nên phòng rủi ro.`, `${loc.join(", ")} hóa Lộc ở ${p.name}${LQL}`, "trung"));
   }
   for (const p of c.palaces)
-    if (has(p, "Vũ Khúc") && has(p, ...KHONG_KIEP) && ["Mệnh", "Tài Bạch", "Điền Trạch", "Quan Lộc"].includes(p.name))
-      out.push(y("Vũ Khúc gặp Không/Kiếp: tiền ra nhiều hơn vào; Vũ Khúc sợ Không Kiếp nhất, rồi đến Hỏa Linh, Kình Đà.", `Vũ Khúc cùng ${found(p, KHONG_KIEP).join(", ")} ở ${p.name}${LQL}`, "xau"));
+    if (has(p, "Vũ Khúc") && has(p, ...KHONG_KIEP) && ["Mệnh", "Tài Bạch", "Điền Trạch", "Quan Lộc"].includes(p.name) && !p.majorStars.some((s) => s.name === "Vũ Khúc" && s.brightness && SANG.has(s.brightness)))
+      out.push(y("Vũ Khúc không sáng lại gặp Không/Kiếp: tiền ra nhiều hơn vào (Vũ Khúc sáng thì ít sợ sát tinh).", `Vũ Khúc cùng ${found(p, KHONG_KIEP).join(", ")} ở ${p.name}${LQL} · Phong Thủy Tâm Linh`, "xau"));
   return out.filter((x) => x.text);
 }
 
@@ -190,6 +192,8 @@ function hanNam(c: TuViChart): Y[] {
     if (hT && hD) {
       if (hT === hD || SINH[hD] === hT) out.push(y("Tam hợp của cung đại hạn cùng hành hoặc sinh cho tam hợp tuổi: 10 năm này được thời.", `tuổi ${CHI[tuoi]} (${hT}), đại hạn ${dhP.chiName} (${hD})${HQ}`, "tot"));
       else if (SINH[hT] === hD) out.push(y("Tam hợp tuổi sinh cho tam hợp cung đại hạn: 10 năm này phải bỏ nhiều sức.", `tuổi ${CHI[tuoi]} (${hT}), đại hạn ${dhP.chiName} (${hD})${HQ}`, "trung"));
+      else if (KHAC[hD] === hT) out.push(y("Tam hợp cung đại hạn khắc tam hợp tuổi: thiếu thiên thời, là thế xấu nhất của đại hạn; nên giữ an toàn.", `tuổi ${CHI[tuoi]} (${hT}), đại hạn ${dhP.chiName} (${hD}) · Phong Thủy Tâm Linh, Đông Phương Đạo Quán`, "xau"));
+      else if (KHAC[hT] === hD) out.push(y("Tam hợp tuổi khắc tam hợp cung đại hạn: phải gắng sức mới thắng hoàn cảnh.", `tuổi ${CHI[tuoi]} (${hT}), đại hạn ${dhP.chiName} (${hD}) · Phong Thủy Tâm Linh, Đông Phương Đạo Quán`, "trung"));
     }
     // H13: chính tinh đại hạn
     const DH_Y: Record<string, string> = { "Cự Môn": "dễ có thị phi, tranh luận; nên giữ lời", "Phá Quân": "nhiều đổi mới, dễ hao tài", "Thái Âm": "thuận làm ăn, nhà cửa", "Thái Dương": "thuận công danh, đi xa" };
@@ -236,7 +240,7 @@ function hanNam(c: TuViChart): Y[] {
   const than = at(c, c.thanChi);
   const phu = cung(c, "Phu Thê");
   const duyen = [...new Set([menh.chi, than.chi, phu.chi])].flatMap((chi) => luuAt(chi).filter((n) => ["Lưu Đào Hoa", "Lưu Hồng Loan", "Lưu Thiên Hỷ", "Lưu Long Đức", "Lưu Nguyệt Đức"].includes(n)).map((n) => `${n} ở ${tenCung(c, chi)}`));
-  if (duyen.length >= 2 && duyen.some((s) => /Đào Hoa|Hồng Loan/.test(s))) out.push(y("Năm có duyên tình cảm: dễ gặp gỡ, hợp tìm hiểu hoặc tiến tới hôn nhân.", `${duyen.join("; ")}${HQ}`, "tot"));
+  if (duyen.length >= 2 && duyen.some((s) => /Đào Hoa|Hồng Loan/.test(s))) out.push(y("Năm có duyên tình cảm: dễ gặp gỡ, hợp tìm hiểu hoặc tiến tới hôn nhân.", `${duyen.join("; ")}${HQ} (thầy Lê Quang Lăng không dùng sao lưu Đào/Hồng)`, "tot"));
   const hy = found(thP, ["Thanh Long", "Long Trì", "Phượng Các"]);
   if (hy.length >= 2) out.push(y("Tiểu hạn có sao hỷ (Thanh Long, Long Trì, Phượng Các): năm dễ có tin vui, hỷ sự.", `tiểu hạn ${thP.name} có ${hy.join(", ")}${HQ}`, "tot"));
   if (has(ttP, "Cô Thần", "Quả Tú")) out.push(y("Lưu Thái Tuế gặp Cô Thần/Quả Tú: năm chưa thuận cho cưới hỏi.", `cung ${ttP.name}${HQ}`, "trung"));

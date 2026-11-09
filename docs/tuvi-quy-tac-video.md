@@ -264,3 +264,100 @@ Sửa E1–E3 thì lá số Thiên Lương của người tuổi đó sẽ đổ
 ## D. Hai kênh chưa dùng
 
 Ông Phương Ảo Quán và Phong Thủy Tâm Linh mới có 3 video phụ đề mỗi kênh. Hai kênh này chờ bạn tải lại.
+
+
+---
+
+# Đợt 3 (duyệt 09/11/2026): Lê Quang Lăng, Phong Thủy Tâm Linh, Đông Phương Đạo Quán
+
+Áp dụng trong `packages/luan-co-ban/src/tuvi-video3.ts` (phái Thiên Lương). Chủ dự án duyệt đưa cả ba kênh vào, ghi nguồn từng kênh, và xử lý 9 điểm mâu thuẫn X1–X9 theo cột "Đề xuất". Các sửa ở quy tắc cũ (X2, X3, X4 trong `tuvi-video.ts`; X1, X5, X7, X8, X9 và nhánh khắc của thiên thời trong `tuvi-video2.ts`).
+
+**Nguồn**
+- 89 video: Lê Quang Lăng 38 (bổ sung vào 8 video đã có), Phong Thủy Tâm Linh 27, Đông Phương Đạo Quán 24.
+- Văn bản phần lớn lấy từ bản chép lời Whisper.
+- Đã bỏ 6 video: xem tướng, chuyện linh hồn, và luận lá số của người thật.
+
+**Quy tắc thô:** khoảng 1.090
+- Lê Quang Lăng: 439
+- Phong Thủy Tâm Linh: 314
+- Đông Phương Đạo Quán: 334
+
+Tất cả được viết lại bằng lời riêng và không có thông tin của khách trong video. Cả ba kênh đều dạy Tử vi kiểu Việt, nên quy tắc áp cho phái **Thiên Lương**.
+
+Đánh giá độ tin cậy: quy tắc được **2–3 kênh độc lập cùng nói** thì chắc hơn quy tắc chỉ một kênh nêu. Bảng dưới có cột "Kênh" để bạn thấy điều này.
+
+Ký hiệu: **LQL** = Lê Quang Lăng, **PT** = Phong Thủy Tâm Linh, **ĐP** = Đông Phương Đạo Quán, **HQ** = Học Quán, **389** = kênh 389 TỬ VI.
+
+---
+
+## A. Mâu thuẫn giữa các kênh — cần bạn chọn
+
+| # | Chủ đề | Bên A | Bên B | Đề xuất |
+| --- | --- | --- | --- | --- |
+| X1 | **Sao lưu Đào/Hồng/Khôi/Việt** (app đang dùng, theo HQ) | HQ: có lưu, dùng để xem năm tình duyên | LQL: chỉ lưu bộ theo Thái Tuế, không lưu Đào/Hồng/Khôi/Việt | Giữ, ghi chú "theo HQ; LQL không dùng" |
+| X2 | **Tuần/Triệt theo tuổi** | 389: cả hai mạnh khoảng 30 năm đầu | PT, ĐP: Triệt mạnh trước 30 tuổi, Tuần mạnh sau 30 | Theo PT + ĐP (2 kênh), sửa câu 389 |
+| X3 | **Thiên Mã + Tràng Sinh/Lâm Quan** | 389: ra ngoài thì phát | PT: cả đời bôn ba, thái quá | Gộp: "đi nhiều, có lộc khi đi, nhưng khó yên" |
+| X4 | **Mệnh trong vòng Thái Tuế** (Tam Luân) | 389: nền thuận, ít vấp | PT, ĐP: chính trực, hay can dự việc người; thuận hay không tùy nhóm | Thay bằng 4 nhóm vòng Thái Tuế (mục B, T1) |
+| X5 | **Liêm Tham ở Tỵ/Hợi gặp Hóa Kỵ** | HQ: thế khó, dễ vướng pháp lý | LQL: thành "phản vi kỳ cách" | Nêu cả hai |
+| X6 | **Sát tinh đơn lẻ** | App: luận từng sao | PT: chỉ thành cặp trong tam phương tứ chính (Không–Kiếp, Kình–Đà, Hỏa–Linh) mới tác oai | Theo PT cho phần luận mới; phần cũ giữ |
+| X7 | **Vũ Khúc gặp sát tinh** | LQL: sợ nhất Không Kiếp | PT: Vũ Khúc sáng thì không sợ | Thêm điều kiện: Vũ Khúc hãm mới sợ |
+| X8 | **Thiên Đồng hóa Kỵ** | HQ: làm ơn mắc oán | PT: bị kích nên chịu phấn đấu | Nêu cả hai |
+| X9 | **Mã đầu đới kiếm** | HQ: Thất Sát + Kình ở Ngọ | PT: Kình ở Mệnh Ngọ là đủ | Theo PT (rộng hơn) |
+
+---
+
+## B. Quy tắc đề xuất đưa vào (phái Thiên Lương)
+
+### B1. Nhiều kênh cùng nói (độ tin cậy cao)
+
+| # | Quy tắc (viết lại) | Kênh |
+| --- | --- | --- |
+| D1 | **Đại hạn theo 3 yếu tố.** *Thiên thời*: tam hợp cung hạn so với tam hợp tuổi; cùng hành tốt nhất, hạn sinh tuổi, rồi tuổi sinh hạn, hạn khắc tuổi xấu nhất. *Địa lợi*: hành cung hạn so với bản mệnh. *Nhân hòa*: nhóm chính tinh của hạn so với nhóm của Mệnh (Sát Phá Liêm Tham, Tử Phủ Vũ Tướng, Cự Nhật, Cơ Nguyệt Đồng Lương). Thiên thời là quan trọng nhất | PT, ĐP, HQ |
+| D2 | **Sát tinh và chính tinh chế ngự.** Phá Quân chế Không Kiếp, Thất Sát chế Kình Đà, Tham Lang chế Hỏa Linh. Tử Vi chế Hỏa Linh. Thiên Phủ, Thiên Cơ chế Kình Đà Hỏa Linh nhưng không chế được Không Kiếp. Mệnh có chính tinh tương ứng thì ít sợ cặp sát đó | PT, LQL, ĐP |
+| D3 | **Tuần/Triệt chỉ làm giảm lực, không đảo nghĩa.** Cung đẹp bớt đẹp; chính tinh hãm hoặc sát tinh bị Tuần/Triệt thì lại được che, thành "phản vi kỳ cách". Triệt nặng hơn Tuần. Thiên Mã, Thiên Hình, Thiên Tướng, Tướng Quân, Quốc Ấn kỵ Triệt. Tật Ách có Triệt là tốt | LQL, PT, ĐP |
+| D4 | **Mệnh vô chính diệu đắc "tam không / tứ không"** (Tuần, Triệt, Thiên Không, Địa Không ở tam phương): thành cách đẹp. Có Nhật Nguyệt sáng hợp chiếu cũng tốt. Hạn vô chính diệu gặp Tuần/Triệt thì lại ổn | PT, ĐP, 389 |
+| D5 | **Nhật Nguyệt đồng cung Sửu/Mùi.** Đóng ngay Mệnh thì công danh khó lớn, hợp kinh doanh hơn khoa cử. Chiếu Mệnh thì tốt. Có Tuần, Khoa/Lộc hoặc Hóa Kỵ thì đổi cục diện | PT, LQL |
+| D6 | **Nhật hoặc Nguyệt ở Thiên Di, Quan Lộc:** hợp làm việc với nước ngoài | LQL (3 video) |
+| D7 | **Không Kiếp theo vị trí.** Đắc ở Tỵ, Hợi, Dần, Thân thì phát nhanh rồi thoái; nếu gặp Tuần/Triệt thì luận như hãm. Bị kìm bởi Tử Vi, Thiên Phủ, Sát Phá Liêm Tham, Tả Hữu. Kỵ Cự Môn, Nhật Nguyệt. Có bảng theo cung: Phụ Mẫu, Điền, Quan, Thiên Di, Tật | LQL, ĐP, PT |
+| D8 | **Đào Hoa / Hồng Loan theo cung.** Ở Quan Lộc là thế đẹp nhất (sớm có việc, có danh). Ở Thiên Di quý hơn ở Mệnh. Gặp Hình, Kỵ, Không Kiếp, Hỏa Linh thì duyên thành nghiệp | LQL (2 lô), PT |
+| D9 | **Vòng Tràng Sinh theo độ mạnh.** Tràng Sinh, Lâm Quan, Đế Vượng tăng cát; Suy, Bệnh, Tử, Tuyệt giảm cát, tăng hung. Chỉ xét sao đồng cung. Phúc Đức có Tràng Sinh hoặc Đế Vượng thì phúc bền | ĐP, PT, LQL |
+| D10 | **Tuần/Triệt gỡ nhau ở hạn:** Mệnh có Triệt, hạn gặp Tuần (hoặc ngược lại) thì được gỡ | ĐP, LQL (đã có một phần) |
+| D11 | **Thiên Không cư Mệnh** ("lưng trời gãy gánh"). Hạn rơi vào tam hợp có Thiên Không, nhất là ở tứ mộ, thì nên co cụm, không mở rộng. Nhật Nguyệt, Hóa Khoa, Tử Vi chế được | PT, ĐP |
+| D12 | **Tham Vũ đồng hành:** Mệnh ở Thìn, Tuất, Sửu, Mùi, Tham và Vũ cùng sáng, gặp Hỏa/Linh thì phát nhanh nhưng muộn mới vững | PT, LQL |
+
+### B2. Một kênh nêu rõ, máy kiểm được
+
+| # | Quy tắc | Kênh |
+| --- | --- | --- |
+| S1 | Tứ địa của cung Mệnh: tứ sinh (Dần Thân Tỵ Hợi) hay thay đổi mới phát; tứ bại (Tý Ngọ Mão Dậu) đa đoan; tứ mộ (Thìn Tuất Sửu Mùi) bảo thủ, hay xa quê | PT |
+| S2 | Thiên Mã so với bản mệnh theo hành cung: Mã sinh mệnh thì đi lại an toàn; Mã khắc mệnh thì nên cẩn thận xe cộ; mệnh sinh Mã thì dễ mất đồ khi đi | ĐP |
+| S3 | Mệnh/Thân so với cung nhị hợp (sinh xuất, sinh nhập theo hành) | ĐP |
+| S4 | Cô Thần/Quả Tú theo cung: ở Quan, Tài thì xấu trừ khi có cát tinh; ở Mệnh đi cùng Đào Hoa thì khó hơn; bản mệnh Hỏa nặng nhất, Mộc nhẹ nhất | ĐP |
+| S5 | Ân Quang + Thiên Quý đủ bộ ở Thìn Tuất Sửu Mùi thì giải sát tinh mạnh; đơn thủ thì yếu | ĐP |
+| S6 | Song Hao đắc ở Dần Thân Mão Dậu thì tốt nhiều hơn xấu; hãm gặp Tuần/Triệt thì thành "hồ tù" | LQL |
+| S7 | Giải Thần đẹp nhất ở Quan Lộc và Phu Thê, giải được cả Hóa Kỵ | LQL |
+| S8 | Thiên Khôi thanh, ưa Mệnh; Thiên Việt quyết liệt, ưa Quan và Thiên Di; Việt gặp Hình hoặc Hỏa Linh thì nặng hơn | LQL |
+| S9 | Liêm Trinh: Liêm Tướng hơn Liêm Phủ, hơn đơn thủ, hơn Liêm Sát; Liêm Phá vất vả nhất | LQL |
+| S10 | Thiên Lương ở Tý/Ngọ là cách cao nếu Thân tốt; Cơ Lương ở Thìn/Tuất bị kìm; Thiên Lương ở Tỵ/Hợi kém nhất. Đại hạn có Thiên Lương: có quý nhân che chở, hợp đi học | LQL |
+| S11 | Cự Môn ưa Khoa/Quyền/Lộc và Tuần/Triệt; thế đẹp Cự Cơ ở Mão/Dậu, Cự Nhật ở Dần/Thân | LQL, HQ |
+| S12 | Lưu Lộc Tồn và Lưu Tang Môn theo từng cung (Lưu Lộc vào Điền: hợp mua nhà, xe; Lưu Tang vào Điền: không nên sửa xây; vào Phu Thê: không cưới vội) | LQL |
+| S13 | Thân cư Phu Thê (nặng gia đình, bạn đời ảnh hưởng lớn) và Thân cư Mệnh (tự quyết, chủ động) | PT |
+| S14 | Thiên Di có Địa Không/Kiếp: ra ngoài rủi nhiều hơn may | LQL |
+
+### B3. Nhạy cảm (viết dạng "nên chú ý", ghi là kinh nghiệm của thầy)
+
+Gồm: chính tinh ở Phu Thê theo chi (ĐP); Hồng Loan ở tứ mộ thì duyên trắc trở (LQL); Tham Lang ở Tật Ách (LQL); Phu Thê xét cùng Mệnh, Thân, Phúc Đức (ĐP).
+
+---
+
+## C. Không đưa vào
+
+- Tuổi thọ theo vòng Tràng Sinh: chính thầy PT nói chưa kiểm chứng.
+- "Ngày chết theo cung Tật", "hạn chết": dân gian, không kiểm chứng được.
+- Ý nghĩa nghiệp, căn đồng, kiếp trước.
+- Trọng số phần trăm cho 3 yếu tố đại hạn: mỗi video nói một khác (60/10/30, 70/10/20…).
+- Tỷ lệ Tuần/Triệt 70/30 theo âm dương: ASR không rõ.
+
+## D. Điểm cần kiểm thêm
+
+ĐP nêu bảng độ sáng Thái Âm (miếu ở Dậu, Tuất, Hợi; vượng ở Thân, Tý). Bảng này lệch một cung so với engine. Chưa đủ căn cứ để sửa.

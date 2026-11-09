@@ -4,6 +4,7 @@ import { CANH_BAO_CHUNG, type LuanCoBan, type Phan, type Y } from "./types";
 import { CAT_TINH, CHINH_TINH, CUNG_Y, NGUON_TUVI, PHU_TINH, SAT_TINH } from "./tuvi-data";
 import { luanVideoBac, luanVideoNam, NGUON_VIDEO_BAC, NGUON_VIDEO_NAM } from "./tuvi-video";
 import { luanVideoNam2, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL } from "./tuvi-video2";
+import { luanVideoNam3, NGUON_VIDEO_DP, NGUON_VIDEO_PT } from "./tuvi-video3";
 
 const SANG = new Set(["Miếu", "Vượng", "Đắc"]);
 const TOI = new Set(["Hãm", "Bất"]);
@@ -145,8 +146,8 @@ export function luanTuVi(c: TuViChart): LuanCoBan {
   const nguon = [NGUON_TUVI];
   const canhBaoVideo: string[] = [];
   if (c.config.school === "vn-thien-luong") {
-    phan.push(...luanVideoNam(c), ...luanVideoNam2(c));
-    nguon.push(NGUON_VIDEO_NAM, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL);
+    phan.push(...luanVideoNam(c), ...luanVideoNam2(c), ...luanVideoNam3(c));
+    nguon.push(NGUON_VIDEO_NAM, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL, NGUON_VIDEO_PT, NGUON_VIDEO_DP);
     canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của một thầy, chưa đối chiếu sách; mục gia đạo, sức khỏe, tâm linh chỉ để tham khảo, không thay lời khuyên y tế.");
   } else if (c.config.school === "bac-phai") {
     phan.push(...luanVideoBac(c));
