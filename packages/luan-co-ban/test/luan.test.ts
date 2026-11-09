@@ -94,3 +94,18 @@ describe.skipIf(!existsSync(SACH))("Thoán từ — đối chiếu 'Giải nghĩ
     expect(miss.sort((a, b) => a - b)).toEqual([...known]);
   });
 });
+
+describe("Phú Tử vi", () => {
+  it("Cự Môn ở Mệnh tại Tý/Ngọ thì có câu 'thạch trung ẩn ngọc', ngược lại thì không", () => {
+    let seen = 0;
+    for (let y = 1960; y < 2000 && seen < 3; y++) for (let m = 1; m <= 12; m++) for (const h of [1, 5, 9, 13, 17, 21]) {
+      const c = buildTuVi(buildSnapshot({ date: { y, m, d: 10 }, calendar: "solar", time: { h, mi: 0 } } as never), "nam", { school: "vn-thien-luong", leapMonth: "split15" });
+      const menh = c.palaces.find((p) => p.chi === c.menhChi)!;
+      const want = menh.majorStars.some((s) => s.name === "Cự Môn") && (menh.chi === 0 || menh.chi === 6);
+      const got = !!luanTuVi(c).phan.find((p) => p.title.startsWith("Phú"))?.items.some((i) => i.text.includes("thạch trung ẩn ngọc"));
+      expect(got).toBe(want);
+      if (want) seen++;
+    }
+    expect(seen).toBeGreaterThan(0);
+  });
+});

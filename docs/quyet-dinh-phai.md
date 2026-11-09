@@ -77,3 +77,5 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 - Bắc phái: bảng tứ hóa thầy Đào Thanh Tín dùng trùng bảng thông dụng của engine (Canh: Dương Vũ Âm Đồng; Nhâm: Lương Tử Phụ Vũ; Mậu: Tham Âm Bật Cơ).
 - Đợt 2 (Tử Vi Học Quán, Lê Quang Lăng) thêm cho phái Thiên Lương: sao lưu mở rộng (Lưu Đào Hoa, Hồng Loan, Thiên Hỷ, Long Đức, Nguyệt Đức, Khôi, Việt), lưu niên đại hạn, sao đại vận (Lộc Tồn, Kình, Đà, Khôi, Việt, Mã theo can chi cung đại hạn) và tứ hóa đại vận, nguyệt hạn. Công thức theo bài giảng kênh Tử Vi Học Quán.
 - Chưa sửa (chờ quyết định): Phá Toái và Khôi/Việt tuổi Mậu, Đinh, Nhâm, Canh trong engine phái Việt khác với Tử Vi Học Quán và Toàn thư (xem tuvi-quy-tac-video.md, mục E).
+- Vòng Tràng Sinh phái Việt: sửa thứ tự Mộ → Tuyệt → Thai → Dưỡng → Tràng Sinh (lasotuvi đặt ngược Thai/Dưỡng). Test đối chiếu lasotuvi bỏ hai sao này, có test riêng cho thứ tự vòng.
+- Phú Tử vi: `luan-co-ban/src/tuvi-phu-data.ts` — câu phú cổ Hán Việt các thầy trích dẫn, kèm điều kiện máy kiểm; hiện ở mọi phái khi khớp. Nghĩa viết lại, không chép bản dịch của sách hiện đại.

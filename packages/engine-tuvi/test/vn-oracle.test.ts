@@ -35,8 +35,10 @@ describe.skipIf(!has)("Phái Việt khớp lasotuvi", () => {
         if (o.daiHan !== p.daiHan) bad.push(`${tag} cung ${cung} đại hạn ${o.daiHan} vs ${p.daiHan}`);
         if (chiIndex(o.tieuHan) !== p.tieuHanChi) bad.push(`${tag} cung ${cung} tiểu hạn ${o.tieuHan} vs ${p.tieuHanChi}`);
         if (o.tuan !== p.tuan || o.triet !== p.triet) bad.push(`${tag} cung ${cung} Tuần/Triệt`);
-        const oStars = o.stars.map((s) => s.split("|")).filter(([n]) => !HOA[title(n!)]).map(([n, b]) => `${title(n!)}|${b}`).sort();
-        const pStars = p.stars.map((s) => `${s.name}|${s.brightness?.charAt(0) ?? ""}`).sort();
+        // Thai/Dưỡng: lasotuvi đặt ngược thứ tự vòng Tràng Sinh; engine đã sửa nên bỏ khỏi so sánh (kiểm riêng ở dưới)
+        const TD = new Set(["Thai", "Dưỡng"]);
+        const oStars = o.stars.map((s) => s.split("|")).filter(([n]) => !HOA[title(n!)] && !TD.has(title(n!))).map(([n, b]) => `${title(n!)}|${b}`).sort();
+        const pStars = p.stars.filter((s) => !TD.has(s.name)).map((s) => `${s.name}|${s.brightness?.charAt(0) ?? ""}`).sort();
         if (oStars.join(",") !== pStars.join(",")) bad.push(`${tag} cung ${cung} sao\n  lst: ${oStars.join(",")}\n  ta:  ${pStars.join(",")}`);
         const oHoa = o.stars.map((s) => HOA[title(s.split("|")[0]!)]).filter(Boolean).sort();
         const pHoa = p.stars.map((s) => s.mutagen).filter(Boolean).sort();
@@ -44,5 +46,19 @@ describe.skipIf(!has)("Phái Việt khớp lasotuvi", () => {
       }
     }
     expect(bad.slice(0, 10)).toEqual([]);
+  });
+  it("vòng Tràng Sinh: Tuyệt → Thai → Dưỡng → Tràng Sinh", () => {
+    const cases = JSON.parse(readFileSync(file, "utf8")) as { in: number[] }[];
+    for (const c of cases.slice(0, 300)) {
+      const [nn, tt, y, gio, gt] = c.in as [number, number, number, number, 1 | -1];
+      const r = anSaoVN({ canNam: ((y + 6) % 10) + 1, chiNam: ((y + 8) % 12) + 1, thang: tt, ngay: nn, gio, gioiTinh: gt });
+      const pos = (n: string) => r.palaces.findIndex((p) => p?.stars.some((s) => s.name === n));
+      const ts = pos("Tràng Sinh"), md = pos("Mộc Dục");
+      const dir = ((md - ts + 12) % 12) === 1 ? 1 : -1;
+      const step = (from: number, k: number) => ((((from - 1 + k * dir) % 12) + 12) % 12) + 1;
+      expect(pos("Dưỡng")).toBe(step(ts, -1));
+      expect(pos("Thai")).toBe(step(ts, -2));
+      expect(pos("Tuyệt")).toBe(step(ts, -3));
+    }
   });
 });

@@ -5,6 +5,7 @@ import { CAT_TINH, CHINH_TINH, CUNG_Y, NGUON_TUVI, PHU_TINH, SAT_TINH } from "./
 import { luanVideoBac, luanVideoNam, NGUON_VIDEO_BAC, NGUON_VIDEO_NAM } from "./tuvi-video";
 import { luanVideoNam2, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL } from "./tuvi-video2";
 import { luanVideoNam3, NGUON_VIDEO_DP, NGUON_VIDEO_PT } from "./tuvi-video3";
+import { luanPhu, NGUON_PHU } from "./tuvi-phu";
 
 const SANG = new Set(["Miếu", "Vượng", "Đắc"]);
 const TOI = new Set(["Hãm", "Bất"]);
@@ -153,6 +154,13 @@ export function luanTuVi(c: TuViChart): LuanCoBan {
     phan.push(...luanVideoBac(c));
     nguon.push(NGUON_VIDEO_BAC);
     canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của một thầy Bắc phái, chưa đối chiếu sách.");
+  }
+
+  // 8. Câu phú cổ ứng với lá số (mọi phái)
+  const phu = luanPhu(c);
+  if (phu) {
+    phan.push(phu);
+    nguon.push(NGUON_PHU);
   }
 
   // Gộp các ý trùng lời trong cùng một mục, nối căn cứ
