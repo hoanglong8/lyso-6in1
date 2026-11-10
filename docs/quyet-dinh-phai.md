@@ -83,3 +83,7 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
   Ly tâm = can cung X hóa sao nằm trong X; hướng tâm = can cung X hóa sao ở cung đối (định nghĩa chung của ba nguồn,
   khác một số sách Khâm Thiên đặt nhãn ở cung nhận). Tứ hóa lưu niên vẫn dùng can năm; thêm một dòng song song theo
   can cung lưu niên (Minh Phương). Thiên Đồng hóa Kỵ: chỉ tự hóa Kỵ mới luận tổn phúc (Đào Thanh Tín).
+- Phú Tử vi (11/2026, đợt 2): ~610 bản ghi / ~460 câu phú cổ từ 100 câu phú Ma Thị, Phú Tử vi thông thơ, phú Lộc Quyền
+  Khoa Kỵ, 50 câu phú cách cục, thơ phú Tử vi (tuvibatquai), phú các thầy trích. Chỉ lấy câu phú (phạm vi công cộng),
+  nghĩa tự viết; không lấy lời giải của trang web hay sách hiện đại (Vũ Tài Lục, Thái Văn Thịnh). Câu gặp ở >8% lá số
+  gắn `pho: true` và hiện ở mục "câu phổ quát". `sang: false` nghĩa là chính tinh Hãm (không tính Bình).

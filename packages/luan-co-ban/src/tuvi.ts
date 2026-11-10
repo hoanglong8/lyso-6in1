@@ -5,7 +5,7 @@ import { CAT_TINH, CHINH_TINH, CUNG_Y, NGUON_TUVI, PHU_TINH, SAT_TINH } from "./
 import { luanVideoBac, luanVideoNam, NGUON_VIDEO_BAC, NGUON_VIDEO_NAM } from "./tuvi-video";
 import { luanVideoNam2, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL } from "./tuvi-video2";
 import { luanVideoNam3, NGUON_VIDEO_DP, NGUON_VIDEO_PT } from "./tuvi-video3";
-import { luanPhu, NGUON_PHU } from "./tuvi-phu";
+import { luanPhuAll, NGUON_PHU } from "./tuvi-phu";
 import { luanKhamThien, luanVideoBac2, luanVideoNam4, NGUON_KHAM_THIEN, NGUON_VIDEO_BAC2, NGUON_VIDEO_NAM4 } from "./tuvi-video4";
 
 const SANG = new Set(["Miếu", "Vượng", "Đắc"]);
@@ -158,9 +158,9 @@ export function luanTuVi(c: TuViChart): LuanCoBan {
   }
 
   // 8. Câu phú cổ ứng với lá số (mọi phái)
-  const phu = luanPhu(c);
-  if (phu) {
-    phan.push(phu);
+  const phu = luanPhuAll(c);
+  if (phu.length) {
+    phan.push(...phu);
     nguon.push(NGUON_PHU);
   }
 
