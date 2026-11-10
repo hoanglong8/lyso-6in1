@@ -4,7 +4,7 @@ import type { Phan, Y } from "./types";
 import { CUNG_CHUC } from "./tuvi-video";
 import { PHU, type PhuDk } from "./tuvi-phu-data";
 
-export const NGUON_PHU = "Câu phú Tử vi cổ (Hán Việt và phú Việt): các thầy trên YouTube trích, 100 câu phú Ma Thị, Phú Tử vi thông thơ, phú Lộc Quyền Khoa Kỵ, 50 câu phú cách cục, thơ phú Tử vi; nghĩa viết lại, điều kiện do app tự kiểm";
+export const NGUON_PHU = "Câu phú Tử vi cổ (Hán Việt và phú Việt): các thầy trên YouTube trích, 100 câu phú Ma Thị, Phú Tử vi thông thơ, phú Lộc Quyền Khoa Kỵ, 50 câu phú cách cục, thơ phú Tử vi, sách Tử vi đẩu số phú giải (Thái Văn Thịnh), Tử Vi Đẩu Số Toàn Thư (Trần Đoàn) và Phú nôm cốt tủy; nghĩa viết lại, điều kiện do app tự kiểm";
 
 const m12 = (x: number) => ((x % 12) + 12) % 12;
 const at = (c: TuViChart, chi: number) => c.palaces.find((p) => p.chi === m12(chi)) as TuViPalace;
@@ -86,21 +86,31 @@ function khop(c: TuViChart, dk: PhuDk, p: TuViPalace): boolean {
   return true;
 }
 
-/** Các câu phú khớp với lá số: mục chính (câu ứng riêng) và mục câu phổ quát */
+const PHO_TOI_DA = 12;
+
+/** Các câu phú khớp với lá số: mục chính (câu ứng riêng, hiếm trước) và mục câu phổ quát (tối đa 12 câu) */
 export function luanPhuAll(c: TuViChart): Phan[] {
-  const rieng: Y[] = [];
-  const pho: Y[] = [];
+  const rieng: [number, Y][] = [];
+  const pho: [number, Y][] = [];
   const seen = new Set<string>();
   for (const ph of PHU) {
     if (seen.has(ph.phu)) continue;
     const hit = cungGoc(c, ph.dk).find(({ p }) => khop(c, ph.dk, p));
     if (!hit) continue;
     seen.add(ph.phu);
-    (ph.pho ? pho : rieng).push({ text: `“${ph.phu}” — ${ph.nghia}`, canCu: `${hit.nhan} (${hit.p.chiName}) · ${ph.kenh.join(", ")}`, tone: ph.tone });
+    (ph.pho ? pho : rieng).push([ph.tanSuat ?? 0, { text: `“${ph.phu}” — ${ph.nghia}`, canCu: `${hit.nhan} (${hit.p.chiName}) · ${ph.kenh.join(", ")}`, tone: ph.tone }]);
   }
+  const xep = (l: [number, Y][]) => l.sort((a, b) => a[0] - b[0]).map((x) => x[1]);
   const out: Phan[] = [];
-  if (rieng.length) out.push({ title: "Phú Tử vi (câu phú cổ ứng với lá số)", items: rieng });
-  if (pho.length) out.push({ title: "Phú Tử vi – câu phổ quát (nhiều lá số cùng gặp)", items: pho });
+  if (rieng.length) out.push({ title: "Phú Tử vi (câu phú cổ ứng với lá số)", items: xep(rieng) });
+  if (pho.length) {
+    const items = xep(pho);
+    const du = items.length - PHO_TOI_DA;
+    out.push({
+      title: "Phú Tử vi – câu phổ quát (nhiều lá số cùng gặp)",
+      items: du > 0 ? [...items.slice(0, PHO_TOI_DA), { text: `Còn ${du} câu phú phổ quát khác cũng khớp lá số này; ẩn bớt cho gọn.`, canCu: "câu gặp ở hơn 4% lá số", tone: "trung" }] : items,
+    });
+  }
   return out;
 }
 

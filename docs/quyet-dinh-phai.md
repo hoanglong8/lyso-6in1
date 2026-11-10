@@ -87,3 +87,8 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
   Khoa Kỵ, 50 câu phú cách cục, thơ phú Tử vi (tuvibatquai), phú các thầy trích. Chỉ lấy câu phú (phạm vi công cộng),
   nghĩa tự viết; không lấy lời giải của trang web hay sách hiện đại (Vũ Tài Lục, Thái Văn Thịnh). Câu gặp ở >8% lá số
   gắn `pho: true` và hiện ở mục "câu phổ quát". `sang: false` nghĩa là chính tinh Hãm (không tính Bình).
+- Phú Tử vi đợt 3 (11/2026): thêm ~700 bản ghi từ "Tử vi đẩu số phú giải" (Thái Văn Thịnh) và "Tử Vi Đẩu Số Toàn Thư"
+  (Trần Đoàn, bản Vũ Tài Lục, gồm các bài ca và Phú nôm cốt tủy) → ~1.130 câu. Chỉ lấy câu phú; lời giải/dịch của hai
+  sách không được dùng (agent chỉ nhận danh sách câu đã tách). Mỗi bản ghi lưu `tanSuat` (‰ trên 1000 lá số); câu >4% là
+  phổ quát, mục phổ quát hiện tối đa 12 câu hiếm nhất. Dữ liệu phú ~600 KB trong chunk luận (gzip ~134 KB) — có thể tách
+  lazy-load sau nếu cần.
