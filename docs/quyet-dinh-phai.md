@@ -79,3 +79,7 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 - Chưa sửa (chờ quyết định): Phá Toái và Khôi/Việt tuổi Mậu, Đinh, Nhâm, Canh trong engine phái Việt khác với Tử Vi Học Quán và Toàn thư (xem tuvi-quy-tac-video.md, mục E).
 - Vòng Tràng Sinh phái Việt: sửa thứ tự Mộ → Tuyệt → Thai → Dưỡng → Tràng Sinh (lasotuvi đặt ngược Thai/Dưỡng). Test đối chiếu lasotuvi bỏ hai sao này, có test riêng cho thứ tự vòng.
 - Phú Tử vi: `luan-co-ban/src/tuvi-phu-data.ts` — câu phú cổ Hán Việt các thầy trích dẫn, kèm điều kiện máy kiểm; hiện ở mọi phái khi khớp. Nghĩa viết lại, không chép bản dịch của sách hiện đại.
+- Đợt 4 (11/2026): Bắc phái thêm trường Khâm Thiên Tứ hóa (Tâm Thành, Minh Phương, Tử vi lý số) — `tuvi-video4.ts`.
+  Ly tâm = can cung X hóa sao nằm trong X; hướng tâm = can cung X hóa sao ở cung đối (định nghĩa chung của ba nguồn,
+  khác một số sách Khâm Thiên đặt nhãn ở cung nhận). Tứ hóa lưu niên vẫn dùng can năm; thêm một dòng song song theo
+  can cung lưu niên (Minh Phương). Thiên Đồng hóa Kỵ: chỉ tự hóa Kỵ mới luận tổn phúc (Đào Thanh Tín).

@@ -33,10 +33,35 @@ describe("Luận theo kinh nghiệm video (Tử vi)", () => {
       expect(bac.phan.some((p) => p.title.includes("Học Quán"))).toBe(false);
       const np = luanTuVi(buildTuVi(s, "nam", { school: "nam-phai", leapMonth: "split15" }, { viewYear: 2026 }));
       expect(np.phan.some((p) => /389|Đào Thanh Tín/.test(p.title))).toBe(false);
-      for (const l of [vn, bac]) for (const p of l.phan.filter((x) => /389|Đào Thanh Tín|thầy|Học Quán|Phong Thủy|Đông Phương/.test(x.title))) {
+      for (const l of [vn, bac]) for (const p of l.phan.filter((x) => /389|Đào Thanh Tín|thầy|Học Quán|Phong Thủy|Đông Phương|Khâm Thiên/.test(x.title))) {
         for (const y of p.items) expect(y.canCu?.length, y.text).toBeGreaterThan(2);
         expect(new Set(p.items.map((y) => y.text)).size, p.title).toBe(p.items.length);
       }
+    }
+  });
+  it("Khâm Thiên (Bắc phái): tự hóa hướng tâm ở Mệnh = can Mệnh hóa sao ở Thiên Di; không hiện ở phái khác", () => {
+    let gap = 0;
+    for (const s of snaps) {
+      const c = chart(s, "bac-phai");
+      const l = luanTuVi(c);
+      const kt = l.phan.find((p) => p.title.startsWith("Khâm Thiên"));
+      const menh = c.palaces.find((p) => p.chi === c.menhChi)!;
+      for (const h of menh.phiHoa ?? []) {
+        if (h.toChi !== (c.menhChi + 6) % 12) continue;
+        gap++;
+        expect(kt?.items.some((y) => y.text.startsWith(`Mệnh hóa ${h.mutagen} hướng tâm`))).toBe(true);
+      }
+      expect(luanTuVi(chart(s, "vn-thien-luong")).phan.some((p) => p.title.startsWith("Khâm Thiên"))).toBe(false);
+    }
+    expect(gap).toBeGreaterThan(0);
+  });
+  it("Phú đợt 4: Nhật xuất Phù Tang ↔ Thái Dương ở Mệnh tại Mão", () => {
+    for (const s of snaps) for (const sc of ["vn-thien-luong", "bac-phai"] as const) {
+      const c = chart(s, sc);
+      const m = c.palaces.find((p) => p.chi === c.menhChi)!;
+      const want = m.chi === 3 && m.majorStars.some((x) => x.name === "Thái Dương");
+      const got = luanTuVi(c).phan.some((p) => p.items.some((y) => y.text.includes("Nhật xuất Phù Tang")));
+      expect(got).toBe(want);
     }
   });
   it("Thuận/nghịch lý trong luận khớp nhãn của engine", () => {

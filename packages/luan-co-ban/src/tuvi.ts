@@ -6,6 +6,7 @@ import { luanVideoBac, luanVideoNam, NGUON_VIDEO_BAC, NGUON_VIDEO_NAM } from "./
 import { luanVideoNam2, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL } from "./tuvi-video2";
 import { luanVideoNam3, NGUON_VIDEO_DP, NGUON_VIDEO_PT } from "./tuvi-video3";
 import { luanPhu, NGUON_PHU } from "./tuvi-phu";
+import { luanKhamThien, luanVideoBac2, luanVideoNam4, NGUON_KHAM_THIEN, NGUON_VIDEO_BAC2, NGUON_VIDEO_NAM4 } from "./tuvi-video4";
 
 const SANG = new Set(["Miếu", "Vượng", "Đắc"]);
 const TOI = new Set(["Hãm", "Bất"]);
@@ -147,13 +148,13 @@ export function luanTuVi(c: TuViChart): LuanCoBan {
   const nguon = [NGUON_TUVI];
   const canhBaoVideo: string[] = [];
   if (c.config.school === "vn-thien-luong") {
-    phan.push(...luanVideoNam(c), ...luanVideoNam2(c), ...luanVideoNam3(c));
-    nguon.push(NGUON_VIDEO_NAM, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL, NGUON_VIDEO_PT, NGUON_VIDEO_DP);
+    phan.push(...luanVideoNam(c), ...luanVideoNam2(c), ...luanVideoNam3(c), ...luanVideoNam4(c));
+    nguon.push(NGUON_VIDEO_NAM, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL, NGUON_VIDEO_PT, NGUON_VIDEO_DP, NGUON_VIDEO_NAM4);
     canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của một thầy, chưa đối chiếu sách; mục gia đạo, sức khỏe, tâm linh chỉ để tham khảo, không thay lời khuyên y tế.");
   } else if (c.config.school === "bac-phai") {
-    phan.push(...luanVideoBac(c));
-    nguon.push(NGUON_VIDEO_BAC);
-    canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của một thầy Bắc phái, chưa đối chiếu sách.");
+    phan.push(...luanVideoBac(c), ...luanVideoBac2(c), ...luanKhamThien(c));
+    nguon.push(NGUON_VIDEO_BAC, NGUON_VIDEO_BAC2, NGUON_KHAM_THIEN);
+    canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của các thầy Bắc phái (Đào Thanh Tín, Tâm Thành, Minh Phương, Tử vi lý số), chưa đối chiếu sách.");
   }
 
   // 8. Câu phú cổ ứng với lá số (mọi phái)

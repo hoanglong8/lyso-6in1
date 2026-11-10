@@ -12,6 +12,8 @@ export interface PhuDk {
   chi?: string[];
   sang?: boolean;
   khong?: string[];
+  /** cung đối có ít nhất một trong các sao này */
+  doi?: string[];
 }
 export interface Phu { phu: string; nghia: string; tone: "tot" | "xau" | "trung"; dk: PhuDk; kenh: string[] }
 
@@ -467,5 +469,294 @@ export const PHU: Phu[] = [
   "kenh": [
    "Học Quán"
   ]
- }
+ },
+{
+ "phu": "Tử Vi cư Ngọ, cực hướng ly minh",
+ "nghia": "Tử Vi ở Ngọ sáng rực, không bị sát tinh phá: có uy, dễ được trọng dụng, giữ vị trí cao.",
+ "tone": "tot",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Tử Vi"
+  ],
+  "chi": [
+   "Ngọ"
+  ],
+  "khong": [
+   "Kình Dương",
+   "Đà La",
+   "Địa Không",
+   "Địa Kiếp"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Nhật xuất Phù Tang",
+ "nghia": "Thái Dương ở Mão như mặt trời mới mọc: danh phận sáng dần, càng làm càng hiển đạt.",
+ "tone": "tot",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Thái Dương"
+  ],
+  "chi": [
+   "Mão"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Nguyệt lãng Thiên Môn",
+ "nghia": "Thái Âm ở Hợi sáng trong: tài lộc, nhà cửa thanh nhã và bền.",
+ "tone": "tot",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Thái Âm"
+  ],
+  "chi": [
+   "Hợi"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Nhật trầm thủy để",
+ "nghia": "Thái Dương ở Tý như mặt trời chìm đáy nước: tài năng bị che, công danh chậm; cần bền bỉ và cát tinh trợ giúp.",
+ "tone": "trung",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Thái Dương"
+  ],
+  "chi": [
+   "Tý"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Tử Vi Mão Dậu, Kiếp Không tứ sát, đa vi thoát tục chi tăng",
+ "nghia": "Tử Vi ở Mão/Dậu gặp Không Kiếp: thiên về đời sống tâm linh, dễ thích sống thoát tục.",
+ "tone": "trung",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Tử Vi",
+   "Địa Không"
+  ],
+  "chi": [
+   "Mão",
+   "Dậu"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Tử Vi Mão Dậu, Kiếp Không tứ sát, đa vi thoát tục chi tăng",
+ "nghia": "Tử Vi ở Mão/Dậu gặp Không Kiếp: thiên về đời sống tâm linh, dễ thích sống thoát tục.",
+ "tone": "trung",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Tử Vi",
+   "Địa Kiếp"
+  ],
+  "chi": [
+   "Mão",
+   "Dậu"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Phủ phùng Không xứ, tài suy",
+ "nghia": "Thiên Phủ (kho tiền) gặp Không: kho dễ trống, tiền khó giữ; nên tích lũy chắc tay.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Thiên Phủ",
+   "Địa Không"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Phủ phùng Không xứ, tài suy",
+ "nghia": "Thiên Phủ (kho tiền) gặp Không: kho dễ trống, tiền khó giữ; nên tích lũy chắc tay.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Thiên Phủ",
+   "Tuần"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Phủ phùng Không xứ, tài suy",
+ "nghia": "Thiên Phủ (kho tiền) gặp Không: kho dễ trống, tiền khó giữ; nên tích lũy chắc tay.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Thiên Phủ",
+   "Triệt"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Phủ phùng Không xứ, tài suy",
+ "nghia": "Thiên Phủ (kho tiền) gặp Không: kho dễ trống, tiền khó giữ; nên tích lũy chắc tay.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Tài Bạch",
+  "sao": [
+   "Thiên Phủ",
+   "Địa Không"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Phủ phùng Không xứ, tài suy",
+ "nghia": "Thiên Phủ (kho tiền) gặp Không: kho dễ trống, tiền khó giữ; nên tích lũy chắc tay.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Tài Bạch",
+  "sao": [
+   "Thiên Phủ",
+   "Tuần"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Phủ phùng Không xứ, tài suy",
+ "nghia": "Thiên Phủ (kho tiền) gặp Không: kho dễ trống, tiền khó giữ; nên tích lũy chắc tay.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Tài Bạch",
+  "sao": [
+   "Thiên Phủ",
+   "Triệt"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Hóa Khoa đệ nhất giải thần",
+ "nghia": "Hóa Khoa ở Mệnh là sao giải hàng đầu: gỡ bớt rủi ro, thuận học hành, có tiếng tốt.",
+ "tone": "tot",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Hóa Khoa"
+  ]
+ },
+ "kenh": [
+  "389 TỬ VI"
+ ]
+},
+{
+ "phu": "Tham cư Hợi Tý, danh vi phiếm thủy đào hoa",
+ "nghia": "Tham Lang ở Hợi/Tý (đào hoa phiếm thủy): đa tình, thích hưởng thụ; nên giữ chừng mực.",
+ "tone": "trung",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Tham Lang"
+  ],
+  "chi": [
+   "Hợi",
+   "Tý"
+  ]
+ },
+ "kenh": [
+  "Tử Vi Tâm Thành"
+ ]
+},
+{
+ "phu": "Dương Lương Xương Lộc",
+ "nghia": "Tam phương Mệnh hội Thái Dương, Thiên Lương, Văn Xương, Lộc Tồn: thuận học vấn, thi cử, có danh.",
+ "tone": "tot",
+ "dk": {
+  "cung": "Mệnh",
+  "hoi": [
+   "Thái Dương",
+   "Thiên Lương",
+   "Văn Xương",
+   "Lộc Tồn"
+  ]
+ },
+ "kenh": [
+  "Tử Vi Tâm Thành"
+ ]
+},
+{
+ "phu": "Lộc phùng xung phá, cát xứ tàng hung",
+ "nghia": "Có Lộc ở Mệnh mà cung đối bị Kỵ hay Không Kiếp xung: chỗ tưởng tốt lại ẩn điều xấu, đừng chủ quan.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Lộc Tồn"
+  ],
+  "doi": [
+   "Hóa Kỵ",
+   "Địa Không",
+   "Địa Kiếp"
+  ]
+ },
+ "kenh": [
+  "Khâm Thiên Tứ Hóa Minh Phương"
+ ]
+},
+{
+ "phu": "Lộc phùng xung phá, cát xứ tàng hung",
+ "nghia": "Có Lộc ở Mệnh mà cung đối bị Kỵ hay Không Kiếp xung: chỗ tưởng tốt lại ẩn điều xấu, đừng chủ quan.",
+ "tone": "xau",
+ "dk": {
+  "cung": "Mệnh",
+  "sao": [
+   "Hóa Lộc"
+  ],
+  "doi": [
+   "Hóa Kỵ",
+   "Địa Không",
+   "Địa Kiếp"
+  ]
+ },
+ "kenh": [
+  "Khâm Thiên Tứ Hóa Minh Phương"
+ ]
+}
 ];

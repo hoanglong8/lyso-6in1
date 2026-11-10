@@ -49,6 +49,10 @@ function khop(c: TuViChart, dk: PhuDk, p: TuViPalace): boolean {
   const hoi = new Set([p.chi, p.chi + 4, p.chi + 8, p.chi + 6].flatMap((x) => [...ten(at(c, x))]));
   if (dk.hoi?.some((x) => !hoi.has(x))) return false;
   if (dk.khong?.some((x) => hoi.has(x))) return false;
+  if (dk.doi?.length) {
+    const d = ten(at(c, p.chi + 6));
+    if (!dk.doi.some((x) => d.has(x))) return false;
+  }
   if (dk.giap?.length) {
     const a = ten(at(c, p.chi - 1)), b = ten(at(c, p.chi + 1));
     if (!dk.giap.every(([x, y]) => (a.has(x) && b.has(y)) || (a.has(y) && b.has(x)))) return false;
