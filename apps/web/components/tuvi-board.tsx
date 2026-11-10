@@ -35,7 +35,7 @@ function anchor(chi: number): [number, number] {
 interface Arrow { from: number; to: number; color: string; dash?: boolean; head?: boolean; key: string }
 
 /** Lớp SVG phủ lên bàn 4×4: tam phương tứ chính hoặc mũi tên phi hóa */
-function Overlay({ arrows, w, h }: { arrows: Arrow[]; w: number; h: number }) {
+function Overlay({ arrows, w, h, mo }: { arrows: Arrow[]; w: number; h: number; mo?: boolean }) {
   if (!w || !h) return null;
   const P = (chi: number) => { const [x, y] = anchor(chi); return [(x * w) / 4, (y * h) / 4] as const; };
   const pairCount = new Map<string, number>();
@@ -62,7 +62,7 @@ function Overlay({ arrows, w, h }: { arrows: Arrow[]; w: number; h: number }) {
         const id = Object.entries(MUT_COLOR).find(([, c]) => c === a.color)?.[0] ?? "tp";
         return (
           <line key={a.key} x1={x1 + ox} y1={y1 + oy} x2={x2 - dx * k + ox} y2={y2 - dy * k + oy} stroke={a.color} strokeWidth={a.head ? 1.8 : 1.4}
-            strokeDasharray={a.dash ? "5 4" : undefined} strokeOpacity={0.85} markerEnd={a.head ? `url(#ah-${id})` : undefined} />
+            strokeDasharray={a.dash ? "5 4" : undefined} strokeOpacity={mo ? 0.45 : 0.8} markerEnd={a.head ? `url(#ah-${id})` : undefined} />
         );
       })}
     </svg>
@@ -283,7 +283,7 @@ export function TuViBoard({ chart, title }: { chart: TuViChart; title: string })
             )}
             <div className="mt-2 text-xs text-stone-500">Trường phái: {chart.school}</div>
           </div>
-          <Overlay arrows={arrows} w={size.w} h={size.h} />
+          <Overlay arrows={arrows} w={size.w} h={size.h} mo={cheDo === "tatca"} />
         </div>
       </div>
       <p className="text-xs text-stone-500">
