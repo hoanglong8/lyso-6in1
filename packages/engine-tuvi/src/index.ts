@@ -403,7 +403,7 @@ function buildFromIztro(
       };
     })
     .sort((x, y) => x.chi - y.chi);
-  if (bac) phiHoaFor(palaces, s.ganzhi.year.can);
+  if (bac || config.school === "trung-chau") phiHoaFor(palaces, s.ganzhi.year.can);
 
   // Vận hạn: lấy một ngày giữa năm âm xem (rằm tháng 6), dịch cùng số năm nếu dùng ngày tương đương
   let vanHan: VanHan | null = null;

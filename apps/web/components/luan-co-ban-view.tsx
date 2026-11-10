@@ -37,7 +37,6 @@ export function LuanCoBanView({ luan, children }: { luan: LuanCoBan; children?: 
         </div>
       ))}
       <div className="space-y-1 border-t border-stone-100 pt-2 text-xs text-stone-500">
-        <p>Đối chiếu: {luan.nguon.join("; ")}.</p>
         {luan.canhBao.map((c) => (
           <p key={c}>{c}</p>
         ))}

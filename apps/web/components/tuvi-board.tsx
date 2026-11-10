@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Mutagen, TuViChart, TuViPalace, TuViStar } from "@lyso/engine-tuvi";
 
 /** Vị trí 12 cung trên bàn 4×4 truyền thống (hàng, cột), theo chi. */
@@ -16,7 +16,58 @@ const BRIGHT: Record<string, string> = { Miếu: "M", Vượng: "V", Đắc: "Đ
 
 const GOOD = new Set(["soft", "lucun", "tianma", "helper"]);
 const BAD = new Set(["tough"]);
-const MUT_BG: Record<Mutagen, string> = { Lộc: "bg-emerald-700", Quyền: "bg-amber-700", Khoa: "bg-sky-700", Kỵ: "bg-stone-900" };
+const MUT_BG: Record<Mutagen, string> = { Lộc: "bg-emerald-600", Quyền: "bg-red-600", Khoa: "bg-purple-600", Kỵ: "bg-stone-900" };
+/** Màu mũi tên phi hóa: Lộc xanh, Quyền đỏ, Khoa tím, Kỵ đen */
+const MUT_COLOR: Record<Mutagen, string> = { Lộc: "#059669", Quyền: "#dc2626", Khoa: "#9333ea", Kỵ: "#1c1917" };
+/** Ký hiệu tự hóa: A Lộc, B Quyền, C Khoa, D Kỵ */
+const MUT_ABCD: Record<Mutagen, string> = { Lộc: "A", Quyền: "B", Khoa: "C", Kỵ: "D" };
+const MUT_TEXT: Record<Mutagen, string> = { Lộc: "text-emerald-600", Quyền: "text-red-600", Khoa: "text-purple-600", Kỵ: "text-stone-900" };
+const m12 = (x: number) => ((x % 12) + 12) % 12;
+
+/** Điểm neo của một cung: mép cung quay vào ô trung tâm (đơn vị: ô lưới, 0..4) */
+function anchor(chi: number): [number, number] {
+  const [r, c] = POS[chi] as [number, number];
+  const x = c === 1 ? 1 : c === 4 ? 3 : c - 0.5;
+  const y = r === 1 ? 1 : r === 4 ? 3 : r - 0.5;
+  return [x, y];
+}
+
+interface Arrow { from: number; to: number; color: string; dash?: boolean; head?: boolean; key: string }
+
+/** Lớp SVG phủ lên bàn 4×4: tam phương tứ chính hoặc mũi tên phi hóa */
+function Overlay({ arrows, w, h }: { arrows: Arrow[]; w: number; h: number }) {
+  if (!w || !h) return null;
+  const P = (chi: number) => { const [x, y] = anchor(chi); return [(x * w) / 4, (y * h) / 4] as const; };
+  const pairCount = new Map<string, number>();
+  return (
+    <svg className="pointer-events-none absolute inset-0" width={w} height={h} aria-hidden>
+      <defs>
+        {Object.entries(MUT_COLOR).concat([["tp", "#b91c1c"]]).map(([k, col]) => (
+          <marker key={k} id={`ah-${k}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill={col} />
+          </marker>
+        ))}
+      </defs>
+      {arrows.map((a) => {
+        const [x1, y1] = P(a.from);
+        const [x2, y2] = P(a.to);
+        const pk = [a.from, a.to].sort().join("-");
+        const n = pairCount.get(pk) ?? 0;
+        pairCount.set(pk, n + 1);
+        // lệch nhẹ các mũi tên trùng cặp cung; rút ngắn đầu mũi tên
+        const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+        const off = (n % 2 ? -1 : 1) * Math.ceil(n / 2) * 5;
+        const ox = (-dy / len) * off, oy = (dx / len) * off;
+        const k = a.head ? 6 / len : 0;
+        const id = Object.entries(MUT_COLOR).find(([, c]) => c === a.color)?.[0] ?? "tp";
+        return (
+          <line key={a.key} x1={x1 + ox} y1={y1 + oy} x2={x2 - dx * k + ox} y2={y2 - dy * k + oy} stroke={a.color} strokeWidth={a.head ? 1.8 : 1.4}
+            strokeDasharray={a.dash ? "5 4" : undefined} strokeOpacity={0.85} markerEnd={a.head ? `url(#ah-${id})` : undefined} />
+        );
+      })}
+    </svg>
+  );
+}
 
 function Star({ s, major }: { s: TuViStar; major?: boolean }) {
   const color = major ? "text-son font-semibold" : GOOD.has(s.type) ? "text-emerald-800" : BAD.has(s.type) ? "text-stone-900 font-medium" : "text-stone-600";
@@ -38,10 +89,11 @@ interface CellProps {
   p: TuViPalace;
   selected: boolean;
   incoming: { mutagen: Mutagen; star: string; self: boolean }[];
+  showAbcd: boolean;
   onSelect?: () => void;
 }
 
-function Cell({ chart, p, selected, incoming, onSelect }: CellProps) {
+function Cell({ chart, p, selected, incoming, showAbcd, onSelect }: CellProps) {
   const [row, col] = POS[p.chi] as [number, number];
   const minors = [...p.minorStars, ...p.adjectiveStars];
   const v = chart.vanHan;
@@ -61,6 +113,12 @@ function Cell({ chart, p, selected, incoming, onSelect }: CellProps) {
         <span className="font-semibold uppercase tracking-wide text-stone-800">
           {p.name}
           {p.isBody && <span className="ml-1 rounded bg-stone-800 px-1 text-[0.8em] normal-case text-white">Thân</span>}
+          {showAbcd &&
+            p.phiHoa?.filter((h) => h.self).map((h) => (
+              <b key={h.mutagen} title={`Tự hóa ${h.mutagen} (${h.star})`} className={`ml-1 normal-case ${MUT_TEXT[h.mutagen]}`}>
+                {MUT_ABCD[h.mutagen]}
+              </b>
+            ))}
         </span>
         <span className="text-stone-500">{p.daiHan.from}</span>
       </div>
@@ -113,33 +171,88 @@ function Cell({ chart, p, selected, incoming, onSelect }: CellProps) {
 
 export function TuViBoard({ chart, title }: { chart: TuViChart; title: string }) {
   const phi = chart.palaces.some((p) => p.phiHoa);
+  const tamHop = chart.config.school === "vn-thien-luong" || chart.config.school === "nam-phai";
   const [from, setFrom] = useState<number | null>(null);
-  const src = phi && from !== null ? chart.palaces.find((p) => p.chi === from) : undefined;
+  const [cheDo, setCheDo] = useState<"chon" | "tatca" | "an">("chon");
+  const [showAbcd, setShowAbcd] = useState(true);
+  const [showTp, setShowTp] = useState(true);
+  const goc = from ?? chart.menhChi;
+  const src = phi ? chart.palaces.find((p) => p.chi === goc) : undefined;
   const v = chart.vanHan;
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  useEffect(() => {
+    const el = gridRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setSize({ w: el.offsetWidth, h: el.offsetHeight }));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const arrows: Arrow[] = [];
+  if (tamHop && showTp) {
+    const [a, b, c2, d] = [goc, m12(goc + 4), m12(goc + 8), m12(goc + 6)];
+    const tp = "#b91c1c";
+    arrows.push({ from: a, to: b, color: tp, key: "t1" }, { from: b, to: c2, color: tp, key: "t2" }, { from: c2, to: a, color: tp, key: "t3" });
+    arrows.push({ from: d, to: a, color: tp, dash: true, head: true, key: "xc" });
+  }
+  if (phi && cheDo !== "an") {
+    const nguon = cheDo === "tatca" ? chart.palaces : src ? [src] : [];
+    for (const p of nguon)
+      for (const h of p.phiHoa ?? [])
+        if (!h.self && h.toChi !== null) arrows.push({ from: p.chi, to: h.toChi, color: MUT_COLOR[h.mutagen], head: true, key: `${p.chi}-${h.mutagen}` });
+  }
   return (
     <div className="space-y-3">
-      {phi && (
-        <p className="rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm text-stone-700">
-          Bắc phái: bấm vào một cung để xem Tứ hóa phi tinh phát từ can cung đó.
-          {src && (
-            <>
-              {" "}
-              Cung <b>{src.name}</b> ({src.canName}) phát:{" "}
-              {src.phiHoa?.map((h) => `${h.star} hóa ${h.mutagen} → ${h.toChi === null ? "?" : chart.palaces[h.toChi]?.name}${h.self ? " (tự hóa)" : ""}`).join("; ")}.
-            </>
+      {(phi || tamHop) && (
+        <div className="space-y-2 rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm text-stone-700 print:hidden">
+          {tamHop && (
+            <div className="flex flex-wrap items-center gap-3">
+              <label className="flex items-center gap-1">
+                <input type="checkbox" checked={showTp} onChange={(e) => setShowTp(e.target.checked)} /> Tam phương tứ chính
+              </label>
+              <span className="text-xs text-stone-500">Bấm vào một cung để xem tam hợp và cung xung chiếu của cung đó (mặc định: Mệnh).</span>
+            </div>
           )}
-        </p>
+          {phi && (
+            <div className="flex flex-wrap items-center gap-3">
+              <span>Mũi tên phi hóa:</span>
+              {([["chon", "cung đang chọn"], ["tatca", "tất cả 12 cung"], ["an", "ẩn"]] as const).map(([k, t]) => (
+                <label key={k} className="flex items-center gap-1">
+                  <input type="radio" name="phihoa" checked={cheDo === k} onChange={() => setCheDo(k)} /> {t}
+                </label>
+              ))}
+              <label className="flex items-center gap-1">
+                <input type="checkbox" checked={showAbcd} onChange={(e) => setShowAbcd(e.target.checked)} /> Tự hóa A·B·C·D
+              </label>
+              <span className="flex flex-wrap gap-2 text-xs">
+                {(Object.keys(MUT_COLOR) as Mutagen[]).map((m) => (
+                  <span key={m} className="flex items-center gap-1">
+                    <span className="inline-block h-0.5 w-4" style={{ background: MUT_COLOR[m] }} /> {m} ({MUT_ABCD[m]})
+                  </span>
+                ))}
+              </span>
+            </div>
+          )}
+          {phi && src && (
+            <p className="text-xs">
+              Cung <b>{src.name}</b> (can {src.canName}) phát:{" "}
+              {src.phiHoa?.map((h) => `${h.star} hóa ${h.mutagen} → ${h.toChi === null ? "?" : chart.palaces.find((x) => x.chi === h.toChi)?.name}${h.self ? " (tự hóa)" : ""}`).join("; ")}.
+            </p>
+          )}
+        </div>
       )}
       <div className="overflow-x-auto">
-        <div className="grid min-w-[700px] grid-cols-4 grid-rows-4">
+        <div ref={gridRef} className="relative grid min-w-[700px] grid-cols-4 grid-rows-4">
           {chart.palaces.map((p) => (
             <Cell
               key={p.chi}
               chart={chart}
               p={p}
               selected={from === p.chi}
-              incoming={src?.phiHoa?.filter((h) => h.toChi === p.chi) ?? []}
-              onSelect={phi ? () => setFrom(from === p.chi ? null : p.chi) : undefined}
+              incoming={cheDo === "an" ? src?.phiHoa?.filter((h) => h.toChi === p.chi) ?? [] : []}
+              showAbcd={showAbcd}
+              onSelect={phi || tamHop ? () => setFrom(from === p.chi ? null : p.chi) : undefined}
             />
           ))}
           <div style={{ gridRow: "2 / span 2", gridColumn: "2 / span 2" }} className="flex flex-col items-center justify-center gap-1 border border-stone-300 bg-son-soft/50 p-4 text-center text-sm">
@@ -170,6 +283,7 @@ export function TuViBoard({ chart, title }: { chart: TuViChart; title: string })
             )}
             <div className="mt-2 text-xs text-stone-500">Trường phái: {chart.school}</div>
           </div>
+          <Overlay arrows={arrows} w={size.w} h={size.h} />
         </div>
       </div>
       <p className="text-xs text-stone-500">
