@@ -283,8 +283,10 @@ export function anSaoVN({ canNam, chiNam, thang: tt, ngay: nn, gio: gioSinh, gio
   // Vòng Tràng sinh (dương nam âm nữ thuận)
   const trangSinh = TRANG_SINH[cucSo] as number;
   ["Tràng Sinh", "Mộc Dục", "Quan Đới", "Lâm Quan", "Đế Vượng", "Suy", "Bệnh", "Tử", "Mộ", "Tuyệt"].forEach((n, i) => put(dichCung(trangSinh, nn12 * i), n));
-  put(dichCung(trangSinh, -nn12), "Thai");
-  put(dichCung(trangSinh, -2 * nn12), "Dưỡng");
+  // Vòng 12: ... Mộ, Tuyệt, Thai, Dưỡng rồi trở lại Tràng Sinh — Dưỡng ở ngay trước Tràng Sinh, Thai trước Dưỡng.
+  // (lasotuvi đặt ngược Thai/Dưỡng; đã sửa theo thứ tự vòng chuẩn.)
+  put(dichCung(trangSinh, -2 * nn12), "Thai");
+  put(dichCung(trangSinh, -nn12), "Dưỡng");
 
   // Sao đôi
   at("Đà La", dichCung(locTon, -1));

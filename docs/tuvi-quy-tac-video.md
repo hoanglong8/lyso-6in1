@@ -361,3 +361,122 @@ Gồm: chính tinh ở Phu Thê theo chi (ĐP); Hồng Loan ở tứ mộ thì d
 ## D. Điểm cần kiểm thêm
 
 ĐP nêu bảng độ sáng Thái Âm (miếu ở Dậu, Tuất, Hợi; vượng ở Thân, Tý). Bảng này lệch một cung so với engine. Chưa đủ căn cứ để sửa.
+
+
+## Đợt 4 (11/2026): 389 TỬ VI đợt 2, Đào Thanh Tín đợt 2, Tâm Thành, Minh Phương, Tử vi lý số
+
+Người dùng duyệt phần A, B, C và 10 câu phú; xử lý K1–K7 theo đề xuất. Tâm Thành, Minh Phương, Tử vi lý số xếp vào Bắc phái.
+
+Nguồn: 389 Tử Vi (30 video mới), Đào Thanh Tín (30 video mới), Tử Vi Tâm Thành (20), Khâm Thiên Tứ Hóa Minh Phương (20),
+playlist "Tử vi lý số" (20). Chép lời khoảng 1 triệu từ; trích thô ~1.380 dòng, tôi gộp và lọc còn các đề xuất dưới đây.
+Tiêu chí chọn: thầy nói ở ≥2 video hoặc là định nghĩa nền tảng; máy kiểm được trên engine hiện có; không trùng app.
+
+Lưu ý độ phủ: video livestream 2–3 giờ (Đào Thanh Tín, 389) chỉ đọc kỹ đoạn đầu và quét theo từ khóa; video bài giảng
+(Tâm Thành, Minh Phương, playlist) đọc gần hết. Quy tắc nhạy cảm (sức khỏe, hôn nhân, con cái, tâm linh) viết dạng "nên chú ý".
+
+## A. Thiên Lương — 389 Tử Vi (bổ sung `luanVideoNam`)
+
+| Mã | Điều kiện máy kiểm | Luận (viết lại) | Số video |
+|---|---|---|---|
+| T1 | Thiên Khôi hoặc Thiên Việt ở Mệnh/Thân hoặc chiếu (tam phương) | Thường là con trưởng, hoặc là người "nắm vai trưởng" trong nhà | 9 |
+| T2 | Thiên Việt ở Tài Bạch / Quan Lộc / Thân | Hợp công nghệ, điện tử, kinh doanh trên mạng | 9 |
+| T3 | Thiên Trù ở Mệnh/Thân/Quan/Tài | Sành ăn, hợp nghề ẩm thực, nhà hàng | 13 |
+| T4 | Vũ Khúc hoặc Thiên Phủ ở Mệnh/Thân/Quan/Tài | Sao thương mại: hợp kinh doanh, tài chính, ngân hàng, kế toán | 11 |
+| T5 | Thân Mệnh đồng cung | Nhất quán, nghĩ gì làm nấy, nhưng dễ bảo thủ, khó đổi ý (bổ sung lời app đang có) | 7 |
+| T6 | Cục khắc bản mệnh (không cần nghịch lý, không cần Thân cư Di) | Hoàn cảnh ban đầu ít ưu đãi; đổi môi trường, ra khỏi quê thì thuận hơn | 10 |
+| T7 | Cục sinh mệnh / mệnh sinh cục | Cục sinh mệnh: được hoàn cảnh nâng đỡ. Mệnh sinh cục: thuận nhưng phải bỏ sức nhiều | 6 |
+| T8 | Mệnh ở Thìn Tuất Sửu Mùi | Bổ sung "nên lập nghiệp xa quê" vào lời tứ mộ đang có | 6 |
+| T9 | Vòng Thái Tuế ở Mệnh/Thân: Thiếu Âm, Long Đức, Trực Phù | Hiền, nhẫn, dễ tin người; Trực Phù thêm tính đa nghi, hay chất vấn | 8 |
+| T10 | Quan Phù ở Mệnh/Thân/Quan | Kỹ tính, cẩn thận, hay soi xét | 4 |
+| T11 | Vòng Tràng Sinh ở Mệnh: Quan Đới / Dưỡng / Mộ | Quan Đới: có công danh. Dưỡng: khôn khéo, có thể có cha mẹ nuôi/anh em nuôi. Mộ: nhớ rộng không sâu, hay sơ suất giấy tờ | 4–7 |
+| T12 | Quang Quý, Thiên Quý, Ân Quang, Thiên Đức, Nguyệt Đức, Thiên Quan ở Mệnh/Thân (≥2 sao) | Thiện lương, thích làm từ thiện, hay có quý nhân (tâm linh) | 8 |
+| T13 | Thiên Tài + Thiên Thọ ở Mệnh/Thân/Phúc/Nô | "Quả báo hiện tiền": làm gì nhận nấy nhanh; nên sống tử tế (tâm linh) | 5 |
+| T14 | Thiên Hình ở Mệnh/Thân/Tật | Nên chú ý dao kéo, phẫu thuật, vết sẹo; tính nghiêm, hợp ngành kỷ luật (nhạy cảm) | 6 |
+| T15 | Kiếp Sát ở Mệnh/Thân/Quan | Hợp vũ trang, luật, y; thuở nhỏ nên chú ý tai nạn (nhạy cảm) | 6 |
+| T16 | Hỏa Tinh hoặc Linh Tinh ở Mệnh/Thân | Tính nóng; nên chú ý tim mạch, huyết áp, bỏng (nhạy cảm) | 4 |
+| T17 | Song Hao ở Tài/Phúc | Bổ sung nghề hợp: tài chính, cho vay, xuất nhập khẩu | 7 |
+| T18 | Thiên Cơ ở Mệnh/Tài/Quan | Có hai nghề, nhiều cách kiếm tiền | 4 |
+| T19 | Phá Quân ở Tý/Ngọ | Đời lên xuống như sóng, thích phiêu lưu; ở Ngọ thuận hơn Tý | 4 |
+| T20 | Tuổi Thìn Tuất Sửu Mùi có Không/Kiếp ở Mệnh/Thân | Không Kiếp gây hại nhẹ hơn các tuổi khác | 3 |
+| T21 | Thiên Phủ gặp Tuần/Triệt/Không/Kiếp ở Phu Thê, Tử Tức (mở rộng N13 đang xét Mệnh/Tài) | Kho trống ở cung đó: hao tài vì bạn đời/con cái | 4 |
+| T22 | Hóa Kỵ ở Nô Bộc | Bạn bè, đồng nghiệp trước mặt tốt, sau lưng dễ thị phi | 3 |
+| T23 | Hóa Kỵ ở Tử Tức | Con cứng đầu, khó dạy (nhạy cảm) | 3 |
+| T24 | Tuần/Triệt ở Quan Lộc (mở rộng N5 đang xét Mệnh) | Công danh, học hành có đoạn đứt quãng | 5 |
+| T25 | Điền Trạch có Phục Binh hoặc Thái Tuế | Nên chú ý trộm cắp, mất đồ trong nhà | 4 |
+| T26 | Đại hạn vào Phu Thê hoặc tam hợp Phu–Di–Phúc | Giai đoạn chuyện tình duyên, hôn nhân dễ biến động (nhạy cảm) | 6 |
+
+**Bất đồng với quy tắc app đã duyệt (anh chọn):**
+- K1. Cơ Lương ở Thìn/Tuất: thầy 389 nói "thành danh gần quê"; quy tắc S10 (Lê Quang Lăng/PT) đang nói "bị kìm".
+- K2. Cô Thần/Quả Tú ở Tài: thầy 389 nói "giữ tiền chắc"; S4 đang nói xấu.
+- K3. Hạn gặp Không/Kiếp: thầy 389 nói Mệnh Sát Phá Tham vẫn phát; N33 đang khuyên tránh đầu tư.
+  Đề xuất: giữ N33 nhưng thêm ngoại lệ "Mệnh Sát Phá Tham thì có thể phát nhanh, vẫn nên chú ý rủi ro".
+
+## B. Bắc phái — Đào Thanh Tín (bổ sung `luanVideoBac`)
+
+| Mã | Điều kiện máy kiểm | Luận (viết lại) |
+|---|---|---|
+| D1 | Thân cư Mệnh / Tài Bạch / Quan Lộc / Phu Thê (app mới có Di, Phúc) | Mệnh: lập trường vững, bảo thủ. Tài: nặng chuyện tiền, hợp nơi nhiều cơ hội. Quan: sống vì công việc. Phu: coi trọng gia đình (nhạy cảm) |
+| D2 | Kỵ năm sinh + Kỵ đại hạn (can cung đại hạn) + Kỵ lưu niên cùng nhập hoặc xung một cung | Giai đoạn cung đó chịu áp lực nặng gấp bội |
+| D3 | Đại hạn phi Quyền và phi Kỵ cùng vào một cung | 10 năm dễ đổi hướng đột ngột ở việc cung đó chủ |
+| D4 | Lộc và Kỵ cùng ở một cung (năm sinh hoặc phi vào) | Lộc–Kỵ trung hòa: xấu bớt nặng, tốt bớt ngọt |
+| D5 | Phi Lộc/Kỵ giữa các cung khác (ngoài Mệnh): Phụ→Điền Lộc, Tài→Điền Lộc, Nô→Quan Lộc, bất kỳ→Điền Kỵ | Cha mẹ để lại nhà đất; tiền đổ vào nhà đất; khách/đồng nghiệp mang lợi; nhà đất dễ vướng giấy tờ |
+| D6 | Tả Phù/Hữu Bật ở Huynh/Tử/Nô | Được người cùng làm, cấp dưới, khách hàng trợ giúp đắc lực |
+| D7 | Hóa Lộc ở Quan Lộc; Lộc Mã (Thiên Mã + Lộc Tồn hoặc Hóa Lộc) ở Quan | Càng bận, càng giao tiếp càng ra tiền; càng động càng sinh tài |
+| D8 | Tham Lang theo chi (Thìn Tuất, Dần Thân, Tỵ Hợi, Mão Dậu, Sửu Mùi, Tý Ngọ) + Đà La / Hỏa Linh | Bảng cách cục Tham Lang; Tham–Đà nên chú ý rượu chè, cờ bạc; Tham–Hỏa/Linh phát nhanh nhưng tham tiếp dễ mất |
+| D9 | Sát tinh theo cung: Đà ở Tài, Linh ở Phúc, Hỏa ở Mệnh | Tiền quay vòng chậm; hay tự dằn vặt; làm trước nghĩ sau |
+| D10 | Hóa Kỵ ở Điền / Tài; Hóa Quyền ở Điền; Phụ Mẫu có Kỵ | Điền Kỵ: kiểm giấy tờ nhà đất. Tài Kỵ: nên chuyển tiền thành tài sản. Điền Quyền: tích lũy nhà đất, tránh tranh chấp. Phụ Kỵ: khác quan điểm với cấp trên |
+
+**Bất đồng với app (anh chọn):**
+- K4. Thiên Đồng hóa Kỵ: app đang luận mọi Đồng Kỵ là hao tiền, hao tinh thần. Thầy Tín: Kỵ do cung khác phi vào Đồng là "phúc";
+  chỉ Đồng **tự hóa** Kỵ (cung can Canh có Đồng) mới tổn phúc. Đề xuất: sửa theo thầy.
+- K5. Sát tinh ở Huynh/Phu: app đang nói "duyên nhạt". Thầy Tín: không đoán xấu máy móc, nhất là có Tả Hữu. Đề xuất: giữ ý
+  nhưng thêm "có Tả Phù/Hữu Bật thì giảm".
+
+## C. Bắc phái — Khâm Thiên Tứ Hóa: Tâm Thành, Minh Phương, playlist Tử vi lý số (mục mới `luanVideoBac2`)
+
+Ba nguồn mới cùng một trường (Khâm Thiên), các định nghĩa khớp nhau. Đây là phần mở rộng lớn nhất: app hiện chỉ có
+phi hóa từ Mệnh/vào Mệnh và cờ "tự hóa" chung.
+
+| Mã | Khái niệm / điều kiện máy kiểm | Luận (viết lại) |
+|---|---|---|
+| C1 | **Tự hóa ly tâm**: can cung X hóa sao nằm ngay trong X. **Hướng tâm**: can cung X hóa sao nằm ở cung đối X+6 | Ly tâm: buông, đẩy ra, "muốn trả". Hướng tâm: kéo về, "muốn có", dấn thân. Không mặc định ly tâm xấu |
+| C2 | Ngã cung (Mệnh, Tài, Quan, Điền, Tật, Phúc) / tha cung (Huynh, Phu, Tử, Nô, Di, Phụ); phi hóa ngã→ngã, ngã→tha | Ngã→ngã: thành quả về mình. Ngã→tha: lợi hoặc sức lực đi ra ngoài. Quyền/Kỵ năm sinh ở tha cung: thành công phải nhờ người |
+| C3 | **Lộc chuyển Kỵ**: A phi Lộc vào B; can cung B phi Kỵ đi tiếp (hoặc B tự hóa Kỵ) | Đầu vui, sau hao; cung nhận Kỵ cuối cùng là nơi chịu tổn thất (Minh Phương: "Lộc nhân Kỵ quả") |
+| C4 | Phi hóa bất kỳ cung A→B (Lộc/Quyền/Khoa/Kỵ), kèm xung cung đối B+6 | Mở rộng phần phi hóa hiện có sang cả 12 cung, giới hạn mỗi lá số tối đa ~6 dòng nổi bật nhất (Kỵ trước) |
+| C5 | Niên hóa (tứ hóa năm sinh) gặp tự hóa ly tâm cùng cung: cùng loại / đồng tổ (Lộc–Kỵ, Quyền–Khoa) / khác tổ | Cùng loại: hao dần. Đồng tổ: đổi chất (niên Kỵ + ly Lộc: Kỵ giải bằng tiền; niên Lộc + ly Kỵ: Lộc thành phiền). Khác tổ: chỉ giảm lượng |
+| C6 | **Phản bối**: hai cung tự hóa cùng loại, một ly tâm một hướng tâm (Mệnh–Tật, Phụ–Phúc, Quan–Di…) | Hai mảng đời đó xung khắc trong suy nghĩ |
+| C7 | **Xuyến liên**: các cung cùng tự hóa cùng loại, cùng kiểu | Các mảng đó cùng một xu hướng, gặp vận kích hoạt thì dồn lực |
+| C8 | **Đảo cực**: Lộc đại vận/lưu niên nhập cung có Kỵ năm sinh, hoặc Kỵ vận nhập cung có Lộc năm sinh | Tốt xấu của cung đó đảo chiều trong vận |
+| C9 | **Lai nhân cung**: cung (trừ Tý, Sửu) có can trùng can năm sinh | Chủ đề gốc rễ của đời; lẻ (Mệnh, Phu, Tài, Di, Quan, Phúc) thiên tự lập, chẵn thiên nhờ người |
+| C10 | **Cung quan trọng của X**: đối X (Thiên Di của X), nhất lục cộng tông (Tật của X), biểu hiện (Tài của X), khí số (Quan của X), tuyệt mạng (Nô của X) | Khi X có tự hóa/niên hóa, các cung này cũng chịu ảnh hưởng; dùng để giải thích, không sinh dòng luận riêng |
+| C11 | Nam tinh / nữ tinh (Liêm Trinh: Lộc là nam, Kỵ là nữ) | Dùng để nói hóa vào Phụ Mẫu là cha hay mẹ, vào Phu Thê là chồng hay vợ |
+| C12 | Mệnh đại vận trùng Mệnh lưu niên; Kỵ vận nhỏ xung cung gốc | Tốt xấu nhân đôi; Kỵ lưu niên xung cung gốc là mạnh nhất |
+| C13 | Tự hóa Kỵ ở Mệnh/Tài/Quan + cung khác phi Kỵ vào | Song Kỵ: cung đó áp lực kéo dài, các vận đi qua dễ bị động |
+
+**Không đưa vào (lý do):** tuyệt mệnh Kỵ, Tật Ách bốn tầng (đoán hạn sức khỏe/tử, quá nhạy cảm); nhật can hóa (engine
+chưa có can ngày ở Bắc phái — có thể làm sau); bình hoành (thầy nói "không có trong sách", điều kiện chưa rõ);
+lưu nguyệt (hai cách an mâu thuẫn ngay trong kênh).
+
+**Bất đồng với app (anh chọn):**
+- K6. Tứ hóa lưu niên: Minh Phương dùng can cung (cung lưu niên phi hóa), app đang dùng can năm (iztro). Đề xuất: giữ can năm
+  làm mặc định, thêm dòng "theo Khâm Thiên: cung lưu niên (can X) phi Kỵ vào …" song song.
+- K7. Triệt có tác dụng mọi tuổi (Minh Phương) — Bắc phái app không dùng Tuần/Triệt; đề xuất bỏ qua.
+
+## D. Câu phú mới (đã kiểm với văn bản phú cổ; bỏ câu chép lời không chắc)
+
+| Câu phú | Điều kiện | Nguồn |
+|---|---|---|
+| Tử Vi cư Ngọ, cực hướng ly minh | Tử Vi ở Mệnh tại Ngọ, không gặp Kình, Đà, Không, Kiếp | 389 |
+| Nhật xuất Phù Tang | Thái Dương ở Mệnh tại Mão | 389 |
+| Nguyệt lãng Thiên Môn | Thái Âm ở Mệnh tại Hợi | 389 |
+| Nhật trầm thủy để | Thái Dương ở Mệnh tại Tý | 389 |
+| Tử Vi Mão Dậu, Kiếp Không tứ sát, đa vi thoát tục chi tăng | Tử Vi ở Mệnh tại Mão/Dậu + Địa Không hoặc Địa Kiếp đồng cung | 389 |
+| Phủ phùng Không xứ, tài suy | Thiên Phủ ở Mệnh/Tài cùng Địa Không, Thiên Không, Tuần hoặc Triệt | 389 |
+| Hóa Khoa đệ nhất giải thần | Hóa Khoa ở Mệnh | 389 |
+| Tham cư Hợi Tý, danh vi phiếm thủy đào hoa | Tham Lang ở Mệnh tại Hợi/Tý | Tâm Thành |
+| Dương Lương Xương Lộc | Tam phương Mệnh đủ Thái Dương, Thiên Lương, Văn Xương, Lộc Tồn | Tâm Thành |
+| Lộc phùng xung phá, cát xứ tàng hung | Mệnh có Lộc Tồn/Hóa Lộc, Thiên Di có Hóa Kỵ hoặc Địa Không/Kiếp | Minh Phương |
+
+Bỏ: "Hóa Kỵ thủ Điền Tài…", "Nguyệt Kỵ nhất đẳng phú ông", "Âm Dương Xương Khúc… Tam Minh", "Thiên Quan Thiên Phúc lâm Tài",
+"Đế Vượng ngộ Thai…" (chép lời không chắc chữ); "Hình Riêu số gái…", "Thất Sát hãm địa trai bất nhân…" (phú Việt mang
+tính phán xét nặng về phụ nữ/đạo đức — không nên tự hiện trên lá số); "Khôi Việt Cái Hồng" (thầy đặt ở Tử Tức, sách đặt ở Mệnh — lệch).

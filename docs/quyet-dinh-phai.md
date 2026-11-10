@@ -77,3 +77,13 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 - Bắc phái: bảng tứ hóa thầy Đào Thanh Tín dùng trùng bảng thông dụng của engine (Canh: Dương Vũ Âm Đồng; Nhâm: Lương Tử Phụ Vũ; Mậu: Tham Âm Bật Cơ).
 - Đợt 2 (Tử Vi Học Quán, Lê Quang Lăng) thêm cho phái Thiên Lương: sao lưu mở rộng (Lưu Đào Hoa, Hồng Loan, Thiên Hỷ, Long Đức, Nguyệt Đức, Khôi, Việt), lưu niên đại hạn, sao đại vận (Lộc Tồn, Kình, Đà, Khôi, Việt, Mã theo can chi cung đại hạn) và tứ hóa đại vận, nguyệt hạn. Công thức theo bài giảng kênh Tử Vi Học Quán.
 - Chưa sửa (chờ quyết định): Phá Toái và Khôi/Việt tuổi Mậu, Đinh, Nhâm, Canh trong engine phái Việt khác với Tử Vi Học Quán và Toàn thư (xem tuvi-quy-tac-video.md, mục E).
+- Vòng Tràng Sinh phái Việt: sửa thứ tự Mộ → Tuyệt → Thai → Dưỡng → Tràng Sinh (lasotuvi đặt ngược Thai/Dưỡng). Test đối chiếu lasotuvi bỏ hai sao này, có test riêng cho thứ tự vòng.
+- Phú Tử vi: `luan-co-ban/src/tuvi-phu-data.ts` — câu phú cổ Hán Việt các thầy trích dẫn, kèm điều kiện máy kiểm; hiện ở mọi phái khi khớp. Nghĩa viết lại, không chép bản dịch của sách hiện đại.
+- Đợt 4 (11/2026): Bắc phái thêm trường Khâm Thiên Tứ hóa (Tâm Thành, Minh Phương, Tử vi lý số) — `tuvi-video4.ts`.
+  Ly tâm = can cung X hóa sao nằm trong X; hướng tâm = can cung X hóa sao ở cung đối (định nghĩa chung của ba nguồn,
+  khác một số sách Khâm Thiên đặt nhãn ở cung nhận). Tứ hóa lưu niên vẫn dùng can năm; thêm một dòng song song theo
+  can cung lưu niên (Minh Phương). Thiên Đồng hóa Kỵ: chỉ tự hóa Kỵ mới luận tổn phúc (Đào Thanh Tín).
+- Phú Tử vi (11/2026, đợt 2): ~610 bản ghi / ~460 câu phú cổ từ 100 câu phú Ma Thị, Phú Tử vi thông thơ, phú Lộc Quyền
+  Khoa Kỵ, 50 câu phú cách cục, thơ phú Tử vi (tuvibatquai), phú các thầy trích. Chỉ lấy câu phú (phạm vi công cộng),
+  nghĩa tự viết; không lấy lời giải của trang web hay sách hiện đại (Vũ Tài Lục, Thái Văn Thịnh). Câu gặp ở >8% lá số
+  gắn `pho: true` và hiện ở mục "câu phổ quát". `sang: false` nghĩa là chính tinh Hãm (không tính Bình).

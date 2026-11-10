@@ -71,7 +71,7 @@ function khung(c: TuViChart): Y[] {
   }
   // S13 Thân cư Mệnh / Phu Thê
   const thanTen = tenCung(c, c.thanChi);
-  if (thanTen === "Mệnh") out.push(y("Mệnh Thân đồng cung: tự quyết, chủ động; tốt xấu dồn cả vào cung Mệnh.", `Thân tại Mệnh${PT}`));
+  if (thanTen === "Mệnh") out.push(y("Mệnh Thân đồng cung: tự quyết, chủ động, nghĩ gì làm nấy; tốt xấu dồn cả vào cung Mệnh. Mặt trái là dễ bảo thủ, khó đổi ý (389 TỬ VI).", `Thân tại Mệnh${PT}`));
   if (thanTen === "Phu Thê") out.push(y("Thân cư Phu Thê: nặng gia đình, bạn đời ảnh hưởng lớn đến đường đời.", `Thân tại Phu Thê${PT}`));
   // S3 nhị hợp (cặp Tý-Sửu, Dần-Hợi, Mão-Tuất, Thìn-Dậu, Tỵ-Thân, Ngọ-Mùi: tổng chi = 1 mod 12)
   const nh = at(c, 1 - c.menhChi);
@@ -182,7 +182,7 @@ function saoCung(c: TuViChart): Y[] {
   if (mm.includes("Thiên Lương")) {
     if ([0, 6].includes(tlP.chi)) out.push(y("Thiên Lương ở Tý/Ngọ: cách cao, nhất là khi cung Thân tốt; có tiếng nói, được trọng.", `Thiên Lương ở ${tlP.chiName}${LQL}`, "tot"));
     if ([5, 11].includes(tlP.chi)) out.push(y("Thiên Lương ở Tỵ/Hợi: thế kém nhất của Thiên Lương, hay lang bạt, phải tự giữ mình.", `Thiên Lương ở ${tlP.chiName}${LQL}`, "trung"));
-    if ([4, 10].includes(tlP.chi) && major(tlP).includes("Thiên Cơ")) out.push(y("Cơ Lương ở Thìn/Tuất: có tài mưu lược nhưng bị Thiên La/Địa Võng kìm, phát chậm.", `Thiên Cơ, Thiên Lương ở ${tlP.chiName}${LQL}`, "trung"));
+    if ([4, 10].includes(tlP.chi) && major(tlP).includes("Thiên Cơ")) out.push(y("Cơ Lương ở Thìn/Tuất: có tài mưu lược nhưng bị Thiên La/Địa Võng kìm, phát chậm. Thầy 389 lại thấy thế này hay thành danh ngay gần quê.", `Thiên Cơ, Thiên Lương ở ${tlP.chiName}${LQL} · 389 TỬ VI (ý thành danh gần quê)`, "trung"));
   }
   // S11 Cự Môn thế đẹp
   const cmP = c.palaces.find((p) => major(p).includes("Cự Môn"))!;
@@ -218,7 +218,7 @@ function saoCung(c: TuViChart): Y[] {
   for (const ten of ["Quan Lộc", "Tài Bạch"] as CungChuc[]) {
     const p = cung(c, ten);
     const cq = found(p, ["Cô Thần", "Quả Tú"]);
-    if (cq.length && found(p, ["Tả Phù", "Hữu Bật", "Thiên Khôi", "Thiên Việt", "Văn Xương", "Văn Khúc", "Lộc Tồn"]).length < 2) out.push(y(`${cq.join(", ")} ở ${ten}: ${ten === "Tài Bạch" ? "giữ của, chi tiêu tính toán; tiền đến chậm" : "làm việc đơn độc, ít người đỡ"}.`, `${cq.join(", ")} ở ${ten}${DP}`, "trung"));
+    if (cq.length && found(p, ["Tả Phù", "Hữu Bật", "Thiên Khôi", "Thiên Việt", "Văn Xương", "Văn Khúc", "Lộc Tồn"]).length < 2) out.push(y(`${cq.join(", ")} ở ${ten}: ${ten === "Tài Bạch" ? "giữ của, chi tiêu tính toán; tiền đến chậm (thầy 389: giữ tiền chắc)" : "làm việc đơn độc, ít người đỡ"}.`, `${cq.join(", ")} ở ${ten}${DP}`, "trung"));
   }
   if (has(menh, "Cô Thần", "Quả Tú") && has(menh, "Đào Hoa")) out.push(y("Cô Thần/Quả Tú cùng Đào Hoa ở Mệnh: tình cảm khó trọn, hay một mình gánh vác.", `Mệnh có ${found(menh, ["Cô Thần", "Quả Tú", "Đào Hoa"]).join(", ")}${DP}`, "trung"));
   // S5 Quang Quý đủ bộ ở tứ mộ

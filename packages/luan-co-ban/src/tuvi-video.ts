@@ -245,6 +245,8 @@ export function luanVideoNam(c: TuViChart): Phan[] {
       const chiTT = k.length > 0 && k.every((x) => x === "Tuần" || x === "Triệt");
       if (chiTT && (menh.tuan || menh.triet || [1, 4, 7, 10].includes(menh.chi) || !menh.majorStars.length))
         vh.push(y(`${lb.split(" ")[0]} hạn gặp ${k.join(", ")} nhưng Mệnh ${menh.tuan || menh.triet ? "cũng có Tuần/Triệt" : !menh.majorStars.length ? "vô chính diệu" : "ở tứ mộ"}: theo thầy Lê Quang Lăng, hạn này lại thuận.`, `${lb} ở ${p.name} · Lê Quang Lăng`, "tot"));
+      else if ((k.length >= 2 || (k.length && ns.includes("Thiên Phủ"))) && menhMajor(c).some((s) => ["Thất Sát", "Phá Quân", "Tham Lang"].includes(s)))
+        vh.push(y(`${lb.split(" ")[0]} hạn gặp Không, Kiếp, Tuần, Triệt nhưng Mệnh có Sát/Phá/Tham: theo thầy 389, vẫn có thể phát nhanh; dù vậy nên lường rủi ro, tránh dồn hết vốn.`, `${lb} ở ${p.name} có ${k.join(", ")} · 389 TỬ VI`, "trung"));
       else if (k.length >= 2 || (k.length && ns.includes("Thiên Phủ")))
         vh.push(y(`${lb.split(" ")[0]} hạn gặp Không, Kiếp, Tuần, Triệt: tránh đầu cơ, cho vay, đầu tư lớn; giữ tiền mặt.`, `${lb} ở ${p.name} có ${k.join(", ")}`, "xau"));
       if (ns.includes("Đại Hao") && ns.includes("Tiểu Hao")) vh.push(y("Hạn có song Hao: không nên đầu tư lớn, dễ hao tài.", `${lb} ở ${p.name}`, "xau"));
@@ -278,7 +280,7 @@ export function luanVideoNam(c: TuViChart): Phan[] {
 const KY_Y: Record<string, string> = {
   "Cự Môn": "lời nói dễ bị hiểu lầm, thị phi",
   "Thái Dương": "vất vả bên ngoài, dễ bị soi xét",
-  "Thiên Đồng": "hao tiền, hao tinh thần",
+  "Thiên Đồng": "phải lo nghĩ cho người khác, nhưng thầy Tín coi Kỵ từ cung khác phi vào Thiên Đồng là có phúc; chỉ Thiên Đồng tự hóa Kỵ mới là tổn phúc",
   "Văn Xương": "rắc rối giấy tờ, hợp đồng",
   "Văn Khúc": "rắc rối giấy tờ, lời nói",
   "Thái Âm": "việc nhà, nhà cửa nặng nề",
@@ -338,7 +340,7 @@ export function luanVideoBac(c: TuViChart): Phan[] {
         phi.push(
           h.mutagen === "Lộc"
             ? y(`${tenCung(c, p.chi)} tự hóa Lộc: tự có lợi ở ${yBac(c, p.chi)} nhưng cũng dễ tiêu đi.`, `can ${p.canName} hóa Lộc ${h.star} ngay trong cung`, "trung")
-            : y(`${tenCung(c, p.chi)} tự hóa Kỵ: tự sinh vướng ở ${yBac(c, p.chi)}, tiền vào nhiều ra nhiều; nên giữ kỷ luật.`, `can ${p.canName} hóa Kỵ ${h.star} ngay trong cung`, "xau"),
+            : y(`${tenCung(c, p.chi)} tự hóa Kỵ: tự sinh vướng ở ${yBac(c, p.chi)}, tiền vào nhiều ra nhiều; nên giữ kỷ luật.${h.star === "Thiên Đồng" ? " Thiên Đồng tự hóa Kỵ: tổn phúc, hao tinh thần." : ""}`, `can ${p.canName} hóa Kỵ ${h.star} ngay trong cung`, "xau"),
         );
   // Kỵ năm sinh xung cung đối
   for (const p of c.palaces)
@@ -365,7 +367,8 @@ export function luanVideoBac(c: TuViChart): Phan[] {
   for (const ten of ["Huynh Đệ", "Phu Thê", "Tử Tức", "Phụ Mẫu"] as CungChuc[]) {
     const p = cung(c, ten);
     const s4 = found(p, SAT4);
-    if (s4.length) sc.push(y(`Sát tinh ở ${ten}: duyên với ${yBac(c, p.chi)} nhạt hoặc có khoảng cách.${ten === "Phu Thê" ? " Vợ chồng lệch giờ giấc hoặc khác ngành lại tốt." : ""}`, `${s4.join(", ")} ở ${ten}`, "trung"));
+    const giam = has(p, "Tả Phù", "Hữu Bật") ? " Có Tả Phù/Hữu Bật đi cùng thì không nên đoán xấu: vẫn được giúp đỡ." : "";
+    if (s4.length) sc.push(y(`Sát tinh ở ${ten}: duyên với ${yBac(c, p.chi)} nhạt hoặc có khoảng cách.${ten === "Phu Thê" ? " Vợ chồng lệch giờ giấc hoặc khác ngành lại tốt." : ""}${giam}`, `${s4.join(", ")} ở ${ten}`, "trung"));
   }
   if (has(menh, "Lộc Tồn")) sc.push(y("Lộc Tồn ở Mệnh nên Kình Dương, Đà La kẹp ở Phụ Mẫu và Huynh Đệ: ở gần nhà dễ bị kìm kẹp; nên ra ngoài lập nghiệp, tiền bạc với anh em phải rạch ròi.", "Lộc Tồn ở Mệnh", "trung"));
   const di = cung(c, "Thiên Di");
