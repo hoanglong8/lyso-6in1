@@ -7,6 +7,7 @@ import { castCoins, castMaiHoaTime, interpret } from "@lyso/engine-kinhdich";
 import { buildLucNhamFromSnapshot } from "@lyso/engine-lucnham";
 import { buildKyMonFromSnapshot } from "@lyso/engine-kymon";
 import { buildThaiAtFromSnapshot } from "@lyso/engine-thaiat";
+import { luanPhuAll, NGUON_PHU } from "../src/phu";
 import { DUNG_THAN, QUE, VIEC_KYMON, luanBazi, luanKinhDich, luanKyMon, luanLucNham, luanThaiAt, luanTuVi, type LuanCoBan } from "../src";
 
 let seed = 9;
@@ -26,15 +27,16 @@ describe("Luận theo kinh nghiệm video (Tử vi)", () => {
     for (const s of snaps) {
       const vn = luanTuVi(chart(s, "vn-thien-luong"));
       const bac = luanTuVi(chart(s, "bac-phai", "nu"));
-      expect(vn.phan.some((p) => p.title.includes("389 TỬ VI"))).toBe(true);
-      expect(bac.phan.some((p) => p.title.includes("Đào Thanh Tín"))).toBe(true);
-      expect(vn.phan.some((p) => p.title.includes("Đào Thanh Tín"))).toBe(false);
-      expect(vn.phan.some((p) => p.title.includes("Học Quán"))).toBe(true);
-      expect(bac.phan.some((p) => p.title.includes("Học Quán"))).toBe(false);
+      const has = (l: typeof vn, k: string) => l.phan.some((p) => !p.title.startsWith("Phú") && p.items.some((y) => y.canCu?.includes(k)));
+      expect(has(vn, "389 TỬ VI")).toBe(true);
+      expect(has(bac, "Đào Thanh Tín")).toBe(true);
+      expect(has(vn, "Đào Thanh Tín")).toBe(false);
+      expect(has(vn, "Học Quán")).toBe(true);
+      expect(has(bac, "Học Quán")).toBe(false);
+      for (const l of [vn, bac]) for (const p of l.phan) expect(p.title).not.toMatch(/kinh nghiệm|thầy/i);
       const np = luanTuVi(buildTuVi(s, "nam", { school: "nam-phai", leapMonth: "split15" }, { viewYear: 2026 }));
-      expect(np.phan.some((p) => /389|Đào Thanh Tín/.test(p.title))).toBe(false);
-      for (const l of [vn, bac]) for (const p of l.phan.filter((x) => /389|Đào Thanh Tín|thầy|Học Quán|Phong Thủy|Đông Phương|Khâm Thiên/.test(x.title))) {
-        for (const y of p.items) expect(y.canCu?.length, y.text).toBeGreaterThan(2);
+      expect(np.phan.some((p) => !p.title.startsWith("Phú") && p.items.some((y) => /389 TỬ VI|Đào Thanh Tín/.test(y.canCu ?? "")))).toBe(false);
+      for (const l of [vn, bac]) for (const p of l.phan) {
         expect(new Set(p.items.map((y) => y.text)).size, p.title).toBe(p.items.length);
       }
     }
@@ -44,14 +46,14 @@ describe("Luận theo kinh nghiệm video (Tử vi)", () => {
     for (const s of snaps) {
       const c = chart(s, "bac-phai");
       const l = luanTuVi(c);
-      const kt = l.phan.find((p) => p.title.startsWith("Khâm Thiên"));
+      const kt = { items: l.phan.flatMap((p) => p.items) };
       const menh = c.palaces.find((p) => p.chi === c.menhChi)!;
       for (const h of menh.phiHoa ?? []) {
         if (h.toChi !== (c.menhChi + 6) % 12) continue;
         gap++;
-        expect(kt?.items.some((y) => y.text.startsWith(`Mệnh hóa ${h.mutagen} hướng tâm`))).toBe(true);
+        expect(kt.items.some((y) => y.text.startsWith(`Mệnh hóa ${h.mutagen} hướng tâm`))).toBe(true);
       }
-      expect(luanTuVi(chart(s, "vn-thien-luong")).phan.some((p) => p.title.startsWith("Khâm Thiên"))).toBe(false);
+      expect(luanTuVi(chart(s, "vn-thien-luong")).phan.some((p) => !p.title.startsWith("Phú") && p.items.some((y) => y.canCu?.includes("Khâm Thiên")))).toBe(false);
     }
     expect(gap).toBeGreaterThan(0);
   });
@@ -60,20 +62,20 @@ describe("Luận theo kinh nghiệm video (Tử vi)", () => {
       const c = chart(s, sc);
       const m = c.palaces.find((p) => p.chi === c.menhChi)!;
       const want = m.chi === 3 && m.majorStars.some((x) => x.name === "Thái Dương");
-      const got = luanTuVi(c).phan.some((p) => p.items.some((y) => y.text.includes("Nhật xuất Phù Tang")));
+      const got = luanTuVi(c, { phu: luanPhuAll(c), nguonPhu: NGUON_PHU }).phan.some((p) => p.items.some((y) => y.text.includes("Nhật xuất Phù Tang")));
       expect(got).toBe(want);
     }
   });
   it("Thuận/nghịch lý trong luận khớp nhãn của engine", () => {
     for (const s of snaps) {
       const c = chart(s, "vn-thien-luong");
-      const t = luanTuVi(c).phan.find((p) => p.title.startsWith("Khung lá số"))!.items[0]!.text;
-      expect(t.startsWith(c.amDuongMenh!)).toBe(true);
+      const g = luanTuVi(c).phan.find((p) => p.title === "Thế cục chung")!.items;
+      expect(g.some((y) => y.text.startsWith(c.amDuongMenh!))).toBe(true);
     }
   });
   it("Bắc phái: lưu niên xoay cung đúng (lưu Tài cách Mệnh lưu 8 cung)", () => {
     const c = chart(snaps[0]!, "bac-phai");
-    const t = luanTuVi(c).phan.find((p) => p.title.startsWith("Vận hạn") && p.title.includes("Đào Thanh Tín"))!.items.find((y) => y.text.startsWith("Lưu niên"))!.text;
+    const t = luanTuVi(c).phan.find((p) => p.title.startsWith("Vận hạn"))!.items.find((y) => y.text.startsWith("Lưu niên"))!.text;
     const ORDER = ["Mệnh", "Phụ Mẫu", "Phúc Đức", "Điền Trạch", "Quan Lộc", "Nô Bộc", "Thiên Di", "Tật Ách", "Tài Bạch", "Tử Tức", "Phu Thê", "Huynh Đệ"];
     const lm = c.vanHan!.luuThaiTue.chi;
     const want = ORDER[(((lm + 8 - c.menhChi) % 12) + 12) % 12];
@@ -127,10 +129,19 @@ describe("Phú Tử vi", () => {
       const c = buildTuVi(buildSnapshot({ date: { y, m, d: 10 }, calendar: "solar", time: { h, mi: 0 } } as never), "nam", { school: "vn-thien-luong", leapMonth: "split15" });
       const menh = c.palaces.find((p) => p.chi === c.menhChi)!;
       const want = menh.majorStars.some((s) => s.name === "Cự Môn") && (menh.chi === 0 || menh.chi === 6);
-      const got = !!luanTuVi(c).phan.find((p) => p.title.startsWith("Phú"))?.items.some((i) => i.text.includes("thạch trung ẩn ngọc"));
+      const got = !!luanTuVi(c, { phu: luanPhuAll(c) }).phan.find((p) => p.title.startsWith("Phú"))?.items.some((i) => i.text.includes("thạch trung ẩn ngọc"));
       expect(got).toBe(want);
       if (want) seen++;
     }
     expect(seen).toBeGreaterThan(0);
+  });
+});
+
+describe("Phú nạp riêng", () => {
+  it("luanTuVi không kèm phú khi không truyền; có khi truyền", () => {
+    const s = buildSnapshot({ date: { y: 1990, m: 5, d: 15 }, calendar: "solar", time: { h: 7, mi: 5 } });
+    const c = buildTuVi(s, "nam", { school: "vn-thien-luong", leapMonth: "split15" }, { viewYear: 2026 });
+    expect(luanTuVi(c).phan.some((p) => p.title.startsWith("Phú"))).toBe(false);
+    expect(luanTuVi(c, { phu: luanPhuAll(c), nguonPhu: NGUON_PHU }).phan.some((p) => p.title.startsWith("Phú"))).toBe(true);
   });
 });

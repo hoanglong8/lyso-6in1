@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { buildSnapshot } from "@lyso/calendar-vn";
 import { buildBazi } from "@lyso/engine-bazi";
 import { buildTuVi } from "@lyso/engine-tuvi";
@@ -21,12 +21,27 @@ const TABS: [Tab, string][] = [
   ["lich", "Lịch & giờ sinh"],
 ];
 
+type PhuMod = typeof import("@lyso/luan-co-ban/phu");
+
+/** Nạp dữ liệu câu phú (~600 KB) sau khi trang đã hiện, không chặn lần tải đầu */
+function usePhu(enabled: boolean): PhuMod | null {
+  const [mod, setMod] = useState<PhuMod | null>(null);
+  useEffect(() => {
+    if (!enabled || mod) return;
+    let ok = true;
+    import("@lyso/luan-co-ban/phu").then((m) => ok && setMod(m)).catch(() => undefined);
+    return () => { ok = false; };
+  }, [enabled, mod]);
+  return mod;
+}
+
 export default function LaSoApp() {
   const [profile, setProfile] = useState<Profile>(() => emptyProfile());
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [tab, setTab] = useState<Tab>("tuvi");
   const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
   const saved = useSavedProfiles();
+  const phuMod = usePhu(tab === "tuvi");
 
   const result = useMemo(() => {
     try {
@@ -143,7 +158,12 @@ export default function LaSoApp() {
             )}
             {tab === "tuvi" && <TuViBoard chart={result.tuvi} title={title} />}
             {tab === "bazi" && <BaziView chart={result.bazi} viewYear={viewYear} />}
-            {tab === "tuvi" && <LuanCoBanView luan={luanTuVi(result.tuvi)} />}
+            {tab === "tuvi" && (
+              <LuanCoBanView
+                luan={luanTuVi(result.tuvi, phuMod ? { phu: phuMod.luanPhuAll(result.tuvi), nguonPhu: phuMod.NGUON_PHU } : undefined)}
+                note={phuMod ? undefined : "Đang tải câu phú Tử vi…"}
+              />
+            )}
             {tab === "bazi" && <LuanCoBanView luan={luanBazi(result.bazi, viewYear)} />}
             {tab === "lich" && <LichResult s={result.s} />}
             {tab !== "lich" && (

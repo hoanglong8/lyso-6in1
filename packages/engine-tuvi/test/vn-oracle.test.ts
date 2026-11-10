@@ -36,7 +36,7 @@ describe.skipIf(!has)("Phái Việt khớp lasotuvi", () => {
         if (chiIndex(o.tieuHan) !== p.tieuHanChi) bad.push(`${tag} cung ${cung} tiểu hạn ${o.tieuHan} vs ${p.tieuHanChi}`);
         if (o.tuan !== p.tuan || o.triet !== p.triet) bad.push(`${tag} cung ${cung} Tuần/Triệt`);
         // Thai/Dưỡng: lasotuvi đặt ngược thứ tự vòng Tràng Sinh; engine đã sửa nên bỏ khỏi so sánh (kiểm riêng ở dưới)
-        const TD = new Set(["Thai", "Dưỡng"]);
+        const TD = new Set(["Thai", "Dưỡng", "Phá Toái", "Thiên Khôi", "Thiên Việt"]); // + E1–E3: lasotuvi khác sách
         const oStars = o.stars.map((s) => s.split("|")).filter(([n]) => !HOA[title(n!)] && !TD.has(title(n!))).map(([n, b]) => `${title(n!)}|${b}`).sort();
         const pStars = p.stars.filter((s) => !TD.has(s.name)).map((s) => `${s.name}|${s.brightness?.charAt(0) ?? ""}`).sort();
         if (oStars.join(",") !== pStars.join(",")) bad.push(`${tag} cung ${cung} sao\n  lst: ${oStars.join(",")}\n  ta:  ${pStars.join(",")}`);
@@ -46,6 +46,17 @@ describe.skipIf(!has)("Phái Việt khớp lasotuvi", () => {
       }
     }
     expect(bad.slice(0, 10)).toEqual([]);
+  });
+  it("E1–E3: Phá Toái, Thiên Khôi, Thiên Việt theo sách", () => {
+    const KV: Record<number, [number, number]> = { 1: [2, 8], 2: [1, 9], 3: [12, 10], 4: [12, 10], 5: [2, 8], 6: [1, 9], 7: [7, 3], 8: [7, 3], 9: [4, 6], 10: [4, 6] };
+    const PT: Record<number, number> = { 1: 6, 7: 6, 4: 6, 10: 6, 3: 10, 9: 10, 6: 10, 12: 10, 5: 2, 11: 2, 2: 2, 8: 2 };
+    for (let y = 1984; y < 2044; y++) {
+      const canNam = ((y + 6) % 10) + 1, chiNam = ((y + 8) % 12) + 1;
+      const r = anSaoVN({ canNam, chiNam, thang: 3, ngay: 9, gio: 4, gioiTinh: 1 });
+      const pos = (n: string) => r.palaces.findIndex((p) => p?.stars.some((s) => s.name === n));
+      expect([pos("Thiên Khôi"), pos("Thiên Việt")], `năm ${y}`).toEqual(KV[canNam]);
+      expect(pos("Phá Toái"), `năm ${y}`).toBe(PT[chiNam]);
+    }
   });
   it("vòng Tràng Sinh: Tuyệt → Thai → Dưỡng → Tràng Sinh", () => {
     const cases = JSON.parse(readFileSync(file, "utf8")) as { in: number[] }[];

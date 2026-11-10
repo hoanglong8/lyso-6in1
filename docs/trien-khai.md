@@ -9,11 +9,11 @@ Không cần biến môi trường nào. Mọi trang là trang tĩnh; tính lá 
 
 | # | Việc | Ghi chú |
 | --- | --- | --- |
-| 1 | Hồ sơ đánh giá tác động chuyển dữ liệu ra nước ngoài | Làm **trước** khi bật Supabase hoặc AI (mục 3) |
+| 1 | Hồ sơ đánh giá tác động chuyển dữ liệu ra nước ngoài | Làm **trước** khi bật Supabase hoặc AI (mục 3); bản nháp nội dung: [ho-so-du-lieu-ca-nhan.md](ho-so-du-lieu-ca-nhan.md) |
 | 2 | Lên Vercel Pro | Hobby không cho dùng thương mại |
 | 3 | Supabase (mục 1) | Vùng Singapore |
 | 4 | `ANTHROPIC_API_KEY` (mục 2) | Đặt giới hạn chi tiêu tháng |
-| 5 | Cổng thanh toán | Chưa có code; VNPay/MoMo/PayOS cần hộ kinh doanh hoặc doanh nghiệp |
+| 5 | Cổng thanh toán payOS (mục 4) | Đã có code, đang tắt; cần hộ kinh doanh hoặc doanh nghiệp để mở kênh payOS |
 | 6 | `NEXT_PUBLIC_GIAI_DOAN=2` rồi redeploy | Công tắc chung: thiếu biến này thì mọi phần trên vẫn tắt |
 
 ## 1. Database + đăng nhập (Supabase)
@@ -43,9 +43,24 @@ Không cần biến môi trường nào. Mọi trang là trang tĩnh; tính lá 
 
 Ước tính theo giá công bố (Haiku 5.5: 0,10/0,50 USD; Sonnet 5.5: 2/10 USD mỗi triệu token vào/ra), ngữ cảnh ~3–4 nghìn token, bài ra ~1,5 nghìn (cơ bản) hoặc ~4 nghìn token (nâng cao).
 
+## 4. Thanh toán (payOS)
+
+Code: `apps/web/lib/thanh-toan/payos.ts`, `app/api/thanh-toan/tao` (tạo đơn + link), `app/api/thanh-toan/webhook` (kiểm chữ ký,
+gia hạn gói), trang `/nang-cap`. Chỉ chạy khi có đủ: `NEXT_PUBLIC_GIAI_DOAN=2`, Supabase, và các biến dưới.
+
+1. Supabase SQL Editor: chạy `supabase/migrations/20261110000000_thanh_toan.sql` (bảng `don_hang`).
+2. Vercel → Environment Variables (Production):
+   - `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Settings → API; chỉ để ở máy chủ)
+   - `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY` (my.payos.vn → Kênh thanh toán)
+   - `GIA_NANG_CAO_1_THANG`, `GIA_NANG_CAO_12_THANG` (VND, số nguyên; để trống gói nào thì gói đó không bán)
+3. my.payos.vn → Kênh thanh toán → Webhook URL: `https://<tên miền>/api/thanh-toan/webhook` (payOS gửi một webhook thử; route trả 200).
+4. Mua thử một gói giá nhỏ, kiểm bảng `don_hang` chuyển `da-tra` và `goi_dich_vu.het_han` được gia hạn.
+
+Ghi chú: mô tả đơn giữ ≤ 9 ký tự (`LYSO 1T`) vì payOS giới hạn khi tài khoản ngân hàng chưa liên kết qua payOS.
+
 ## 3. Lưu ý pháp lý cần làm trước khi mở công khai
 
 - Hồ sơ lá số là dữ liệu cá nhân cơ bản (Luật BVDLCN 2025, NĐ 356/2025). Đã có: đồng ý rõ ràng khi đăng nhập, trang Quyền riêng tư, tự xóa hồ sơ, RLS.
 - Lưu ở Supabase Singapore là **chuyển dữ liệu ra nước ngoài**; gửi dữ liệu lá số sang Anthropic cũng vậy. Khi thu phí, cần lập hồ sơ đánh giá tác động chuyển dữ liệu ra nước ngoài theo nghị định.
 - Vercel Hobby chỉ cho dùng phi thương mại: bật thu phí thì phải lên gói Pro.
-- Thanh toán chưa làm: cổng nội địa (VNPay, MoMo, PayOS) thường yêu cầu hộ kinh doanh hoặc doanh nghiệp.
+- Thanh toán: đã có code payOS (mục 4), đang tắt; cổng nội địa thường yêu cầu hộ kinh doanh hoặc doanh nghiệp.

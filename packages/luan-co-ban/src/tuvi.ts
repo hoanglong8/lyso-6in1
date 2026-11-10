@@ -5,7 +5,6 @@ import { CAT_TINH, CHINH_TINH, CUNG_Y, NGUON_TUVI, PHU_TINH, SAT_TINH } from "./
 import { luanVideoBac, luanVideoNam, NGUON_VIDEO_BAC, NGUON_VIDEO_NAM } from "./tuvi-video";
 import { luanVideoNam2, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL } from "./tuvi-video2";
 import { luanVideoNam3, NGUON_VIDEO_DP, NGUON_VIDEO_PT } from "./tuvi-video3";
-import { luanPhuAll, NGUON_PHU } from "./tuvi-phu";
 import { luanKhamThien, luanVideoBac2, luanVideoNam4, NGUON_KHAM_THIEN, NGUON_VIDEO_BAC2, NGUON_VIDEO_NAM4 } from "./tuvi-video4";
 
 const SANG = new Set(["Miếu", "Vượng", "Đắc"]);
@@ -45,7 +44,52 @@ function cungTomTat(c: TuViChart, p: TuViPalace): Y {
   return { text: `${head}${gist}${sangTxt}${extra ? ` Có ${extra}.` : ""}`, canCu: `cung ${p.name} (${p.canName} ${p.chiName}) — ${CUNG_Y[p.name] ?? ""}`, tone };
 }
 
-export function luanTuVi(c: TuViChart): LuanCoBan {
+
+const KENH = ["389", "Học Quán", "Lê Quang Lăng", "Phong Thủy", "Đông Phương", "Đào Thanh Tín", "Tâm Thành", "Minh Phương", "Tử vi lý số", "Khâm Thiên"];
+/** Gắn tên nguồn vào căn cứ của từng ý (nếu căn cứ chưa nêu kênh) */
+function tag(ps: Phan[], label: string): Phan[] {
+  for (const p of ps)
+    p.items = p.items.map((y) => (y.canCu && KENH.some((k) => y.canCu!.includes(k)) ? y : { ...y, canCu: y.canCu ? `${y.canCu} · ${label}` : label }));
+  return ps;
+}
+
+const NHOM: [RegExp, string][] = [
+  [/^(Thế cục chung|Khung lá số|Thân, cục)/, "Thế cục chung"],
+  [/^Mệnh —/, "Mệnh: tính cách và năng lực gốc"],
+  [/^(Cách cục|Chính tinh và cách cục|Sao, Tuần Triệt)/, "Chính tinh, cách cục, Tuần Triệt"],
+  [/^(Tứ hóa năm sinh|Phi hóa|Khâm Thiên)/, "Tứ hóa và phi hóa"],
+  [/^(Các lĩnh vực chính|Phụ tinh theo cung|Sao và cung|Kinh nghiệm luận)/, "Các cung và lĩnh vực"],
+  [/^(Gia đạo|Hôn nhân)/, "Gia đạo, hôn nhân, sức khỏe"],
+  [/^(Vận hạn|Xem hạn|Đại hạn và năm)/, "VAN"],
+];
+const THU_TU = ["Thế cục chung", "Mệnh: tính cách và năng lực gốc", "Chính tinh, cách cục, Tuần Triệt", "Các cung và lĩnh vực", "Tứ hóa và phi hóa", "Gia đạo, hôn nhân, sức khỏe", "VAN"];
+const LA_VAN = /^(Năm \d{4}|Đại hạn|Đại vận|Theo Khâm Thiên)|đại vận|lưu niên|Đại hạn \d/;
+
+/** Gom các mục nhỏ (theo kênh) thành ít nhóm; ý về vận hạn trong mục hỗn hợp chuyển sang nhóm vận hạn */
+function nhomLai(phan: Phan[], vanTitle: string): Phan[] {
+  const g = new Map<string, Y[]>();
+  const rest: Phan[] = [];
+  for (const p of phan) {
+    const k = NHOM.find(([re]) => re.test(p.title))?.[1];
+    if (!k) { rest.push(p); continue; }
+    for (const y of p.items) {
+      const key = k !== "VAN" && /^(Kinh nghiệm luận|Khâm Thiên)/.test(p.title) && LA_VAN.test(`${y.text} ${y.canCu ?? ""}`) ? "VAN" : k;
+      g.set(key, [...(g.get(key) ?? []), y]);
+    }
+  }
+  const out: Phan[] = [];
+  for (const k of THU_TU) {
+    const items = g.get(k);
+    if (items?.length) out.push({ title: k === "VAN" ? vanTitle : k, items });
+  }
+  return [...out, ...rest];
+}
+
+/**
+ * Luận Tử vi. Câu phú (dữ liệu lớn, ~600 KB) không nhập tĩnh ở đây để trang tải nhanh: bên gọi nạp
+ * `@lyso/luan-co-ban/phu` khi cần rồi truyền kết quả `luanPhuAll(c)` vào `extra.phu`.
+ */
+export function luanTuVi(c: TuViChart, extra?: { phu?: Phan[]; nguonPhu?: string }): LuanCoBan {
   const menh = at(c, c.menhChi);
   const than = at(c, c.thanChi);
   const phan: Phan[] = [];
@@ -148,21 +192,31 @@ export function luanTuVi(c: TuViChart): LuanCoBan {
   const nguon = [NGUON_TUVI];
   const canhBaoVideo: string[] = [];
   if (c.config.school === "vn-thien-luong") {
-    phan.push(...luanVideoNam(c), ...luanVideoNam2(c), ...luanVideoNam3(c), ...luanVideoNam4(c));
+    phan.push(
+      ...tag(luanVideoNam(c), "389 TỬ VI"),
+      ...tag(luanVideoNam2(c), "Học Quán, Lê Quang Lăng"),
+      ...tag(luanVideoNam3(c), "Lê Quang Lăng, Phong Thủy Tâm Linh, Đông Phương Đạo Quán"),
+      ...tag(luanVideoNam4(c), "389 TỬ VI"),
+    );
     nguon.push(NGUON_VIDEO_NAM, NGUON_VIDEO_HQ, NGUON_VIDEO_LQL, NGUON_VIDEO_PT, NGUON_VIDEO_DP, NGUON_VIDEO_NAM4);
-    canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của một thầy, chưa đối chiếu sách; mục gia đạo, sức khỏe, tâm linh chỉ để tham khảo, không thay lời khuyên y tế.");
+    canhBaoVideo.push("Nhiều ý rút từ video của các thầy (tên kênh ghi ở phần căn cứ), chưa đối chiếu sách; ý về sức khỏe, tâm linh chỉ để tham khảo, không thay lời khuyên y tế.");
   } else if (c.config.school === "bac-phai") {
-    phan.push(...luanVideoBac(c), ...luanVideoBac2(c), ...luanKhamThien(c));
+    phan.push(...tag(luanVideoBac(c), "Đào Thanh Tín"), ...tag(luanVideoBac2(c), "Đào Thanh Tín"), ...tag(luanKhamThien(c), "Khâm Thiên Tứ hóa"));
     nguon.push(NGUON_VIDEO_BAC, NGUON_VIDEO_BAC2, NGUON_KHAM_THIEN);
-    canhBaoVideo.push("Các mục ghi \"kinh nghiệm luận\" rút từ video của các thầy Bắc phái (Đào Thanh Tín, Tâm Thành, Minh Phương, Tử vi lý số), chưa đối chiếu sách.");
+    canhBaoVideo.push("Nhiều ý rút từ video của các thầy Bắc phái (tên kênh ghi ở phần căn cứ), chưa đối chiếu sách.");
   }
 
   // 8. Câu phú cổ ứng với lá số (mọi phái)
-  const phu = luanPhuAll(c);
+  const phu = extra?.phu ?? [];
   if (phu.length) {
-    phan.push(...phu);
-    nguon.push(NGUON_PHU);
+    phan.push(...phu.map((p) => ({ ...p, items: [...p.items] })));
+    if (extra?.nguonPhu) nguon.push(extra.nguonPhu);
   }
+
+  // Sắp lại thành ít nhóm theo logic đọc lá số; nguồn ghi ở căn cứ, không ở tiêu đề
+  const gop = nhomLai(phan, c.vanHan ? `Vận hạn năm ${c.vanHan.year} (${c.vanHan.yearName}, ${c.vanHan.age} tuổi mụ)` : "Vận hạn");
+  phan.length = 0;
+  phan.push(...gop);
 
   // Gộp các ý trùng lời trong cùng một mục, nối căn cứ
   for (const p of phan) {

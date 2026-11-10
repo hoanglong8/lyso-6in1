@@ -76,7 +76,7 @@ Thầy thẩm định ký vào cột "Duyệt" trước khi mở beta (Cổng 2)
 - Âm dương thuận lý = âm dương năm sinh trùng âm dương cung Mệnh (không xét giới tính). Bản port lasotuvi trước đây nhân với giới tính, đã sửa.
 - Bắc phái: bảng tứ hóa thầy Đào Thanh Tín dùng trùng bảng thông dụng của engine (Canh: Dương Vũ Âm Đồng; Nhâm: Lương Tử Phụ Vũ; Mậu: Tham Âm Bật Cơ).
 - Đợt 2 (Tử Vi Học Quán, Lê Quang Lăng) thêm cho phái Thiên Lương: sao lưu mở rộng (Lưu Đào Hoa, Hồng Loan, Thiên Hỷ, Long Đức, Nguyệt Đức, Khôi, Việt), lưu niên đại hạn, sao đại vận (Lộc Tồn, Kình, Đà, Khôi, Việt, Mã theo can chi cung đại hạn) và tứ hóa đại vận, nguyệt hạn. Công thức theo bài giảng kênh Tử Vi Học Quán.
-- Chưa sửa (chờ quyết định): Phá Toái và Khôi/Việt tuổi Mậu, Đinh, Nhâm, Canh trong engine phái Việt khác với Tử Vi Học Quán và Toàn thư (xem tuvi-quy-tac-video.md, mục E).
+- Đã sửa (11/2026, E1–E3): Phá Toái (Tý Ngọ Mão Dậu ở Tỵ, Dần Thân Tỵ Hợi ở Dậu, tứ mộ ở Sửu); Khôi/Việt: Giáp Mậu Sửu/Mùi, Ất Kỷ Tý/Thân, Bính Đinh Hợi/Dậu, Canh Tân Ngọ/Dần (câu phú "Canh Tân phùng Mã Hổ"), Nhâm Quý Mão/Tỵ. Test đối chiếu lasotuvi bỏ ba sao này; có test riêng theo sách.
 - Vòng Tràng Sinh phái Việt: sửa thứ tự Mộ → Tuyệt → Thai → Dưỡng → Tràng Sinh (lasotuvi đặt ngược Thai/Dưỡng). Test đối chiếu lasotuvi bỏ hai sao này, có test riêng cho thứ tự vòng.
 - Phú Tử vi: `luan-co-ban/src/tuvi-phu-data.ts` — câu phú cổ Hán Việt các thầy trích dẫn, kèm điều kiện máy kiểm; hiện ở mọi phái khi khớp. Nghĩa viết lại, không chép bản dịch của sách hiện đại.
 - Đợt 4 (11/2026): Bắc phái thêm trường Khâm Thiên Tứ hóa (Tâm Thành, Minh Phương, Tử vi lý số) — `tuvi-video4.ts`.

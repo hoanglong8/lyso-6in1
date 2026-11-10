@@ -8,7 +8,7 @@ import { CUNG, type KyMonChart } from "@lyso/engine-kymon";
 import { CUNG_TA, R16, THAN16, type ThaiAtChart } from "@lyso/engine-thaiat";
 import { CANH_BAO_CHUNG, type LuanCoBan, type Phan, type Y } from "./types";
 
-const CHUA_SACH = "Chưa có sách chuyên đề trong kho sách để đối chiếu — nội dung theo ý nghĩa thông dụng, cần thầy kiểm tra";
+const CHUA_SACH = "Chưa có sách chuyên đề trong kho sách để đối chiếu — nội dung theo ý nghĩa và cách cục thông dụng (thập can khắc ứng, ngũ bất ngộ thời, lục thân tam truyền, tam tài số), cần thầy kiểm tra";
 
 // ——— Đại Lục Nhâm ———
 
@@ -39,6 +39,10 @@ export const PHEP_Y: Record<string, string> = {
   "Phục ngâm": "Thiên bàn trùng địa bàn: mọi thứ còn nằm im, trì trệ, chưa động.",
   "Phản ngâm": "Thiên bàn đối xung địa bàn: đảo ngược, đi lại, thay đổi liên tục.",
 };
+
+const HANH_CAN = ["Mộc", "Mộc", "Hỏa", "Hỏa", "Thổ", "Thổ", "Kim", "Kim", "Thủy", "Thủy"];
+const HANH_CHI = ["Thủy", "Thổ", "Mộc", "Mộc", "Thổ", "Hỏa", "Hỏa", "Thổ", "Kim", "Kim", "Thổ", "Thủy"];
+const SINH: Record<string, string> = { Mộc: "Hỏa", Hỏa: "Thổ", Thổ: "Kim", Kim: "Thủy", Thủy: "Mộc" };
 
 const LUC_THAN_Y: Record<string, string> = {
   "Thê tài": "tiền bạc, của cải (với nam: vợ)",
@@ -78,6 +82,38 @@ export function luanLucNham(c: LucNhamChart): LuanCoBan {
       { text: `Kết cục nghiêng về ${LUC_THAN_Y[mat.lucThan] ?? mat.lucThan}${mat.tuanKhong ? ", nhưng mạt truyền không vong nên dễ không thành" : ""}.`, canCu: `Mạt truyền ${CHI[mat.chi]} ${mat.lucThan}` },
     ],
   });
+  // Sinh khắc can ngày với sơ/mạt truyền; tam truyền hợp cục; tiến/thoái; quý nhân thuận nghịch
+  const canH = HANH_CAN[c.day.can]!;
+  const so = tt.items[0]!;
+  const sinhKhac = (h: string) => (KHAC[h] === canH ? "khac-can" : KHAC[canH] === h ? "can-khac" : SINH[h] === canH ? "sinh-can" : SINH[canH] === h ? "can-sinh" : "hoa");
+  const sk: Y[] = [];
+  const soRel = sinhKhac(HANH_CHI[so.chi]!);
+  sk.push({
+    text: {
+      "khac-can": "Sơ truyền khắc can ngày: việc tự tìm đến, có áp lực từ bên ngoài; người hỏi ở thế bị động.",
+      "can-khac": "Can ngày khắc sơ truyền: người hỏi nắm thế chủ động, việc do mình khởi xướng.",
+      "sinh-can": "Sơ truyền sinh can ngày: khởi đầu có trợ lực, được giúp.",
+      "can-sinh": "Can ngày sinh sơ truyền: phải bỏ công sức, tiền của ra trước.",
+      hoa: "Sơ truyền cùng hành với can ngày: việc ngang hàng, có cạnh tranh hoặc cùng chung sức.",
+    }[soRel]!,
+    canCu: `can ${CAN[c.day.can]} (${canH}) — sơ truyền ${CHI[so.chi]} (${HANH_CHI[so.chi]})`,
+    tone: soRel === "khac-can" ? "xau" : soRel === "sinh-can" ? "tot" : "trung",
+  });
+  const matRel = sinhKhac(HANH_CHI[mat.chi]!);
+  if (matRel === "khac-can" || matRel === "sinh-can")
+    sk.push({ text: matRel === "sinh-can" ? "Mạt truyền sinh can ngày: kết cục có lợi cho người hỏi." : "Mạt truyền khắc can ngày: kết cục bất lợi, nên lường trước.", canCu: `mạt truyền ${CHI[mat.chi]} (${HANH_CHI[mat.chi]})`, tone: matRel === "sinh-can" ? "tot" : "xau" });
+  const ba = tt.items.map((x) => x.chi).sort((x, y) => x - y).join(",");
+  const CUC: Record<string, string> = { "0,4,8": "Thủy", "2,6,10": "Hỏa", "3,7,11": "Mộc", "1,5,9": "Kim" };
+  if (CUC[ba]) {
+    const h = CUC[ba]!;
+    const lt = h === canH ? "huynh đệ (bạn bè, cạnh tranh)" : SINH[h] === canH ? "phụ mẫu (văn thư, người trên)" : SINH[canH] === h ? "tử tôn (vui vẻ, giải tai)" : KHAC[canH] === h ? "thê tài (tiền bạc)" : "quan quỷ (áp lực, công danh)";
+    sk.push({ text: `Tam truyền hợp thành ${h} cục: sức việc dồn về một mối, nghiêng về ${lt}.`, canCu: tt.items.map((x) => CHI[x.chi]).join(" ") });
+  }
+  const d1 = (tt.items[1]!.chi - so.chi + 12) % 12, d2 = (mat.chi - tt.items[1]!.chi + 12) % 12;
+  if (d1 === 1 && d2 === 1) sk.push({ text: "Tam truyền tiến liền nhau (tiến liên như): việc tiến tới, nên làm tiếp.", canCu: "sơ → trung → mạt thuận chi liền", tone: "tot" });
+  if (d1 === 11 && d2 === 11) sk.push({ text: "Tam truyền lùi liền nhau (thoái liên như): việc lùi lại, nên giữ hoặc rút.", canCu: "sơ → trung → mạt nghịch chi liền", tone: "xau" });
+  sk.push({ text: c.quyNhan.thuan ? "Quý nhân thuận hành: việc theo lẽ thường, dễ được người trên giúp." : "Quý nhân nghịch hành: việc nhiều khúc mắc, nhờ người cần kiên nhẫn.", canCu: `Quý nhân ${c.quyNhan.truDa} tại ${CHI[c.quyNhan.chi]}`, tone: c.quyNhan.thuan ? "tot" : "trung" });
+  phan.push({ title: "Sinh khắc với người hỏi", items: sk });
   const k1 = c.tuKhoa[0]!;
   phan.push({ title: "Tứ khóa", items: [{ text: `Khóa 1 (can ngày — người hỏi): ${CHI[k1.top]} ${k1.tuong}, ${THIEN_TUONG_Y[k1.tuong]?.y ?? ""}. Khóa 3 (chi ngày — sự việc): ${CHI[c.tuKhoa[2]!.top]} ${c.tuKhoa[2]!.tuong}.` }] });
   return { mon: "Đại Lục Nhâm", tomTat: `${tt.method}; tam truyền ${tt.items.map((x) => `${CHI[x.chi]} ${x.tuong}`).join(" → ")}.`, phan, nguon: [CHUA_SACH], canhBao: [CANH_BAO_CHUNG] };
@@ -126,6 +162,22 @@ export const VIEC_KYMON: Record<string, { label: string; mon: string }> = {
 const CUNG_HANH = ["", "Thủy", "Thổ", "Mộc", "Mộc", "Thổ", "Kim", "Kim", "Thổ", "Hỏa"];
 const KHAC: Record<string, string> = { Mộc: "Thổ", Thổ: "Thủy", Thủy: "Hỏa", Hỏa: "Kim", Kim: "Mộc" };
 const TAM_KY = new Set([1, 2, 3]); // Ất Bính Đinh
+/** Cách cục thập can thông dụng: "thiên-địa" (chỉ số can) → [tên, nghĩa, tone] */
+const CACH_CAN: Record<string, [string, string, Y["tone"]]> = {
+  "4-2": ["Thanh Long phản thủ", "việc lớn hanh thông, cầu gì được nấy", "tot"],
+  "2-4": ["Phi điểu điệt huyệt", "cơ hội tự đến, mưu sự dễ thành", "tot"],
+  "1-7": ["Thanh Long đào tẩu", "người dưới bỏ đi, hao tài, việc đổ vỡ", "xau"],
+  "7-1": ["Bạch Hổ xương cuồng", "việc gia đạo bất an, dễ tổn thương, kiện tụng", "xau"],
+  "3-9": ["Chu Tước đầu giang", "văn thư, tin tức sai lạc; dễ thị phi, kiện cáo", "xau"],
+  "9-3": ["Đằng Xà yêu kiều", "việc quái lạ, lo sợ, giấy tờ rắc rối", "xau"],
+  "6-2": ["Thái Bạch nhập Huỳnh", "kẻ gây hại tự lui; hợp phòng thủ, không hợp tấn công", "trung"],
+  "2-6": ["Huỳnh nhập Thái Bạch", "kẻ gây hại đến gần; đề phòng mất mát, trộm cắp", "xau"],
+  "6-4": ["Thiên ất phục cung", "trăm việc bất lợi, đề phòng tranh chấp", "xau"],
+  "4-6": ["Thiên ất phi cung", "đổi chỗ, đổi việc thì bất lợi; nên giữ yên", "xau"],
+  "6-6": ["Thái Bạch đồng cung (chiến cách)", "anh em, đồng sự tranh giành, dễ xung đột", "xau"],
+  "1-2": ["Kỳ nghi thuận toại (Ất gặp Bính)", "cát lợi, được tiến cử, thăng chức", "tot"],
+  "2-3": ["Tinh kỳ trợ (Bính gặp Đinh)", "văn thư, tin vui, thi cử thuận", "tot"],
+};
 
 export function luanKyMon(c: KyMonChart, viec?: keyof typeof VIEC_KYMON): LuanCoBan {
   const phan: Phan[] = [];
@@ -134,7 +186,21 @@ export function luanKyMon(c: KyMonChart, viec?: keyof typeof VIEC_KYMON): LuanCo
   ];
   if (c.phucNgam) chung.push({ text: "Phục ngâm: sao về chỗ cũ, mọi việc trì trệ; hợp giữ yên, thu thập, không hợp khởi sự.", tone: "xau" });
   if (c.phanNgam) chung.push({ text: "Phản ngâm: sao đối xung chỗ cũ, việc đảo lộn, đi lại nhiều; nên làm nhanh việc nhỏ, tránh việc lâu dài.", tone: "xau" });
+  // Ngũ bất ngộ thời: can giờ khắc can ngày, cùng âm dương
+  if (KHAC[HANH_CAN[c.hour.can]!] === HANH_CAN[c.day.can] && c.hour.can % 2 === c.day.can % 2)
+    chung.push({ text: "Ngũ bất ngộ thời (can giờ khắc can ngày): giờ này trăm việc không hợp khởi sự, nên chọn giờ khác.", canCu: `giờ ${CAN[c.hour.can]}, ngày ${CAN[c.day.can]}`, tone: "xau" });
   phan.push({ title: "Thế cục", items: chung });
+  // Cách cục thập can: can thiên bàn chồng lên can địa bàn
+  const cach: Y[] = [];
+  for (let k = 1; k <= 9; k++) {
+    const p = c.palaces[k];
+    if (!p) continue;
+    for (const t of p.thien) for (const d of p.dia) {
+      const g = CACH_CAN[`${t}-${d}`];
+      if (g) cach.push({ text: `${g[0]}: ${g[1]}`, canCu: `thiên bàn ${CAN[t]} trên địa bàn ${CAN[d]} ở cung ${k} ${CUNG[k]}`, tone: g[2] });
+    }
+  }
+  if (cach.length) phan.push({ title: "Cách cục can chồng can", items: cach });
 
   const palaceY = (k: number): Y[] => {
     const p = c.palaces[k]!;
@@ -180,6 +246,17 @@ const keBen = (a: number, b: number) => {
   return i >= 0 && j >= 0 && (Math.abs(i - j) === 1 || Math.abs(i - j) === 7);
 };
 
+/** Tam tài số và trùng dương/trùng âm của một toán (theo nguyên lý thông dụng của Thái ất) */
+function toanY(v: number, ten: string): Y[] {
+  const chuc = Math.floor(v / 10), don = v % 10;
+  const out: Y[] = [];
+  const thieu = [chuc === 0 ? "vô thiên (dưới 10)" : "", don === 0 ? "vô địa (không có số lẻ hàng đơn vị)" : "", !String(v).includes("5") ? "vô nhân (không có số 5)" : ""].filter(Boolean);
+  if (thieu.length) out.push({ text: `${ten} ${v}: ${thieu.join(", ")} — thế của bên này thiếu một phần trợ lực.`, tone: "trung" });
+  if (chuc > 0 && don > 0 && chuc % 2 === 1 && don % 2 === 1) out.push({ text: `${ten} ${v} trùng dương (hàng chục và đơn vị đều lẻ): thế cương, mạnh nhưng dễ quá đà.`, tone: "trung" });
+  if (chuc > 0 && don > 0 && chuc % 2 === 0 && don % 2 === 0) out.push({ text: `${ten} ${v} trùng âm (hàng chục và đơn vị đều chẵn): thế nhu, nên thủ hơn công.`, tone: "trung" });
+  return out.map((y) => ({ ...y, canCu: `${ten} = ${v}` }));
+}
+
 export function luanThaiAt(c: ThaiAtChart): LuanCoBan {
   const tuongTrangThai = (cung: number, ten: string): Y => {
     if (cung === 5) return { text: `${ten} ở trung cung: tướng không ra khỏi trung cung — khó phát huy, nên giữ thế thủ.`, tone: "xau" };
@@ -208,6 +285,7 @@ export function luanThaiAt(c: ThaiAtChart): LuanCoBan {
         tuongTrangThai(c.khach.daiTuong, "Khách đại tướng"),
       ],
     },
+    { title: "Toán số (tam tài, âm dương)", items: [c.chu, c.khach].flatMap((t, i) => toanY(t.value, i ? "Khách toán" : "Chủ toán")) },
     { title: "Tam môn", items: [{ text: c.tamMon === "cụ" ? "Tam môn cụ (Hưu, Sinh, Khai không bị Thái ất chiếm): đường đi thông, thuận cho hành động." : "Tam môn không cụ: một cát môn bị Thái ất chiếm, hành động lớn kém thuận.", tone: c.tamMon === "cụ" ? "tot" : "xau" }] },
   ];
   return { mon: "Thái ất", tomTat: `${c.duong ? "Dương" : "Âm"} độn ${c.cuc} cục; Thái ất cung ${c.thaiAt.cung}; chủ toán ${c.chu.value}, khách toán ${c.khach.value}.`, phan, nguon: [CHUA_SACH], canhBao: [CANH_BAO_CHUNG, "Thái ất chủ yếu dùng cho thời vận chung (quốc gia, thời cuộc, tập thể); áp dụng cho việc cá nhân chỉ mang tính tham khảo."] };
