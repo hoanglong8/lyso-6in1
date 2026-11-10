@@ -5,8 +5,8 @@ tính theo **âm lịch Việt Nam (UTC+7)**, có múi giờ lịch sử và gi�
 
 - **Giai đoạn 1 (đang chạy, mặc định):** tính 6 môn và luận cơ bản theo luật, **toàn bộ trên trình duyệt**.
   Máy chủ không nhận, không lưu, không chuyển dữ liệu sinh ra nước ngoài. Hồ sơ chỉ lưu trên máy người dùng nếu họ bấm lưu.
-- **Giai đoạn 2 (đã viết code, đang tắt):** Supabase (tài khoản, hồ sơ), AI luận giải (Claude API), Vercel Pro, cổng thanh toán,
-  hồ sơ đánh giá chuyển dữ liệu ra nước ngoài. Bật bằng `NEXT_PUBLIC_GIAI_DOAN=2` — xem [docs/trien-khai.md](docs/trien-khai.md).
+- **Giai đoạn 2 (đã viết code, đang tắt):** Supabase (tài khoản, hồ sơ), AI luận giải (Claude API), cổng thanh toán payOS;
+  còn cần Vercel Pro và nộp hồ sơ đánh giá chuyển dữ liệu ra nước ngoài (bản nháp: docs/ho-so-du-lieu-ca-nhan.md). Bật bằng `NEXT_PUBLIC_GIAI_DOAN=2` — xem [docs/trien-khai.md](docs/trien-khai.md).
 
 ## Nguyên tắc
 
@@ -62,7 +62,7 @@ docs/                   Sổ quyết định trường phái
 - Tử vi: Mệnh (chính tinh, độ sáng, vô chính diệu mượn Thiên Di, Tuần/Triệt), tam phương tứ chính, tứ hóa, Thân, cục–mệnh, 5 cung chính, đại/tiểu hạn.
 - Bát tự: vượng suy nhật chủ theo 4 tiêu chí được lệnh, đắc địa, được sinh, được trợ (theo *Tôi học đoán mệnh*), hỷ/kỵ, thập thần, đại vận và lưu niên.
 - Kinh dịch: quẻ chủ/hỗ/biến, hào động, Mai Hoa thể–dụng, Lục hào dụng thần theo việc hỏi. Thoán từ Hán Việt (Chu Dịch, phạm vi công cộng) đối chiếu sách: 61/64 quẻ khớp nguyên văn, 3 quẻ khác dị bản.
-- Đại Lục Nhâm, Kỳ môn, Thái ất: luận theo luật cơ bản; **chưa có sách chuyên đề trong kho để đối chiếu**, mỗi bài ghi rõ điều này.
+- Đại Lục Nhâm, Kỳ môn, Thái ất: luận theo luật cơ bản và cách cục thông dụng (sinh khắc tam truyền, thập can khắc ứng, ngũ bất ngộ thời, tam tài số); **chưa có sách chuyên đề trong kho để đối chiếu**, mỗi bài ghi rõ điều này.
 - Sách tham khảo là sách có bản quyền, chỉ dùng để đối chiếu, không đưa vào repo; văn tự trong app là viết riêng.
 
 ## Tài khoản và AI luận giải (giai đoạn 2, đang tắt)

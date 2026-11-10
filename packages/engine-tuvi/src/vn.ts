@@ -123,14 +123,17 @@ function timHoaLinh(chiNam: number, gio: number, gioiTinh: number, amDuongNam: n
   return [dichCung(hoa - 1, gio), dichCung(linh + 1, -gio)];
 }
 
-const KHOI = [0, 2, 1, 12, 10, 8, 1, 8, 7, 6, 4];
+// Thiên Khôi theo can năm (cung 1=Tý … 12=Hợi): Giáp Mậu Sửu, Ất Kỷ Tý, Bính Đinh Hợi, Canh Tân Ngọ, Nhâm Quý Mão.
+// lasotuvi đặt Đinh Dậu, Mậu Mùi, Nhâm Tỵ (tráo Khôi/Việt) và Canh Mùi; sửa theo Toàn thư và câu phú "Canh Tân phùng Mã Hổ" (E2, E3).
+const KHOI = [0, 2, 1, 12, 12, 2, 1, 7, 7, 4, 4];
 const THIEN_QUAN = [0, 8, 5, 6, 3, 4, 10, 12, 10, 11, 7];
 const THIEN_PHUC = [0, 10, 9, 1, 12, 4, 3, 7, 6, 7, 6];
 const LUU_HA = [0, 10, 11, 8, 5, 6, 7, 9, 4, 12, 3];
 const THIEN_TRU = [0, 6, 7, 1, 6, 7, 9, 3, 7, 10, 11];
 const coThan = (chi: number) => ([12, 1, 2].includes(chi) ? 3 : [3, 4, 5].includes(chi) ? 6 : [6, 7, 8].includes(chi) ? 9 : 12);
 const thienMa = (chi: number) => [6, 3, 12, 9][chi % 4] as number;
-const phaToai = (chi: number) => [6, 10, 2][chi % 3] as number;
+// Phá Toái theo chi năm: Tý Ngọ Mão Dậu ở Tỵ; Dần Thân Tỵ Hợi ở Dậu; Thìn Tuất Sửu Mùi ở Sửu (lasotuvi tráo hai nhóm đầu, E1).
+const phaToai = (chi: number) => [10, 6, 2][chi % 3] as number;
 const TRIET: Record<number, [number, number]> = { 1: [9, 10], 6: [9, 10], 2: [7, 8], 7: [7, 8], 3: [5, 6], 8: [5, 6], 4: [3, 4], 9: [3, 4], 5: [1, 2], 10: [1, 2] };
 
 /** Tứ hóa theo 10 câu của cụ Thiên Lương: [Lộc, Quyền, Khoa, Kỵ] theo can năm 1..10 */
