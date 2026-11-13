@@ -13,6 +13,7 @@ import { LuanCoBanView } from "./luan-co-ban-view";
 import { PrintButton } from "./print-button";
 import { luanBazi, luanTuVi } from "@lyso/luan-co-ban";
 import { GIAI_DOAN_2 } from "@/lib/phase";
+import { docHash, linkChiaSe } from "@/lib/share";
 
 type Tab = "tuvi" | "bazi" | "lich";
 const TABS: [Tab, string][] = [
@@ -42,6 +43,23 @@ export default function LaSoApp() {
   const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
   const saved = useSavedProfiles();
   const phuMod = usePhu(tab === "tuvi");
+  const [daChep, setDaChep] = useState(false);
+  // Mở từ link chia sẻ (#h=…): nạp hồ sơ trong link, không lưu tự động
+  useEffect(() => {
+    const p = docHash(window.location.hash);
+    if (p) setProfile({ ...p, id: Math.random().toString(36).slice(2, 10) });
+  }, []);
+  const chiaSe = async () => {
+    const url = linkChiaSe(profile, window.location.origin);
+    try {
+      if (navigator.share) await navigator.share({ title: profile.name || "Lá số", url });
+      else await navigator.clipboard.writeText(url);
+      setDaChep(true);
+      setTimeout(() => setDaChep(false), 2500);
+    } catch {
+      /* người dùng hủy */
+    }
+  };
 
   const result = useMemo(() => {
     try {
@@ -112,7 +130,13 @@ export default function LaSoApp() {
       </aside>
 
       <section id="ket-qua" className="min-w-0 scroll-mt-4 space-y-4">
-        <div className="flex justify-end"><PrintButton /></div>
+        <div className="flex flex-wrap items-center justify-end gap-2 print:hidden">
+          <span className="text-xs text-stone-500">{daChep ? "Đã chép link." : "Link chứa ngày giờ sinh — chỉ gửi người bạn tin."}</span>
+          <button type="button" onClick={chiaSe} className="rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm hover:border-son">
+            Chia sẻ link
+          </button>
+          <PrintButton />
+        </div>
         <div className="flex gap-1 rounded-lg bg-stone-200/60 p-1 text-sm print:hidden">
           {TABS.map(([k, label]) => (
             <button

@@ -41,6 +41,14 @@ export default function Home() {
             Chiêm theo thời điểm hỏi: Kinh dịch, Đại Lục Nhâm, Kỳ môn độn giáp, Thái ất thần số.
           </p>
         </Link>
+              <Link href="/hop-tuoi" className="rounded-xl border border-stone-200 bg-white p-5 hover:border-son">
+          <h2 className="text-lg font-semibold">Xem hợp tuổi →</h2>
+          <p className="mt-1 text-sm text-stone-600">So hai người theo năm sinh, ngày sinh, nạp âm và cung phi Bát trạch.</p>
+        </Link>
+        <Link href="/chon-ngay" className="rounded-xl border border-stone-200 bg-white p-5 hover:border-son">
+          <h2 className="text-lg font-semibold">Chọn ngày tốt →</h2>
+          <p className="mt-1 text-sm text-stone-600">12 trực, ngày giờ hoàng đạo, ngày xung tuổi — theo việc cần làm.</p>
+        </Link>
       </section>
 
       <section>

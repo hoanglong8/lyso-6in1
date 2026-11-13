@@ -23,7 +23,8 @@
     "next": "^16.4.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "@lyso/luan-co-ban": "workspace:*"
+    "@lyso/luan-co-ban": "workspace:*",
+    "@lyso/van-su": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
