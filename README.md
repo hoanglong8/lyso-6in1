@@ -5,6 +5,8 @@ tính theo **âm lịch Việt Nam (UTC+7)**, có múi giờ lịch sử và gi�
 
 - **Giai đoạn 1 (đang chạy, mặc định):** tính 6 môn và luận cơ bản theo luật, **toàn bộ trên trình duyệt**.
   Máy chủ không nhận, không lưu, không chuyển dữ liệu sinh ra nước ngoài. Hồ sơ chỉ lưu trên máy người dùng nếu họ bấm lưu.
+- **Giai đoạn 3 (chạy trên trình duyệt):** xem hợp tuổi, chọn ngày tốt (package `@lyso/van-su`), chia sẻ lá số bằng link
+  (hồ sơ nằm trong phần `#` của URL, không gửi lên máy chủ), cài app lên điện thoại (PWA, dùng được khi mất mạng).
 - **Giai đoạn 2 (đã viết code, đang tắt):** Supabase (tài khoản, hồ sơ), AI luận giải (Claude API), cổng thanh toán payOS;
   còn cần Vercel Pro và nộp hồ sơ đánh giá chuyển dữ liệu ra nước ngoài (bản nháp: docs/ho-so-du-lieu-ca-nhan.md). Bật bằng `NEXT_PUBLIC_GIAI_DOAN=2` — xem [docs/trien-khai.md](docs/trien-khai.md).
 
