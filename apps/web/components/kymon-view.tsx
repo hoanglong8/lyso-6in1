@@ -27,6 +27,8 @@ export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
             · {c.cuc.termName} {NGUYEN[c.cuc.nguyen]} nguyên · tuần {c.tuanThu} (phù thủ {CAN[c.phuThu]})
             {c.phucNgam && <span className="ml-2 rounded bg-amber-100 px-1.5 text-xs text-amber-900">Phục ngâm</span>}
             {c.phanNgam && <span className="ml-2 rounded bg-amber-100 px-1.5 text-xs text-amber-900">Phản ngâm</span>}
+            {c.monPhucNgam && <span className="ml-2 rounded bg-amber-100 px-1.5 text-xs text-amber-900">Môn phục ngâm</span>}
+            {c.monPhanNgam && <span className="ml-2 rounded bg-amber-100 px-1.5 text-xs text-amber-900">Môn phản ngâm</span>}
           </div>
           <div className="grid min-w-[420px] grid-cols-3 text-sm">
             {GRID.map((k) => {
@@ -42,7 +44,16 @@ export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
                   </div>
                   {!center ? (
                     <>
-                      <div className="text-stone-700">{p.sao.join(" · ")}</div>
+                      <div className="flex items-start justify-between gap-1 text-stone-700">
+                        <span>{p.sao.join(" · ")}</span>
+                        <span className="flex shrink-0 gap-0.5 text-[10px]">
+                          {c.tuCan.filter((x) => x.cung === k).map((x) => (
+                            <span key={x.tru} className="rounded bg-sky-100 px-1 text-sky-900" title={`${x.ten} ${CAN[x.can]}: ${x.vaiTro}`}>
+                              {x.ten.replace(" can", "")}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
                       <div className="flex items-baseline justify-between">
                         <span className="text-lg font-semibold text-son">{p.thien.map((x) => CAN[x]).join(" ")}</span>
                         <span className="font-medium">{p.mon ? `${p.mon} môn` : ""}</span>
@@ -52,6 +63,8 @@ export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
                         <span className="flex gap-1 text-[10px]">
                           {p.tuanKhong && <span className="rounded bg-stone-200 px-1">Không</span>}
                           {p.maTinh && <span className="rounded bg-emerald-100 px-1 text-emerald-800">Mã</span>}
+                          {p.nhatKhong && <span className="rounded border border-stone-300 px-1" title="Tuần không theo ngày">N.không</span>}
+                          {p.nhatMa && <span className="rounded border border-emerald-300 px-1 text-emerald-800" title="Dịch mã theo ngày">N.mã</span>}
                         </span>
                       </div>
                     </>
@@ -68,7 +81,7 @@ export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
             })}
           </div>
           <p className="text-xs text-stone-500">
-            Mỗi ô: bát thần (trên trái), cửu tinh, can thiên bàn (đỏ) – bát môn, can địa bàn. Ô viền đỏ là nơi trực phù ({c.trucPhu.sao}) đến; trực sử {c.trucSu.mon} môn
+            Mỗi ô: bát thần (trên trái), cửu tinh, can thiên bàn (đỏ) – bát môn, can địa bàn. Nhãn xanh Nhật/Thời/Niên/Nguyệt là nơi can của trụ đó đứng trên thiên bàn. Ô viền đỏ là nơi trực phù ({c.trucPhu.sao}) đến; trực sử {c.trucSu.mon} môn
             đến cung {c.trucSu.denCung}. Phương Nam ở trên.
           </p>
         </div>
@@ -101,7 +114,7 @@ export function KyMonView({ snap }: { snap: CalendarSnapshot }) {
             <option value="">— chung —</option>
             {Object.entries(VIEC_KYMON).map(([k, v]) => (
               <option key={k} value={k}>
-                {v.label} ({v.mon} môn)
+                {v.label}
               </option>
             ))}
           </select>

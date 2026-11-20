@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildSnapshot, ganzhi, jdnFromYmd, CAN, type CalendarInput } from "@lyso/calendar-vn";
-import { buildKyMon, cucMaoSon, cucSachBo, cucTriNhuan, triNhuanChain, CUNG, type Cuc } from "../src";
+import { buildKyMonFromSnapshot, buildKyMon, cucMaoSon, cucSachBo, cucTriNhuan, triNhuanChain, CUNG, type Cuc } from "../src";
 
 const gz = (s: string) => {
   const [c, z] = s.split(" ");
@@ -117,5 +117,42 @@ describe("Định cục", () => {
     expect([...where].sort((a, b) => a - b)).toEqual([5, 17]);
     console.log("nhuận 1800–2100:", leaps);
     expect(Math.abs(leaps - 105)).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("Tứ can, nhật không/mã, môn ngâm, giáp ranh tiết", () => {
+  it("tứ can nằm đúng cung có can đó trên thiên bàn; Giáp ẩn dưới nghi của tuần", () => {
+    const cuc: Cuc = cucSachBo(5, gz("Canh Tuất"));
+    const c = buildKyMon(cuc, gz("Canh Tuất"), gz("Quý Mùi"), undefined, { nam: gz("Giáp Thìn"), thang: gz("Canh Ngọ") });
+    expect(c.tuCan.map((x) => x.tru)).toEqual(["nhat", "thoi", "nien", "nguyet"]);
+    for (const x of c.tuCan) expect(c.palaces[x.cung]!.thien).toContain(x.canTim);
+    const nien = c.tuCan.find((x) => x.tru === "nien")!;
+    expect(nien.can).toBe(0);
+    expect(nien.canTim).toBe(8); // Giáp Thìn tuần → Nhâm
+    // thiên bàn kinqimen: Canh ở Khảm 1, Quý ở Ly 9
+    expect(c.tuCan[0]!.cung).toBe(1);
+    expect(c.tuCan[1]!.cung).toBe(9);
+  });
+  it("nhật không theo tuần của ngày, nhật mã theo chi ngày", () => {
+    const cuc: Cuc = cucSachBo(5, gz("Canh Tuất"));
+    const c = buildKyMon(cuc, gz("Canh Tuất"), gz("Quý Mùi"));
+    // Canh Tuất thuộc tuần Giáp Thìn → không Dần Mão → cung Cấn 8, Chấn 3; Tuất (Dần Ngọ Tuất) mã tại Thân → Khôn 2
+    expect([1, 2, 3, 4, 6, 7, 8, 9].filter((k) => c.palaces[k]!.nhatKhong)).toEqual([3, 8]);
+    expect([1, 2, 3, 4, 6, 7, 8, 9].filter((k) => c.palaces[k]!.nhatMa)).toEqual([2]);
+  });
+  it("môn ngâm xét riêng với tinh ngâm", () => {
+    const cuc: Cuc = cucSachBo(5, gz("Canh Tuất"));
+    for (let i = 0; i < 60; i++) {
+      const h = ganzhi(i % 10, i % 12);
+      const c = buildKyMon(cuc, gz("Canh Tuất"), h);
+      const monGoc: Record<number, string> = { 1: "Hưu", 8: "Sinh", 3: "Thương", 4: "Đỗ", 9: "Cảnh", 2: "Tử", 7: "Kinh", 6: "Khai" };
+      const ve = Object.entries(monGoc).every(([k, m]) => c.palaces[+k]!.mon === m);
+      expect(c.monPhucNgam).toBe(ve);
+    }
+  });
+  it("cảnh báo khi giờ xem sát lúc giao tiết", () => {
+    const s = snapCN(2024, 6, 21, 4, 30); // Hạ chí 2024-06-21 04:51 Bắc Kinh
+    expect(buildKyMonFromSnapshot(s).canhBaoTiet).toMatch(/Hạ chí/);
+    expect(buildKyMonFromSnapshot(snapCN(2024, 6, 28, 12)).canhBaoTiet).toBeUndefined();
   });
 });

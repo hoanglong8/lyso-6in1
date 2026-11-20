@@ -104,6 +104,15 @@ describe("Luận cơ bản", () => {
       for (const ke of ["nien", "nguyet", "nhat", "thoi"] as const) ok(luanThaiAt(buildThaiAtFromSnapshot(s, ke)));
     }
   });
+  it("Kỳ môn: có tứ can, mỗi việc hỏi đều ra mục dụng thần", () => {
+    for (const s of snaps.slice(0, 30)) {
+      const c = buildKyMonFromSnapshot(s);
+      expect(c.tuCan).toHaveLength(4);
+      expect(luanKyMon(c).phan.some((p) => p.title.startsWith("Tứ can"))).toBe(true);
+      for (const v of Object.keys(VIEC_KYMON) as (keyof typeof VIEC_KYMON)[])
+        expect(luanKyMon(c, v).phan.some((p) => p.title.startsWith("Việc hỏi")), `${v}`).toBe(true);
+    }
+  });
 });
 
 /** Đối chiếu Thoán từ với sách (chỉ chạy khi có văn bản sách trên máy; văn bản sách không đưa vào repo). */
