@@ -18,7 +18,7 @@ import {
   type GanZhi,
 } from "@lyso/calendar-vn";
 
-export const ENGINE_VERSION = "engine-kymon@0.1.0";
+export const ENGINE_VERSION = "engine-kymon@0.2.0";
 
 const mod = (a: number, n: number) => ((a % n) + n) % n;
 
@@ -175,8 +175,27 @@ export interface Palace {
   sao: string[];
   mon: string | null;
   than: string | null;
+  /** Tuần không theo trụ giờ */
   tuanKhong: boolean;
+  /** Mã tinh (dịch mã) theo chi giờ */
   maTinh: boolean;
+  /** Tuần không theo trụ ngày — bối cảnh cả ngày */
+  nhatKhong: boolean;
+  /** Dịch mã theo chi ngày */
+  nhatMa: boolean;
+}
+
+/** Vị trí can của một trụ trên thiên bàn. Can Giáp ẩn dưới nghi của tuần mình (độn giáp). */
+export interface CanVaiTro {
+  tru: "nhat" | "thoi" | "nien" | "nguyet";
+  ten: string;
+  vaiTro: string;
+  /** Can thực của trụ */
+  can: number;
+  /** Can dùng để tìm cung (khác `can` khi trụ là Giáp) */
+  canTim: number;
+  /** Cung thiên bàn có can này (1–9, không phải 5) */
+  cung: number;
 }
 
 export interface KyMonChart {
@@ -190,15 +209,35 @@ export interface KyMonChart {
   trucPhu: { sao: string; tuCung: number; denCung: number };
   trucSu: { mon: string; tuCung: number; denCung: number };
   palaces: Palace[]; // chỉ số 1..9 (0 bỏ trống)
+  /** Tinh phục ngâm / phản ngâm: cửu tinh về chỗ cũ / sang cung đối xung */
   phucNgam: boolean;
   phanNgam: boolean;
+  /** Môn phục ngâm / phản ngâm: bát môn dời riêng với cửu tinh nên xét riêng */
+  monPhucNgam: boolean;
+  monPhanNgam: boolean;
+  /** Nhật can, thời can (và niên can, nguyệt can nếu có) trên thiên bàn */
+  tuCan: CanVaiTro[];
+  /** Giờ xem ở sát lúc giao tiết (±24 giờ): cục có thể lệch tùy cách tính */
+  canhBaoTiet?: string;
   notes: string[];
 }
+
+export interface TruPhu {
+  nam?: GanZhi;
+  thang?: GanZhi;
+}
+
+const VAI_TRO: Record<CanVaiTro["tru"], [string, string]> = {
+  nhat: ["Nhật can", "bản thân người hỏi"],
+  thoi: ["Thời can", "sự việc, đối phương"],
+  nien: ["Niên can", "cấp trên, môi trường lớn"],
+  nguyet: ["Nguyệt can", "đồng nghiệp, người ngang hàng, đối thủ"],
+};
 
 const CHI_CUNG = [1, 8, 8, 3, 4, 4, 9, 2, 2, 7, 6, 6];
 const DICH_MA = (z: number) => [2, 11, 8, 5][z % 4] as number;
 
-export function buildKyMon(cuc: Cuc, day: GanZhi, hour: GanZhi, config: KyMonConfig = DEFAULT_KYMON_CONFIG): KyMonChart {
+export function buildKyMon(cuc: Cuc, day: GanZhi, hour: GanZhi, config: KyMonConfig = DEFAULT_KYMON_CONFIG, phu: TruPhu = {}): KyMonChart {
   const ky = config.kyCung === "khon" || !cuc.duong ? 2 : 8;
   const real = (c: number) => (c === 5 ? ky : c);
 
@@ -231,6 +270,8 @@ export function buildKyMon(cuc: Cuc, day: GanZhi, hour: GanZhi, config: KyMonCon
     than: null,
     tuanKhong: false,
     maTinh: false,
+    nhatKhong: false,
+    nhatMa: false,
   }));
   // can trung cung hiện kèm ở cung ký
   palaces[ky]!.dia.push(diaAt[5] as number);
@@ -262,6 +303,24 @@ export function buildKyMon(cuc: Cuc, day: GanZhi, hour: GanZhi, config: KyMonCon
   const kong = [mod(startChi + 10, 12), mod(startChi + 11, 12)];
   for (const z of kong) palaces[CHI_CUNG[z] as number]!.tuanKhong = true;
   palaces[CHI_CUNG[DICH_MA(hour.chi)] as number]!.maTinh = true;
+  // Nhật không & nhật mã theo trụ ngày
+  const dayStart = mod(day.index60 - (day.index60 % 10), 12);
+  for (const z of [mod(dayStart + 10, 12), mod(dayStart + 11, 12)]) palaces[CHI_CUNG[z] as number]!.nhatKhong = true;
+  palaces[CHI_CUNG[DICH_MA(day.chi)] as number]!.nhatMa = true;
+
+  // Tứ can trên thiên bàn
+  const tuCan: CanVaiTro[] = [];
+  const dat = (tru: CanVaiTro["tru"], g: GanZhi | undefined) => {
+    if (!g) return;
+    const canTim = g.can === 0 ? (TUAN_NGHI[Math.floor(g.index60 / 10)] as number) : g.can;
+    const cung = [1, 2, 3, 4, 6, 7, 8, 9].find((k) => palaces[k]!.thien.includes(canTim)) ?? 0;
+    const [ten, vaiTro] = VAI_TRO[tru];
+    tuCan.push({ tru, ten, vaiTro, can: g.can, canTim, cung });
+  };
+  dat("nhat", day);
+  dat("thoi", hour);
+  dat("nien", phu.nam);
+  dat("nguyet", phu.thang);
 
   const notes: string[] = [];
   if (fromCung === 5) notes.push(`Phù thủ ở trung cung, ký ${CUNG[ky]} ${ky}.`);
@@ -278,13 +337,27 @@ export function buildKyMon(cuc: Cuc, day: GanZhi, hour: GanZhi, config: KyMonCon
     palaces,
     phucNgam: shift === 0,
     phanNgam: shift === 4,
+    monPhucNgam: monShift === 0,
+    monPhanNgam: monShift === 4,
+    tuCan,
     notes,
   };
 }
 
 export function buildKyMonFromSnapshot(s: CalendarSnapshot, config: KyMonConfig = DEFAULT_KYMON_CONFIG): KyMonChart {
   const cuc = dinhCuc(s, config.dinhCuc);
-  const c = buildKyMon(cuc, s.ganzhi.day, s.ganzhi.hour, config);
+  const c = buildKyMon(cuc, s.ganzhi.day, s.ganzhi.hour, config, { nam: s.ganzhi.yearBazi, thang: s.ganzhi.monthBazi });
+  const t = new Date(s.instantUtc).getTime();
+  const NGAY = 86_400_000;
+  for (const ref of [s.solarTerm.current, s.solarTerm.next]) {
+    const d = new Date(ref.instant).getTime() - t;
+    if (Math.abs(d) <= NGAY) {
+      const gio = Math.round(Math.abs(d) / 3_600_000);
+      c.canhBaoTiet = `Giờ xem ${d > 0 ? "trước" : "sau"} lúc giao tiết ${ref.name} khoảng ${gio} giờ: cục có thể khác nhau tùy cách định cục — nên đối chiếu thêm cách định cục khác.`;
+      c.notes.push(c.canhBaoTiet);
+      break;
+    }
+  }
   if (s.input.time === null) c.notes.push("Không rõ giờ: bàn đang lấy giờ Ngọ.");
   return c;
 }
@@ -293,10 +366,11 @@ export function toPromptContext(c: KyMonChart): string {
   const canName = (x: number) => CAN[x] as string;
   return [
     `Kỳ môn độn giáp (${c.engineVersion}), chuyển bàn. ${c.cuc.duong ? "Dương" : "Âm"} độn ${c.cuc.so} cục, ${c.cuc.termName} ${NGUYEN[c.cuc.nguyen]} nguyên (${c.cuc.method}). ${c.cuc.note}.`,
-    `Ngày ${c.day.name}, giờ ${c.hour.name}; tuần ${c.tuanThu}, phù thủ ${canName(c.phuThu)}. Trực phù ${c.trucPhu.sao} đến cung ${c.trucPhu.denCung}; trực sử ${c.trucSu.mon} môn đến cung ${c.trucSu.denCung}.${c.phucNgam ? " Phục ngâm." : ""}${c.phanNgam ? " Phản ngâm." : ""}`,
+    `Ngày ${c.day.name}, giờ ${c.hour.name}; tuần ${c.tuanThu}, phù thủ ${canName(c.phuThu)}. Trực phù ${c.trucPhu.sao} đến cung ${c.trucPhu.denCung}; trực sử ${c.trucSu.mon} môn đến cung ${c.trucSu.denCung}.${c.phucNgam ? " Phục ngâm." : ""}${c.phanNgam ? " Phản ngâm." : ""}${c.monPhucNgam ? " Môn phục ngâm." : ""}${c.monPhanNgam ? " Môn phản ngâm." : ""}`,
+    c.tuCan.map((x) => `${x.ten} ${canName(x.can)}${x.can !== x.canTim ? ` (ẩn dưới ${canName(x.canTim)})` : ""} ở cung ${x.cung}`).join("; "),
     ...[1, 8, 3, 4, 9, 2, 7, 6, 5].map((k) => {
       const p = c.palaces[k] as Palace;
-      return `Cung ${k} ${p.name}: thiên ${p.thien.map(canName).join("/") || "—"} trên địa ${p.dia.map(canName).join("/")}; ${p.sao.join(", ") || "—"}; ${p.mon ? `${p.mon} môn` : "—"}; ${p.than ?? "—"}${p.tuanKhong ? "; tuần không" : ""}${p.maTinh ? "; mã tinh" : ""}`;
+      return `Cung ${k} ${p.name}: thiên ${p.thien.map(canName).join("/") || "—"} trên địa ${p.dia.map(canName).join("/")}; ${p.sao.join(", ") || "—"}; ${p.mon ? `${p.mon} môn` : "—"}; ${p.than ?? "—"}${p.tuanKhong ? "; tuần không" : ""}${p.maTinh ? "; mã tinh" : ""}${p.nhatKhong ? "; nhật không" : ""}${p.nhatMa ? "; nhật mã" : ""}`;
     }),
   ].join("\n");
 }

@@ -152,13 +152,32 @@ export const THAN_Y: Record<string, { tone: Y["tone"]; y: string }> = {
   "Cửu Địa": { tone: "tot", y: "vững vàng, giữ gìn, phòng thủ" },
   "Cửu Thiên": { tone: "tot", y: "tiến công, phát triển, cao xa" },
 };
-export const VIEC_KYMON: Record<string, { label: string; mon: string }> = {
-  "cau-tai": { label: "Cầu tài, buôn bán", mon: "Sinh" },
-  "cong-danh": { label: "Công danh, xin việc", mon: "Khai" },
-  "thi-cu": { label: "Thi cử, văn thư", mon: "Cảnh" },
-  "gap-nguoi": { label: "Gặp gỡ, hòa giải", mon: "Hưu" },
-  "viec-kin": { label: "Việc kín, đàm phán", mon: "Đỗ" },
+/**
+ * Dụng thần theo việc hỏi. `chinh` là dụng thần chính (môn hoặc sao), `can`/`sao`/`than` là phụ.
+ * Theo cách thủ dụng thông dụng: tài xem Sinh môn và Mậu, công danh xem Khai môn và Trực Phù,
+ * thi cử xem Cảnh môn, Thiên Phụ, Đinh; hôn nhân nam xem Ất, nữ xem Canh, cùng Lục Hợp; bệnh xem Thiên Nhuế, Tử môn.
+ */
+export interface DungThan {
+  label: string;
+  chinh: { mon?: string; sao?: string; can?: number };
+  mon?: string[];
+  sao?: string[];
+  can?: number[];
+  than?: string[];
+  luuY?: string;
+}
+export const VIEC_KYMON: Record<string, DungThan> = {
+  "cau-tai": { label: "Cầu tài, buôn bán, đầu tư", chinh: { mon: "Sinh" }, can: [4] },
+  "cong-danh": { label: "Công danh, xin việc, dự án", chinh: { mon: "Khai" }, than: ["Trực Phù"] },
+  "thi-cu": { label: "Thi cử, học hành, văn bằng", chinh: { mon: "Cảnh" }, sao: ["Thiên Phụ"], can: [3] },
+  "tinh-cam-nam": { label: "Tình cảm (nam hỏi về nữ)", chinh: { can: 1 }, than: ["Lục Hợp"] },
+  "tinh-cam-nu": { label: "Tình cảm (nữ hỏi về nam)", chinh: { can: 6 }, than: ["Lục Hợp"] },
+  "suc-khoe": { label: "Sức khỏe, bệnh tật", chinh: { sao: "Thiên Nhuế" }, mon: ["Tử"], luuY: "Bàn Kỳ môn chỉ xem xu hướng, không thay cho khám chữa bệnh." },
+  "kien-tung": { label: "Kiện tụng, hợp đồng, tranh chấp", chinh: { mon: "Khai" }, mon: ["Kinh"], sao: ["Thiên Tâm"], than: ["Trực Phù"] },
+  "gap-nguoi": { label: "Gặp gỡ, hòa giải, cầu quý nhân", chinh: { mon: "Hưu" } },
+  "viec-kin": { label: "Việc kín, đàm phán", chinh: { mon: "Đỗ" } },
 };
+const SINH_HANH: Record<string, string> = { Mộc: "Hỏa", Hỏa: "Thổ", Thổ: "Kim", Kim: "Thủy", Thủy: "Mộc" };
 const CUNG_HANH = ["", "Thủy", "Thổ", "Mộc", "Mộc", "Thổ", "Kim", "Kim", "Thổ", "Hỏa"];
 const KHAC: Record<string, string> = { Mộc: "Thổ", Thổ: "Thủy", Thủy: "Hỏa", Hỏa: "Kim", Kim: "Mộc" };
 const TAM_KY = new Set([1, 2, 3]); // Ất Bính Đinh
@@ -186,6 +205,9 @@ export function luanKyMon(c: KyMonChart, viec?: keyof typeof VIEC_KYMON): LuanCo
   ];
   if (c.phucNgam) chung.push({ text: "Phục ngâm: sao về chỗ cũ, mọi việc trì trệ; hợp giữ yên, thu thập, không hợp khởi sự.", tone: "xau" });
   if (c.phanNgam) chung.push({ text: "Phản ngâm: sao đối xung chỗ cũ, việc đảo lộn, đi lại nhiều; nên làm nhanh việc nhỏ, tránh việc lâu dài.", tone: "xau" });
+  if (c.monPhucNgam) chung.push({ text: "Môn phục ngâm: bát môn ở yên chỗ cũ, việc khó chuyển động, nên giữ nguyên trạng.", tone: "xau" });
+  if (c.monPhanNgam) chung.push({ text: "Môn phản ngâm: bát môn sang cung đối xung, việc lật đi lật lại, kế hoạch dễ bị đổi; hợp thu dọn, rút lui hơn khởi sự mới.", tone: "xau" });
+  if (c.canhBaoTiet) chung.push({ text: c.canhBaoTiet, tone: "trung", canCu: "giáp ranh tiết khí" });
   // Ngũ bất ngộ thời: can giờ khắc can ngày, cùng âm dương
   if (KHAC[HANH_CAN[c.hour.can]!] === HANH_CAN[c.day.can] && c.hour.can % 2 === c.day.can % 2)
     chung.push({ text: "Ngũ bất ngộ thời (can giờ khắc can ngày): giờ này trăm việc không hợp khởi sự, nên chọn giờ khác.", canCu: `giờ ${CAN[c.hour.can]}, ngày ${CAN[c.day.can]}`, tone: "xau" });
@@ -209,9 +231,17 @@ export function luanKyMon(c: KyMonChart, viec?: keyof typeof VIEC_KYMON): LuanCo
       const m = MON_Y[p.mon]!;
       let note = "";
       const ch = CUNG_HANH[k]!;
-      if (KHAC[m.hanh] === ch) note = m.tone === "tot" ? " Môn khắc cung (môn bức): cái tốt bị giảm." : " Môn khắc cung (môn bức): cái xấu càng rõ.";
-      else if (KHAC[ch] === m.hanh) note = " Cung khắc môn (môn bị chế): sức của môn yếu đi.";
-      out.push({ text: `${p.mon} môn: ${m.y}.${note}`, tone: m.tone, canCu: `${p.mon} môn (${m.hanh}) ở cung ${k} ${p.name} (${ch})` });
+      let tone = m.tone;
+      if (KHAC[m.hanh] === ch) {
+        // Môn bách: môn khắc cung
+        note = m.tone === "tot" ? " Môn bách (môn khắc cung): cát môn bị bách, việc tốt khó thành, càng ép càng hỏng." : " Môn bách (môn khắc cung): hung môn bị bách, cái xấu càng nặng.";
+        if (m.tone === "tot") tone = "xau";
+      } else if (KHAC[ch] === m.hanh) {
+        // Môn thụ chế: cung khắc môn — không gọi là bách
+        note = m.tone === "tot" ? " Môn thụ chế (cung khắc môn): cát lực giảm, việc chậm, nhiều cản trở." : " Môn thụ chế (cung khắc môn): hung tính được kiềm bớt.";
+        if (m.tone === "tot") tone = "trung";
+      }
+      out.push({ text: `${p.mon} môn: ${m.y}.${note}`, tone, canCu: `${p.mon} môn (${m.hanh}) ở cung ${k} ${p.name} (${ch})${note ? "; cung chế môn không phải bách, môn chế cung mới là bách" : ""}` });
     }
     for (const s of p.sao) if (SAO_Y[s]) out.push({ text: `${s}: ${SAO_Y[s]!.y}.`, tone: SAO_Y[s]!.tone });
     if (p.than && THAN_Y[p.than]) out.push({ text: `${p.than}: ${THAN_Y[p.than]!.y}.`, tone: THAN_Y[p.than]!.tone });
@@ -219,13 +249,67 @@ export function luanKyMon(c: KyMonChart, viec?: keyof typeof VIEC_KYMON): LuanCo
     if (ky.length) out.push({ text: `Thiên bàn có tam kỳ (${ky.map((x) => CAN[x]).join(", ")}): thêm cơ hội, quý khí.`, tone: "tot" });
     if (p.tuanKhong) out.push({ text: "Cung gặp tuần không: việc dễ hụt, chưa thành ngay.", tone: "xau" });
     if (p.maTinh) out.push({ text: "Có mã tinh: việc có biến động, di chuyển, đến nhanh.", tone: "trung" });
+    if (p.nhatKhong && !p.tuanKhong) out.push({ text: "Gặp nhật không (tuần không của ngày): trong ngày việc ở phương này còn hư, dễ lỡ hẹn.", tone: "trung" });
+    if (p.nhatMa && !p.maTinh) out.push({ text: "Có nhật mã: trong ngày có dịch chuyển, thay đổi liên quan phương này.", tone: "trung" });
     return out;
   };
 
+  // Tứ can: nhật can là mình, thời can là việc/đối phương, niên can là trên, nguyệt can là ngang hàng
+  if (c.tuCan.length) {
+    const tom = (k: number) => {
+      const p = c.palaces[k]!;
+      const bits = [p.mon ? `${p.mon} môn` : "", ...p.sao, p.than ?? ""].filter(Boolean);
+      const xau = [p.tuanKhong ? "tuần không" : "", p.nhatKhong ? "nhật không" : ""].filter(Boolean);
+      return `${bits.join(", ")}${xau.length ? `; gặp ${xau.join(", ")}` : ""}`;
+    };
+    const items: Y[] = c.tuCan.map((x) => {
+      const p = c.palaces[x.cung]!;
+      const m = p.mon ? MON_Y[p.mon] : undefined;
+      const tone: Y["tone"] = p.tuanKhong ? "trung" : (m?.tone ?? "trung");
+      return {
+        text: `${x.ten} ${CAN[x.can]} (${x.vaiTro}) ở cung ${x.cung} ${CUNG[x.cung]}: ${tom(x.cung)}.`,
+        tone,
+        canCu: x.can !== x.canTim ? `can Giáp ẩn dưới ${CAN[x.canTim]} (độn giáp)` : `${CAN[x.can]} trên thiên bàn`,
+      };
+    });
+    const nhat = c.tuCan.find((x) => x.tru === "nhat");
+    const thoi = c.tuCan.find((x) => x.tru === "thoi");
+    if (nhat && thoi) {
+      const a = CUNG_HANH[nhat.cung]!, b = CUNG_HANH[thoi.cung]!;
+      let rel: [string, Y["tone"]];
+      if (nhat.cung === thoi.cung) rel = ["cùng cung: mình và việc gắn chặt, chủ động được", "tot"];
+      else if (a === b) rel = ["tỷ hòa (cùng hành): ngang sức, dễ bàn bạc", "trung"];
+      else if (SINH_HANH[b] === a) rel = ["cung thời can sinh cung nhật can: việc tìm đến mình, có lợi", "tot"];
+      else if (SINH_HANH[a] === b) rel = ["cung nhật can sinh cung thời can: mình phải bỏ công sức, hao tổn để theo việc", "trung"];
+      else if (KHAC[a] === b) rel = ["cung nhật can khắc cung thời can: mình chế ngự được việc, nhưng phải dùng sức", "trung"];
+      else rel = ["cung thời can khắc cung nhật can: việc gây áp lực lên mình, dễ bị động", "xau"];
+      items.push({ text: `Quan hệ mình – việc: ${rel[0]}.`, tone: rel[1], canCu: `cung ${nhat.cung} (${a}) và cung ${thoi.cung} (${b})` });
+    }
+    phan.push({ title: "Tứ can: mình, việc, người trên, người ngang hàng", items });
+  }
+
   if (viec) {
     const v = VIEC_KYMON[viec]!;
-    const k = c.palaces.findIndex((p) => p.mon === v.mon);
-    if (k > 0) phan.push({ title: `Việc hỏi: ${v.label} — xét cung có ${v.mon} môn (cung ${k} ${CUNG[k]})`, items: palaceY(k) });
+    const timMon = (m: string) => c.palaces.findIndex((p, i) => i > 0 && p.mon === m);
+    const timSao = (s: string) => [1, 2, 3, 4, 6, 7, 8, 9].find((k) => c.palaces[k]!.sao.includes(s)) ?? -1;
+    const timCan = (x: number) => [1, 2, 3, 4, 6, 7, 8, 9].find((k) => c.palaces[k]!.thien.includes(x)) ?? -1;
+    const timThan = (t: string) => c.palaces.findIndex((p, i) => i > 0 && p.than === t);
+    const [kChinh, tenChinh] = v.chinh.mon ? [timMon(v.chinh.mon), `${v.chinh.mon} môn`] : v.chinh.sao ? [timSao(v.chinh.sao), v.chinh.sao] : [timCan(v.chinh.can!), `can ${CAN[v.chinh.can!]}`];
+    const items: Y[] = kChinh > 0 ? palaceY(kChinh) : [];
+    const phu: string[] = [];
+    for (const m of v.mon ?? []) { const k = timMon(m); if (k > 0) phu.push(`${m} môn ở cung ${k} ${CUNG[k]}`); }
+    for (const s of v.sao ?? []) { const k = timSao(s); if (k > 0) phu.push(`${s} ở cung ${k} ${CUNG[k]}`); }
+    for (const x of v.can ?? []) { const k = timCan(x); if (k > 0) phu.push(`${CAN[x]} ở cung ${k} ${CUNG[k]}${c.palaces[k]!.tuanKhong ? " (tuần không)" : ""}`); }
+    for (const t of v.than ?? []) { const k = timThan(t); if (k > 0) phu.push(`${t} ở cung ${k} ${CUNG[k]}`); }
+    const nhat = c.tuCan.find((x) => x.tru === "nhat");
+    if (nhat && kChinh > 0) {
+      const a = CUNG_HANH[nhat.cung]!, b = CUNG_HANH[kChinh]!;
+      const rel = nhat.cung === kChinh ? "dụng thần cùng cung với nhật can: việc nằm trong tay mình" : SINH_HANH[b] === a ? "cung dụng thần sinh cung nhật can: việc thuận cho mình" : KHAC[b] === a ? "cung dụng thần khắc cung nhật can: việc gây sức ép, khó nắm" : KHAC[a] === b ? "cung nhật can khắc cung dụng thần: phải chủ động, dùng sức mới được" : "dụng thần và nhật can không sinh khắc mạnh";
+      items.push({ text: `Dụng thần với bản thân: ${rel}.`, canCu: `cung ${nhat.cung} (${a}) và cung ${kChinh} (${b})` });
+    }
+    if (phu.length) items.push({ text: `Dụng thần phụ: ${phu.join("; ")}.`, canCu: "thủ dụng theo việc" });
+    if (v.luuY) items.push({ text: v.luuY, tone: "trung" });
+    if (kChinh > 0) phan.push({ title: `Việc hỏi: ${v.label} — dụng thần ${tenChinh} (cung ${kChinh} ${CUNG[kChinh]})`, items });
   } else {
     phan.push({ title: `Cung trực phù đến (cung ${c.trucPhu.denCung})`, items: palaceY(c.trucPhu.denCung) });
   }
